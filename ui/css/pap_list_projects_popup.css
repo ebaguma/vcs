@@ -1,0 +1,20 @@
+
+/*html {
+	overflow-x: hidden;
+	overflow-y: auto;
+}*/
+
+.SearchPap {
+	display: block;
+	width: 900px;
+	height: 135px;
+	margin-bottom: 20px;
+	float: left;
+}
+
+.PapGrid {
+	display: block;
+	width: 900px;
+	height: 500px;
+	float: left;
+}
