@@ -1294,7 +1294,7 @@
             <br>
             <div class="container">
                 <ul class="nav nav-tabs">
-                    <li class="inactive"> <a>&nbsp;</a> </li>
+                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                     <li class="active"> <a data-toggle="tab" href="#Details">Details</a> </li>
                     <li> <a data-toggle="tab" href="#Clients">Clients</a> </li>
                     <li> <a data-toggle="tab" href="#Budget">Budget</a> </li>
@@ -1304,8 +1304,7 @@
                     <!-- li> <a data-toggle="tab" href="#Disputes">Disputes</a> </li -->
                     <li> <a data-toggle="tab" href="#Sections">Sections</a> </li>
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
-                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
-                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
+                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                 </ul>
                 <div class="tab-content"> 
 
@@ -1728,7 +1727,7 @@
 							</div>
 							
 							<!-- Side Form for budget charts etc -->
-							<div id="SideSet" style="margin-top: 10px">
+							<!-- div id="SideSet" style="margin-top: 10px">
 								<form>
 									<fieldset class="fieldset" style="height: 425px; width: 300px;">
 										<legend class="legend" style="width: 170px;">
@@ -1737,7 +1736,7 @@
 										Other Budget Details
 									</fieldset>
 								</form>
-							</div>
+							</div -->
 							
 							<!-- detailed grid showing project expenses -->
 							<div class="GridArea" style="width: 750px;">
@@ -1859,7 +1858,7 @@
 							</div>
 							
 							<!-- Side Form for budget charts etc -->
-                            <div id="SideSet" style="margin-top: 10px">
+                            <!-- div id="SideSet" style="margin-top: 10px">
                                 <form>
                                     <fieldset class="fieldset" style="height: 425px; width: 300px;">
                                         <legend class="legend" style="width: 170px;">
@@ -1868,7 +1867,7 @@
                                         Other Budget Details
                                     </fieldset>
                                 </form>
-                            </div>
+                            </div -->
 							
 							<div class="GridArea" style="width: 750px;">
 								<table class="detailGrid" style="width: 725px;">
@@ -2244,7 +2243,7 @@
 								This is the Project Sections Screen
 							</p>
 							<div class="left-form">
-								<table>
+								<table class="formTable">
 									<tr>
 										<td class="formLabel">Section Name:</td>
 									</tr>
@@ -2260,14 +2259,14 @@
 										<td><span class="formSingleLineBox">Estimated Budget</span></td>
 										<td><span class="formSingleLineBox">Section Length</span></td>
 									</tr>
-									<tr>
+									<!-- tr>
 										<td class="formLabel">Est Start Date:</td>
 										<td class="formLabel">Est End Date:</td>
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox">Start Date</span></td>
 										<td><span class="formSingleLineBox">End Date</span></td>
-									</tr>
+									</tr -->
 									<tr>
 										<td class="formLabel">Other Details:</td>
 									</tr>
@@ -2276,10 +2275,14 @@
 										class="formMultiLineBox">Enter any other details</span></td>
 									</tr>
 									<tr>
-										<td><span class="saveButtonArea">Save</span></td>
-										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-										class="formLinks"><a href="#">Photos</a></span></td>
-									</tr>
+                                        <td><span class="saveButtonArea" href="#">
+                                            <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewSection') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
+                                            <?php // $new_dispute = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Disputes';
+                                                // if ($_GET['Mode'] == 'ViewDispute') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_dispute . '>New Dispute</a></span>'; } ?>
+                                        </span></td>
+                                        <td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
+                                        class="formLinks"><a href="#">Photos</a></span></td>
+                                    </tr>
 								</table>
 								<div class="GridArea">
 									<table class="detailGrid" style="width: 800px;">
@@ -2358,13 +2361,15 @@
 											src="images/delete.png" alt="" class="EditDeleteButtons" /></a></td>
 										</tr>
 									</table>
-									<table class="detailNavigation">
-										<tr>
-											<td><a href="#">Previous</a></td>
-											<td class="PageJump">1 / 5</td>
-											<td><a href="#">Next</a></td>
-										</tr>
-									</table>
+									
+									<span style="white-space: nowrap;">
+                                        <a href="<?php if (isset($_GET['DispID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $_GET['DispID'] . '&UserID=' . $_GET['UserID'] . '&DispStatus=' . $_GET['DispStatus'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } 
+                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } ?>" >Previous</a>
+                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $proj_disp_load_page . ' / ' . $proj_disp_num_pages ; } else {echo '1 / ' . $proj_disp_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                                        <a href="<?php if (isset($_GET['DispID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $_GET['DispID'] . '&UserID=' . $_GET['UserID'] . '&DispStatus=' . $_GET['DispStatus'] . '&GridPage=' . $GLOBALS['proj_disp_next_page'] . '#Disputes'; } 
+                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } ?>" >Next</a>
+                                    </span>
+									
 								</div>
 							</div>
 						</div>
