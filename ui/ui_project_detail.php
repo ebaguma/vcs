@@ -2252,11 +2252,11 @@
 										style="width: 610px;">Enter Section Name</span></td>
 									</tr>
 									<tr>
-										<td class="formLabel">Estimated Budget:</td>
+										<!-- td class="formLabel">Estimated Budget:</td -->
 										<td class="formLabel">Section Length:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Estimated Budget</span></td>
+										<!-- td><span class="formSingleLineBox">Estimated Budget</span></td -->
 										<td><span class="formSingleLineBox">Section Length</span></td>
 									</tr>
 									<!-- tr>
