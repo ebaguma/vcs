@@ -1303,7 +1303,9 @@
                     <li> <a data-toggle="tab" href="#PAP">PAP Definition</a> </li>
                     <!-- li> <a data-toggle="tab" href="#Disputes">Disputes</a> </li -->
                     <li> <a data-toggle="tab" href="#Sections">Sections</a> </li>
-                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
+                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
+                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
+                    <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                 </ul>
                 <div class="tab-content"> 
 
