@@ -37,8 +37,14 @@ Stakeholders using this tool stand to benefit in the following ways:
     - UI (Load, Insert, Update, Delete)
   - Addresses
     - Database (Get, Insert, Update, Delete)
-    - UI (Load, Select, Insert, Update, Delete)- 
+    - UI (Load, Select, Insert, Update, Delete) 
   - Family Members
+    - Database (Get, Insert, Update, Delete)
+    - UI (Load, Select, Insert, Update, Delete)
 - Masters - Pending
-- Valuation - Pending
+- Valuation
+  - Land
+  - Crops
+  - Improvements
+  - Consolidated Financials
 - Reports, Documentation - Pending
