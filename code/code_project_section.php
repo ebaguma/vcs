@@ -24,12 +24,12 @@ Class ProjectSection {
     public $proj_sect_proj_id;
     public $proj_sect_other_dtl;
 
-    function LoadSection() {
+    function LoadSections() {
         include ('code_connect.php');
-        $sql = "CALL USP_GET_PROJ_SECT_LIMIT (@PROJ_ID_, @OFFSET_, @LIMIT_)";
-        $mysqli -> query("SET @PROJ_ID_ = " . $this -> proj_sect_proj_id);
-        $mysqli -> query("SET @OFFSET_ = " . $this -> proj_sect_data_offset);
+        $sql = "CALL USP_GET_PROJ_SECT_LIMIT (@PROJ_ID_, @LIMIT_, @OFFSET_ )";
+        $mysqli -> query("SET @PROJ_ID_ = " . $this -> selected_project_id);
         $mysqli -> query("SET @LIMIT_ = " . $this -> proj_sect_page_rows);
+        $mysqli -> query("SET @OFFSET_ = " . $this -> proj_sect_data_offset);
 
         $result = $mysqli -> query($sql);
 
@@ -48,7 +48,7 @@ Class ProjectSection {
             $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> proj_sect_record_num = $this -> proj_sect_record_num + 1;
-            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> proj_sect_record_num, $ACTION, $SECT_NAME, $DISP_NAME, $ROLE, $DEL_ACTION);
+            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td></tr>", $this -> proj_sect_record_num, $ACTION, $SECT_NAME, $OTHER_DTL, $DEL_ACTION);
         }
         //recuperate resources
         $result -> free();
@@ -56,34 +56,33 @@ Class ProjectSection {
 
     function SelectSection() {
         include ('code_connect.php');
-        $sql = "CALL USP_GET_PROJ_STAFF (@USER_ID_, @PROJ_ID_, @ROLE_ID_)";
-        $mysqli -> query("SET @USER_ID_ = " . $this -> personnel_user_id);
-        $mysqli -> query("SET @PROJ_ID_ = " . $this -> selected_project_id);
-        $mysqli -> query("SET @ROLE_ID_ = " . $this -> personnel_role_id);
+        $sql = "CALL USP_GET_PROJ_SECT (@ID_)";
+        $mysqli -> query("SET @ID_ = " . $this -> proj_sect_id);
         $results = $mysqli -> query($sql);
 
         //iterate through the result set
         if ($results) {
             $row = $results -> fetch_object();
 
-            $this -> personnel_id = $row -> ID;
-            $this -> personnel_user_id = $row -> USER_ID;
-            $this -> personnel_role_id = $row -> ROLE_ID;
-            $this -> personnel_other_dtl = $row -> OTHER_DTL;
+            $this -> proj_sect_id = $row -> ID;
+            $this -> proj_sect_name = $row -> SECT_NAME;
+            $this -> proj_sect_length = $row -> SECT_LENGTH;
+            $this -> proj_sect_other_dtl = $row -> OTHER_DTL;
+            $this -> proj_sect_proj_id = $row -> PROJ_ID;
 
         }
-        
+
     }
 
     function InsertSection() {
         include ('code_connect.php');
-        $sql = "CALL USP_INS_PROJ_STAFF(@USER_ID_, @PROJ_ID_, @ROLE_ID_, @OTHER_DTL_, @CREATED_BY_)";
+        $sql = "CALL USP_INS_PROJ_SECT(@SECT_NAME_, @SECT_LENGTH_, @PROJ_ID_, @OTHER_DTL_, @CREATED_BY_)";
 
-        $mysqli -> query("SET @USER_ID_ = " . $this -> personnel_user_id);
-        $mysqli -> query("SET @PROJ_ID_ = " . $this -> selected_project_id );
-        $mysqli -> query("SET @ROLE_ID_ = " . $this -> personnel_role_id);
-        $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this->personnel_other_dtl . "'");
-        $mysqli -> query("SET @CREATED_BY_ = " . $this->session_user_id );
+        $mysqli -> query("SET @SECT_NAME_ = " . "'" . $this -> proj_sect_name . "'");
+        $mysqli -> query("SET @SECT_LENGTH_ = " . $this -> proj_sect_length);
+        $mysqli -> query("SET @PROJ_ID_ = " . $this -> selected_project_id);
+        $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> proj_sect_other_dtl . "'");
+        $mysqli -> query("SET @CREATED_BY_ = " . $this -> session_user_id);
 
         $results = $mysqli -> query($sql);
         if ($results) {
@@ -96,13 +95,13 @@ Class ProjectSection {
 
     function UpdateSection() {
         include ('code_connect.php');
-        $sql = "CALL USP_UPD_PROJ_STAFF(@ID_, @USER_ID_, @ROLE_ID_, @OTHER_DTL_, @UPDATED_BY_)";
+        $sql = "CALL USP_UPD_PROJ_SECT(@ID_, @SECT_NAME_, @SECT_LENGTH_, @OTHER_DTL_, @UPDATED_BY_)";
 
-        $mysqli -> query("SET @ID_ = " . $this -> personnel_id);
-        $mysqli -> query("SET @USER_ID_ = " . $this -> personnel_user_id );
-        $mysqli -> query("SET @ROLE_ID_ = " . $this -> personnel_role_id);
-        $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this->personnel_other_dtl . "'");
-        $mysqli -> query("SET @UPDATED_BY_ = " . $this->session_user_id );
+        $mysqli -> query("SET @ID_ = " . $this -> proj_sect_id);
+        $mysqli -> query("SET @SECT_NAME_ = " . "'" . $this -> proj_sect_name . "'");
+        $mysqli -> query("SET @SECT_LENGTH_ = " . $this -> proj_sect_length);
+        $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> proj_sect_other_dtl . "'");
+        $mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 
         $results = $mysqli -> query($sql);
         if ($results) {
@@ -115,9 +114,9 @@ Class ProjectSection {
 
     function DeleteSection() {
         include ('code_connect.php');
-        $sql = "CALL USP_DEL_PROJ_STAFF(@ID_)";
+        $sql = "CALL USP_DEL_PROJ_SECT(@ID_)";
 
-        $mysqli -> query("SET @ID_ = " . $this -> personnel_id);
+        $mysqli -> query("SET @ID_ = " . $this -> proj_sect_id);
         $results = $mysqli -> query($sql);
         if ($results) {
             $row = $results -> fetch_object();
@@ -129,10 +128,12 @@ Class ProjectSection {
 
     function ProjSectPageParams() {
         include 'code_connect.php';
-        $sql = "CALL USP_GET_PROJ_STAFF_ALL (" . $this -> selected_project_id . ")";
+        $sql = "CALL USP_GET_PROJ_SECT_ALL (@PROJ_ID_)";
+        $mysqli -> query("SET @PROJ_ID_ = " . $this -> selected_project_id);
+        
         $result = $mysqli -> query($sql);
-        $this -> personnel_num_rows = $result -> num_rows;
-        $this -> personnel_last_page = ceil($this -> personnel_num_rows / $this -> personnel_page_rows);
+        $this -> proj_sect_num_rows = $result -> num_rows;
+        $this -> proj_sect_last_page = ceil($this -> proj_sect_num_rows / $this -> proj_sect_page_rows);
     }
 
 }
