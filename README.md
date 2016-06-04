@@ -26,8 +26,8 @@ Stakeholders using this tool stand to benefit in the following ways:
   - Expenses - OK
   - Personnel - OK
   - PAP Definition - OK
-  - Disputes - Pending
-  - Sections - Pending
+  - Disputes - Postponed
+  - Sections - OK
 - PAP Info - Pending
 - Masters - Pending
 - Valuation - Pending
