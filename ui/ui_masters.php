@@ -1,4 +1,13 @@
 <! doctype html>
+
+<?php
+    
+    ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
+    
+    if(isset($_GET['LogOut'])){ LogOut(); }
+    
+?>
+
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -45,6 +54,20 @@
                 header('Location: ../index.php?Message=Session_Expired');
             }
         }
+
+        function LogOut() {
+            include_once ('../code/code_index.php');
+
+            $logout = new LogInOut();
+            // session_start();
+            if (isset($_SESSION['session_user_id'])) {
+                $logout -> user_id = $_SESSION['session_user_id'];
+            } else {
+                $logout -> user_id = $_COOKIE["last_user"];
+            }
+            $logout -> LogOff();
+        }
+
 		?>
 
 		<div id="ContentP" class="ContentParent" style="height:1300px;">

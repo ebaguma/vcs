@@ -60,7 +60,7 @@
 	<div class="BreadCrumbParent" style="margin-top: 0;">
 		<div class="BreadCrumbContent">
 			<span class="spanBreadCrumbs"><a href="JavaScript:void(0);" onclick="redirectHome();">Valuation, Compensation System:</a></span>
-			<span class="spanCurrentProject"> <a id="SelectedProject" href="#"><span style="color:#003366">Project:</span> KIP</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+			<span class="spanCurrentProject"> <!-- a id="SelectedProject" href="#"><span style="color:#003366">Project:</span> KIP</a -->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span -->
 			<span class="spanUserStatus">
 				<ul >
 					<li class="dropdown">
@@ -73,7 +73,10 @@
 							<li>
 								<a href="#">My Tasks (35)</a>
 							</li>
-							<li><a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?logout=true'; ?>">Sign Out</a></li>
+							<li>
+							    <!-- a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&Logout=true' ; ?>" >Sign Out</a -->
+                                <a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?LogOut=true' ; ?>" >Sign Out</a>
+						    </li>
 						</ul>
 					</li>
 				</ul> </span>

@@ -1,8 +1,14 @@
-<?php
-ob_start();
-?>
+<! doctype html >
 
-<!doctype html>
+    <?php
+    
+    ob_start();
+    
+    if(isset($_GET['LogOut'])){ LogOut(); }
+    
+    ?>
+
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -11,6 +17,101 @@ ob_start();
     
     <?php
     include ('ui_popup_header.php');
+    ?>
+    
+    <?php
+    
+    function LoadProjectPaps() {
+            include_once ('../code/code_pap_list.php');
+            $load_project_paps = new ProjectPapList();
+            $load_project_paps -> selected_project_id = $_GET["ProjectID"];
+
+            if (isset($_GET['GridPage'])) {
+                $GLOBALS['pap_load_page'] = $_GET['GridPage'];
+            } else {
+                $GLOBALS['pap_load_page'] = 1;
+            }
+
+            //set pagination parameters
+            $load_project_paps -> ReadPageParams();
+            $GLOBALS['pap_num_pages'] = $load_project_paps -> pap_last_page;
+
+            //Handling grid pages and navigation
+            if ($GLOBALS['pap_load_page'] == 1) {
+                $load_project_paps -> pap_record_num = 0;
+                $load_project_paps -> pap_data_offset = 0;
+            } else if ($GLOBALS['pap_load_page'] <= $load_project_paps -> pap_last_page) {
+                $load_project_paps -> pap_data_offset = ($GLOBALS['pap_load_page'] - 1) * $load_project_paps -> pap_page_rows;
+                $load_project_paps -> pap_record_num = ($GLOBALS['pap_load_page'] - 1) * $load_project_paps -> pap_page_rows; ;
+            } else {
+                // echo '<script>alert("Page Is Out Of Range");</script>';
+                $GLOBALS['pap_load_page'] = 1;
+                $load_project_paps -> pap_record_num = 0;
+                $load_project_paps -> pap_data_offset = 0;
+            }
+
+            if (($GLOBALS['pap_load_page'] + 1) <= $load_project_paps -> pap_last_page) {
+                $GLOBALS['pap_next_page'] = $GLOBALS['pap_load_page'] + 1;
+            } else {
+                $GLOBALS['pap_next_page'] = 1;
+            }
+
+            if (($GLOBALS['pap_load_page'] - 1) >= 1) {
+                $GLOBALS['pap_prev_page'] = $GLOBALS['pap_load_page'] - 1;
+            } else {
+                $GLOBALS['pap_prev_page'] = 1;
+            }
+
+            //Loading Projects
+            $load_project_paps -> LoadPaps();
+        }
+
+        function SearchProjectPaps() {
+            include_once ('../code/code_project_pap.php');
+            $search_project_paps = new ProjectPap();
+            $search_project_paps -> selected_project_id = $_GET["ProjectID"];
+            $search_project_paps -> pap_search = $_GET["KeyWord"];
+
+            if (isset($_GET['GridPage'])) {
+                $GLOBALS['pap_load_page'] = $_GET['GridPage'];
+            } else {
+                $GLOBALS['pap_load_page'] = 1;
+            }
+
+            //set pagination parameters
+            $search_project_paps -> ProjectPapSearchParams();
+            $GLOBALS['pap_num_pages'] = $search_project_paps -> pap_last_page;
+
+            //Handling grid pages and navigation
+            if ($GLOBALS['pap_load_page'] == 1) {
+                $search_project_paps -> pap_record_num = 0;
+                $search_project_paps -> pap_data_offset = 0;
+            } else if ($GLOBALS['pap_load_page'] <= $search_project_paps -> pap_last_page) {
+                $search_project_paps -> pap_data_offset = ($GLOBALS['pap_load_page'] - 1) * $search_project_paps -> pap_page_rows;
+                $search_project_paps -> pap_record_num = ($GLOBALS['pap_load_page'] - 1) * $search_project_paps -> pap_page_rows; ;
+            } else {
+                // echo '<script>alert("Page Is Out Of Range");</script>';
+                $GLOBALS['pap_load_page'] = 1;
+                $search_project_paps -> pap_record_num = 0;
+                $search_project_paps -> pap_data_offset = 0;
+            }
+
+            if (($GLOBALS['pap_load_page'] + 1) <= $search_project_paps -> pap_last_page) {
+                $GLOBALS['pap_next_page'] = $GLOBALS['pap_load_page'] + 1;
+            } else {
+                $GLOBALS['pap_next_page'] = 1;
+            }
+
+            if (($GLOBALS['pap_load_page'] - 1) >= 1) {
+                $GLOBALS['pap_prev_page'] = $GLOBALS['pap_load_page'] - 1;
+            } else {
+                $GLOBALS['pap_prev_page'] = 1;
+            }
+
+            //Loading Projects
+            $search_project_paps -> SearchProjectPaps();
+        }
+    
     ?>
     
     <?php
@@ -79,18 +180,18 @@ ob_start();
         
         <div class="SearchPap">
           <form>
-            <fieldset class="fieldset" style="height:130px; width:1000px;">
+            <fieldset class="fieldset" style="height:150px; width:1000px;">
               <legend class="legend" style="width:200px;"><span class="legendText" >
               Search By PAP Details
               </span></legend>
               <table>
                 <tr>
-                  <td class="formLabel">PAP Name</td>
+                  <td class="formLabel">Project Affected Person Search</td>
                   <!-- td class="formLabel">Reference Number</td>
                   <td class="formLabel">Other Details</td -->
                 </tr>
                 <tr>
-                  <td><span class="formSingleLineBox" style="width: 610px;" >Search By Name</span></td>
+                  <td><span class="formSingleLineBox" style="width: 990px;" >Search By HHID, Name, Plot Ref, Location Details</span></td>
                   <!-- td><span class="formSingleLineBox">Search By Ref No</span></td>
                   <td><span class="formSingleLineBox">Search By Other Details</span></td -->
                 </tr>
@@ -123,115 +224,23 @@ ob_start();
         
         <div class="PapGrid">
         <form>
-        <fieldset class="fieldset" style="height:470px; width:1000px;">
+        <fieldset class="fieldset" style="height:600px; width:1000px;">
               <legend class="legend" style="width:180px;"><span class="legendText" >
               Summary PAP List
               </span></legend>
-                <table class="detailGrid" style="width:750px;">
-                  <tr>
-                    <td class = "detailGridHead">#</td>
-                    <td  class = "detailGridHead">Project Name:</td>
-                    <td class = "detailGridHead">Project Code:</td>
-                    <td class = "detailGridHead">Project Manager:</td>
-                    <td class = "detailGridHead" colspan="2">Action:</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Karuma Project</td>
-                    <td>KIP</td>
-                    <td>Edwin Baguma</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Standard Gauge Railway</td>
-                    <td>SGR</td>
-                    <td>Byabagambi</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Uganda Kenya Oil Pipeline</td>
-                    <td>UKP</td>
-                    <td>AB Byandala</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Kasese Kinshasa Super Highway</td>
-                    <td>KKSH</td>
-                    <td>AB Byandala</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Entebbe Express Project</td>
-                    <td>EEP</td>
-                    <td>AB Byandala</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Southern ByPass Project</td>
-                    <td>SBP</td>
-                    <td>AB Byandala</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>Tororo Lira TLine Project</td>
-                    <td>TOL</td>
-                    <td>Richard Mungati</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>Mbarara Kabale Highway Project</td>
-                    <td>MKHP</td>
-                    <td>Richard Mungati</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>Kampala Gulu Highway Project</td>
-                    <td>KGHP</td>
-                    <td>Richard Mungati</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>Gulu Juba Super Highway</td>
-                    <td>GJSH</td>
-                    <td>Basajjakawa Jjemba</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>11</td>
-                    <td>Karuma Project</td>
-                    <td>KIP</td>
-                    <td>Edwin Baguma</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
-                  <tr>
-                    <td>12</td>
-                    <td>Standard Gauge Railway</td>
-                    <td>SGR</td>
-                    <td>Byabagambi</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a onClick="HideGrid()" href="#">Select</a></td>
-                  </tr>
+                <table class="detailGrid" style="width:1000px;">
+                    <tr>
+                        <td class="detailGridHead">#</td>
+                        <td class="detailGridHead">HHID</td>
+                        <td class="detailGridHead">PAP Name</td>
+                        <td class="detailGridHead">Plot Ref</td>
+                        <td class="detailGridHead">Designation</td>
+                        <td class="detailGridHead">PAP Type</td>
+                        <td class="detailGridHead">Delete</td>
+                    </tr>
+                    <?php if ($_GET['Mode'] == 'Read') { LoadProjectPaps(); } else if ($_GET['Mode'] == 'SearchPap'){ SearchProjectPaps();  } else { LoadProjectPaps(); } ?>
                 </table>
+                
                 <table class="detailNavigation">
                   <tr>
                     <td><a href="#">Previous</a></td>

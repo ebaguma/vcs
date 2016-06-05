@@ -57,6 +57,10 @@ class ProjectDetail {
             echo '<script>alert("Update Not Successful");</script>';
         }
     }
+    
+    function SelectProject(){
+        
+    }
 
     function LoadProjectStaff() {
 

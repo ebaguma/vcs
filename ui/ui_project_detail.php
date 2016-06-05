@@ -4,18 +4,7 @@
     ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
     //global $load_client_page;
 
-    if (isset($_GET['LogOut'])) {
-        include_once ('../code/code_index.php');
-
-        $logout = new LogInOut();
-        // session_start();
-        if (isset($_SESSION['session_user_id'])) {
-            $logout -> user_id = $_SESSION['session_user_id'];
-        } else {
-            $logout -> user_id = $_COOKIE["last_user"];
-        }
-        $logout -> LogOff();
-    }
+    if(isset($_GET['LogOut'])){ LogOut(); }
 
     if (isset($_POST['Mode']) && $_POST['Mode'] == 'EditDetails') {
         UpdateProjectDetails();
@@ -152,6 +141,10 @@
         UpdateProjectSection();
     }
     
+    if (isset($_GET['Select'])) {
+        SelectProject();
+    }
+    
     ?>
 
 <html>
@@ -234,7 +227,7 @@
 
             $selected_project_code = $project_code;
 
-            SelectProject();
+            // SelectProject();
 
             global $start_date;
             $start_date = $project_details -> start_date;
@@ -264,6 +257,30 @@
             header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $_SESSION['ProjectID'] . '&ProjectCode=' . $_SESSION['ProjectCode'] . '#Details');
             exit();
         }
+
+        function SelectProject(){
+            include_once ('../code/code_project_detail.php');
+
+            $project_id = $_GET['ProjectID'];
+
+            $project_details = new ProjectDetail();
+            $project_details -> project_id = $project_id;
+            $project_details -> LoadProjectDetails();
+            
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+                unset($_SESSION['session_pap_hhid']);
+                unset($_SESSION['session_pap_name']);
+                $_SESSION['session_project_name'] = $project_details -> project_name;
+                $_SESSION['session_project_code'] = $project_details -> project_code;
+            } else if (session_status() == PHP_SESSION_ACTIVE) {
+                unset($_SESSION['session_pap_hhid']);
+                unset($_SESSION['session_pap_name']);
+                $_SESSION['session_project_name'] = $project_details -> project_name;
+                $_SESSION['session_project_code'] = $project_details -> project_code;
+            }
+        }
+
 		?>
 
         <?php
@@ -1009,7 +1026,6 @@
         }
 
         function InsertProjectPap() {
-            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
             include_once ('../code/code_project_pap.php');
             $insert_project_pap = new ProjectPap();
             $insert_project_pap -> pap_name = $_POST['PapName'];
@@ -1299,14 +1315,6 @@
                 $i++;
             }
             return $pass;
-        }
-
-        function SelectProject() {
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-
-            $_SESSION['project_code'] = $_GET['ProjectCode'];
         }
         
 		?>

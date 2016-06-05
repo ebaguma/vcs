@@ -113,10 +113,23 @@
 			<span class="spanCurrentProject">
 			<a id="SelectedProject" href="ui_project_list.php?Mode=Read&PageNumber=1">
     			<span style="color:#003366">Project:</span>
-    			<?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
+    			 <?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
 			</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a id="SelectedPAP" href="ui_pap_list.php?Mode=Read" >
-			    <span style="color:#003366">35678:</span>&nbsp;Larysa Natukunda
+			<a id="SelectedPAP" href="ui_pap_list.php?Mode=Read&ProjectID=<?php if (isset($_GET['ProjectID'])) { echo $_GET['ProjectID']; } ?>&ProjectCode=<?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?>&GridPage=1" >
+			    <span style="color:#003366">
+			        <?php 
+			        if (session_status() == PHP_SESSION_NONE) {
+                        session_start(); echo $_SESSION['session_pap_hhid']; } 
+                    else if (session_status() == PHP_SESSION_ACTIVE) {
+                        echo $_SESSION['session_pap_hhid']; }
+			        ?>:
+			    </span>
+			        <?php 
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start(); echo $_SESSION['session_pap_name']; } 
+                    else if (session_status() == PHP_SESSION_ACTIVE) {
+                        echo $_SESSION['session_pap_name']; }
+                    ?>
 		    </a>
 			</span>
 			<span class="spanUserStatus">
@@ -131,7 +144,8 @@
 								<a href="#">My Tasks (35)</a>
 							</li>
 							<li>
-								<a href="ui_project_list.php?logout=true">Sign Out</a>
+								<!-- a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&Logout=true' ; ?>" >Sign Out</a -->
+								<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?LogOut=true' ; ?>" >Sign Out</a>
 							</li>
 						</ul>
 					</li>

@@ -1,4 +1,17 @@
-<!doctype html>
+<! doctype html>
+    
+    <?php
+    
+    ob_start();
+    
+    if(isset($_GET['LogOut'])){ LogOut(); }
+        
+    if (isset($_GET['HHID'])) {
+        SelectPap();
+    }
+    
+    ?>
+
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -24,6 +37,7 @@
                     $CheckReturnUser = new LogInOut();
                     $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
                     $CheckReturnUser -> CheckLoginStatus();
+                    CheckPapSelection();
                     if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
                         // header('Location: ui/ui_project_list.php?PageNumber=1');
                         echo 'SetActivePage()';
@@ -45,6 +59,50 @@
                 header('Location: ../index.php?Message=Session_Expired');
             }
         }
+
+        function CheckPapSelection(){
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+                if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])){ header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1'); }
+            } else if (session_status() == PHP_SESSION_ACTIVE) {
+                if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])){ header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1'); }
+            }
+            
+        }
+        
+        function SelectPap(){
+            
+            include_once ('../code/code_pap_list.php');
+            $select_project_pap = new ProjectPapList();
+            $select_project_pap -> pap_hhid = $_GET["HHID"];
+            $select_project_pap -> SelectPap();
+            $GLOBALS['pap_name'] = $select_project_pap -> pap_name;
+            
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+                $_SESSION['session_pap_hhid'] = $_GET['HHID'];
+                $_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
+            } else if (session_status() == PHP_SESSION_ACTIVE) {
+                $_SESSION['session_pap_hhid'] = $_GET['HHID'];
+                $_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
+            }
+        }
+
+        function LogOut() {
+            include_once ('../code/code_index.php');
+    
+            $logout = new LogInOut();
+            //session_start();
+            if (isset($_SESSION['session_user_id'])) {
+                $logout -> user_id = $_SESSION['session_user_id'];
+            } else {
+                $logout -> user_id = $_COOKIE["last_user"];
+            }
+            $logout -> LogOff();
+
+        }
+        
+        
 		?>
 
 		<div class="ContentParent">
@@ -149,30 +207,14 @@
 									<tr>
 										<td>
 										<div class="PhotoBox">
-											<img src="UI/images/20150912_161516.png" width="250" height="250" alt=""/>
+											<img src="images/20150912_161516.png" width="250" height="250" alt=""/>
 										</div></td>
 									</tr>
 									<tr>
 										<td><span class="formLinks SideBar" ><a href="#">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
 									</tr>
 								</table>
-								<p>
-									<span class="formLabel" style="color:#000000;">VCS: Quick Links</span>
-								</p>
-								<ul>
-									<li>
-										<a href="#">Change Project Selection</a>
-									</li>
-									<li>
-										<a href="#">Change PAP Selection</a>
-									</li>
-									<li>
-										<a href="#">Another Link</a>
-									</li>
-									<li>
-										<a href="#">Another Link</a>
-									</li>
-								</ul>
+								
 							</div>
 						</div>
 

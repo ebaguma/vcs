@@ -1,5 +1,8 @@
 <?php
 ob_start();
+
+if(isset($_GET['LogOut'])){ LogOut(); }
+
 ?>
 
 <!doctype html>
