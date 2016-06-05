@@ -6,9 +6,7 @@
     
     if(isset($_GET['LogOut'])){ LogOut(); }
         
-    if (isset($_GET['HHID'])) {
-        SelectPap();
-    }
+    if (isset($_GET['HHID'])) { SelectPap(); }
     
     ?>
 
