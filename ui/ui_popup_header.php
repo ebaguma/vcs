@@ -60,7 +60,12 @@
 	<div class="BreadCrumbParent" style="margin-top: 0;">
 		<div class="BreadCrumbContent">
 			<span class="spanBreadCrumbs"><a href="JavaScript:void(0);" onclick="redirectHome();">Valuation, Compensation System:</a></span>
-			<span class="spanCurrentProject"> <!-- a id="SelectedProject" href="#"><span style="color:#003366">Project:</span> KIP</a -->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span -->
+			<span class="spanCurrentProject">
+            <a id="SelectedProject" href="ui_project_list.php?Mode=Read&PageNumber=1">
+                <span style="color:#003366">Project:</span>
+                 <?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
+            </a>    
+		    </span>
 			<span class="spanUserStatus">
 				<ul >
 					<li class="dropdown">

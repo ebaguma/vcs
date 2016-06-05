@@ -67,8 +67,8 @@
         }
 
         function SearchProjectPaps() {
-            include_once ('../code/code_project_pap.php');
-            $search_project_paps = new ProjectPap();
+            include_once ('../code/code_pap_list.php');
+            $search_project_paps = new ProjectPapList();
             $search_project_paps -> selected_project_id = $_GET["ProjectID"];
             $search_project_paps -> pap_search = $_GET["KeyWord"];
 
@@ -79,7 +79,7 @@
             }
 
             //set pagination parameters
-            $search_project_paps -> ProjectPapSearchParams();
+            $search_project_paps -> SearchPageParams();
             $GLOBALS['pap_num_pages'] = $search_project_paps -> pap_last_page;
 
             //Handling grid pages and navigation
@@ -109,7 +109,7 @@
             }
 
             //Loading Projects
-            $search_project_paps -> SearchProjectPaps();
+            $search_project_paps -> SearchPaps();
         }
     
     ?>
@@ -180,10 +180,12 @@
         
         <div class="SearchPap">
           <form>
-            <fieldset class="fieldset" style="height:150px; width:1000px;">
+            <fieldset class="fieldset" style="height:140px; width:1000px;">
               <legend class="legend" style="width:200px;"><span class="legendText" >
               Search By PAP Details
               </span></legend>
+              
+              <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ; ?>" method="GET" autocomplete="off" >
               <table>
                 <tr>
                   <td class="formLabel">Project Affected Person Search</td>
@@ -191,11 +193,21 @@
                   <td class="formLabel">Other Details</td -->
                 </tr>
                 <tr>
-                  <td><span class="formSingleLineBox" style="width: 990px;" >Search By HHID, Name, Plot Ref, Location Details</span></td>
+                  <td>
+                      <input type="hidden" name="Mode" value="<?php echo 'SearchPap'; ?>" />
+                      <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
+                      <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
+                      <span class="formSingleLineBox" style="width: 750px;" >
+                      <input name="KeyWord" type="text" value="<?php if (isset($_GET['KeyWord'])) { echo $_GET['KeyWord'];  } ?>" style="width: 650px;" placeholder="Search For PAP by HHID, PAP Name, Plot Ref, Location Details" />
+                      <a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1'; ?>" class="LinkInBox" >Reset</a>
+                      </span>
+                      <input type="submit" style="position: absolute; left: -99999px;" />
+                  </td>
                   <!-- td><span class="formSingleLineBox">Search By Ref No</span></td>
                   <td><span class="formSingleLineBox">Search By Other Details</span></td -->
                 </tr>
               </table>
+              </form>
             </fieldset>
           </form>
         </div>
@@ -241,13 +253,21 @@
                     <?php if ($_GET['Mode'] == 'Read') { LoadProjectPaps(); } else if ($_GET['Mode'] == 'SearchPap'){ SearchProjectPaps();  } else { LoadProjectPaps(); } ?>
                 </table>
                 
-                <table class="detailNavigation">
-                  <tr>
-                    <td><a href="#">Previous</a></td>
-                    <td class="PageJump" style="width:80px;">1 / 100</td>
-                    <td><a href="#">Next</a></td>
-                  </tr>
-                </table>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ; ?>" method="GET" autocomplete="off" >
+                    <input type="hidden" name="Mode" value="<?php if ($_GET['Mode'] == 'SearchPap') { echo 'SearchPap'; } else { echo 'Read'; } ?>" />
+                    <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
+                    <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
+                    <input type="hidden" name="KeyWord" value="<?php if (isset($_GET['KeyWord'])) {echo $_GET['KeyWord']; } else {echo ''; } ?>" />
+                    <span style="white-space: nowrap; float:left;">
+                        <a href="<?php if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_prev_page'] ; } 
+                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_prev_page'] ; } ?>" >Previous</a>
+                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $_GET['GridPage'] . ' / ' . $GLOBALS['pap_num_pages'] ; } else {echo '1 / ' . $GLOBALS['pap_num_pages'] ; } ?>" style="width: 75px; height: 35px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                        <a href="<?php if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_next_page'] ; } 
+                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_next_page'] ; } ?>" >Next</a>
+                    </span>
+                    <input type="submit" style="position: absolute; left: -99999px;" />
+                </form>
+                
                 </fieldset>
                 </form>
               </div>
