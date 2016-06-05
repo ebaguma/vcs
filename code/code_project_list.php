@@ -38,7 +38,7 @@ class ProjectList {
             $PROJECTSTART = $row -> START_DATE;
             $PROJECTEND = $row -> END_DATE;
 
-            $ACTION = '../ui/ui_home.php?Mode=Read&ProjectID=' . $ID . '&ProjectCode=' . $PROJECTCODE ;
+            $ACTION = '../ui/ui_project_detail.php?Mode=Read&ProjectID=' . $ID . '&ProjectCode=' . $PROJECTCODE ;
             $this -> record_num = $this -> record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> record_num, $ACTION, $PROJECTNAME, $PROJECTCODE, $DISPLAYNAME, $PROJECTSTART, $PROJECTEND);
         }

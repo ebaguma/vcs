@@ -6,7 +6,7 @@ ob_start();
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="Me" content="ProjectList">
+	<meta name="Me" content="PapList">
 	<title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;PAP List</title>
 
 	<?php
@@ -123,6 +123,7 @@ ob_start();
         $logout -> LogOff();
 
     }
+
 	?>
 
 	<?php

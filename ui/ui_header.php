@@ -29,7 +29,7 @@
 						<a href="<?php echo 'ui_masters.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BioID'; ?>">MASTERS</a>
 					</li>
 					<li id="Bio">
-						<a href="<?php echo 'ui_bio.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">PAP INFO</a>
+						<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">PAP INFO</a>
 					</li>
 					<li id="Valuation">
 						<a href="<?php echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Land'; ?>">VALUATION</a>
@@ -112,10 +112,13 @@
 			<span class="spanBreadCrumbs"><a href="#">Valuation, Compensation System:</a></span>
 			<span class="spanCurrentProject">
 			<a id="SelectedProject" href="ui_project_list.php?Mode=Read&PageNumber=1">
-			<span style="color:#003366">Project:</span>
-			<?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
-			</a> </span>
-
+    			<span style="color:#003366">Project:</span>
+    			<?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
+			</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a id="SelectedPAP" href="ui_pap_list.php?Mode=Read" >
+			    <span style="color:#003366">35678:</span>&nbsp;Larysa Natukunda
+		    </a>
+			</span>
 			<span class="spanUserStatus">
 				<ul >
 					<li class="dropdown">
