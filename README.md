@@ -26,9 +26,25 @@ Stakeholders using this tool stand to benefit in the following ways:
   - Expenses - OK
   - Personnel - OK
   - PAP Definition - OK
-  - Disputes - Pending
-  - Sections - Pending
-- PAP Info - Pending
+  - Disputes - Postponed
+  - Sections - OK
+- PAP List
+  - Database (Get, Search, Insert, Update, Delete)
+  - UI (Load, Select, Search)
+- PAP Info
+  - Basic Info
+    - Database (Get, Insert, Update, Delete)
+    - UI (Load, Insert, Update, Delete)
+  - Addresses
+    - Database (Get, Insert, Update, Delete)
+    - UI (Load, Select, Insert, Update, Delete) 
+  - Family Members
+    - Database (Get, Insert, Update, Delete)
+    - UI (Load, Select, Insert, Update, Delete)
 - Masters - Pending
-- Valuation - Pending
+- Valuation
+  - Land
+  - Crops
+  - Improvements
+  - Consolidated Financials
 - Reports, Documentation - Pending
