@@ -1,0 +1,7 @@
+RewriteEngine On
+Options -Indexes
+
+#This is the base directory of the site.
+#Access-Control-Allow-Origin: *
+
+php_value session.cookie_lifetime 0

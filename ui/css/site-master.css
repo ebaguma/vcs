@@ -1,0 +1,89 @@
+a{
+	outline: 0;
+	}
+
+.Header {
+	background-color: #003366;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 60px; /*60px*/
+	padding: 10px;
+	overflow: hidden;
+	z-index: 50;
+}
+html, body {
+	margin: 0;
+	padding: 0;
+}
+.centreHeader {
+	text-align: left;
+	width: 1000px;
+	display: block;
+	height: 60px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.logo {
+	width: 200px;
+	display: block;
+	height: 60px;
+	float: left;
+}
+.Navigation {
+	width: 800px;
+	display: block;
+	height: 60px;
+	float: left;
+}
+.NavigationTable {
+	width: 600px;
+}
+.NavigationTable td {
+	height: 50px;
+	text-align: center;
+}
+.BreadCrumbParent {
+	position: fixed; /* fixed */
+	background-color: #F8F2F2;
+	margin-top: 60px; /* 40px */
+	width: 100%;
+	height: 30px;
+	/*padding: 5px;*/
+	z-index: 50;/*overflow: hidden;*/
+	-webkit-box-shadow: 0 8px 4px -4px #BABABA;
+	-moz-box-shadow: 0 8px 4px -4px #BABABA;
+	box-shadow: 0 8px 4px -4px #BABABA;
+}
+.BreadCrumbContent {
+	text-align: left;
+	width: 1000px;
+	display: block;
+	height: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	list-style-type: none;
+	
+}
+.FooterParent {
+	position: relative;
+	border-top-style: solid;
+	border-top-color: #003366;
+	border-top-width: 1px;
+	background-color: #003366;
+	bottom: 0px;
+	top:1100px;
+	height: 30px;
+	width: 100%;
+	z-index: 100;
+}
+.FooterContent {
+	text-align: center;
+	color: #fff;
+	width: 1000px;
+	display: block;
+	padding: 5px 0px 0px 0px;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 100;
+}

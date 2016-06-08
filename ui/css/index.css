@@ -1,0 +1,111 @@
+
+#loginWrapper {
+	width: 400px;
+	text-align: left;
+	padding-left: 10px;
+	position: absolute;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #003366;
+	margin-left: -150px;
+	height: 300px;
+	margin-top: -200px;
+	top: 50%;
+	left: 50%;
+	display: table;
+}
+
+#loginWrapper span {
+	display: table-cell;
+	vertical-align: middle;
+/*	font-family: 'open_sanslight';*/
+	font-family: 'open_sansregular';
+}
+
+.loginFields {
+	height: 40px;
+	line-height: 30px;
+	display: block;
+	vertical-align: middle;
+	width: 300px;
+	border-color: #003366;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px 5px;
+}
+
+.LoginBoxes {
+	margin: 5px;
+	border-style: none;
+	width: 250px;
+	float: left;
+	height: 30px;
+	line-height:30px;
+	font-size: 20px;
+/*	font-weight:bold;*/
+	color:#8B8D8E;
+}
+
+.ErrorMessage {
+
+	color: #FF0616;
+	width: 30px;
+	font-weight: bolder;
+	text-align: right;
+	height:30px;
+	float: left;
+	font-size: 20px;
+}
+
+.ErrorImage{
+	height:30px; width:30px; margin-top:5px; vertical-align:middle;
+}
+
+.wrongCredentials{
+	font-size: 14px;
+	font-weight: bolder;
+	width: 325px;
+	float: left;
+	color: #FF0616;
+}
+
+::-moz-placeholder { color:#CECECE; } 
+::-webkit-input-placeholder { color:#E0E0E0; }
+:-ms-input-placeholder { color:#E0E0E0; }
+
+#loginWrapper input[type=submit] {
+	box-sizing: border-box;
+	float: left;
+	width: 125px;
+	height: 40px;
+	margin-right: 10px;
+	font-size: 14px;
+	color: #F3F3F3;
+	border-style: none;
+	background-color: #003366;
+}
+
+input {
+	line-height: 30px;
+}
+
+.submitArea {
+	width: 325px;
+	font-size: 14px;
+	font-weight: bolder;
+}
+
+.forgotPass {
+	width: 150px;
+	float: left;
+	line-height: 40px;
+}
+
+.forgotPass a, a:visited, a:hover, a:active {
+	color: #003366;
+	text-decoration: none;
+}
+
+input:focus {
+	outline: none;
+}
