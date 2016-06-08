@@ -113,6 +113,7 @@ a {
 }
 
 ::-moz-placeholder {
+<<<<<<< HEAD
 color:#CECECE;
 }
 ::-webkit-input-placeholder {
@@ -120,6 +121,15 @@ color:#E0E0E0;
 }
 :-ms-input-placeholder {
 color:#E0E0E0;
+=======
+	color: #CECECE;
+}
+::-webkit-input-placeholder {
+	color: #E0E0E0;
+}
+:-ms-input-placeholder {
+	color: #E0E0E0;
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 }
 /*input[placeholder] { color:#E0E0E0; }*/
 
@@ -131,10 +141,17 @@ color:#E0E0E0;
 }
 .formSingleLineBox select {
 	border: none;
+<<<<<<< HEAD
 	display:block;
 	width: 280px;
 	height:25px;
 	-webkit-appearance:none;
+=======
+	display: block;
+	width: 280px;
+	height: 25px;
+	-webkit-appearance: none;
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 }
 .formLabel {
 	height: 30px;
@@ -279,7 +296,11 @@ textarea {
 }
 .detailNavigation {
 	margin: 20px 0px;/* margin-top: 20px;
+<<<<<<< HEAD
      margin-bottom: 20px; */
+=======
+	 margin-bottom: 20px; */
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 }
 .detailNavigation td {
 	font-weight: bold;
@@ -290,6 +311,14 @@ textarea {
 	padding: 5px 5px;
 	text-align: center;
 }
+<<<<<<< HEAD
+=======
+
+.detailNavigation input[type="hidden"] {
+	height: 0px;
+}
+
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 .NavBoxes {
 	border-style: none;
 	/*float: left;*/
@@ -299,7 +328,11 @@ textarea {
 	width: 20px;/*	font-weight:bold;*/
 }
 .detailNavigation .PageJump {
+<<<<<<< HEAD
 	border: 1px solid #C7D8E4;
+=======
+	border: 1px solid #337ab7;
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 }
 .legend {
 	border: none;

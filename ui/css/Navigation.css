@@ -5,6 +5,7 @@
 	margin-bottom: 0;
 	list-style: none;
 }
+<<<<<<< HEAD
 .nav-pills>li {
 	float: left;
 	font-weight: bolder;
@@ -16,6 +17,19 @@
 	margin-left: 2px
 }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+=======
+.nav-pills > li {
+	float: left;
+	font-weight: bolder;
+}
+.nav-pills > li > a {
+	border-radius: 0px
+}
+.nav-pills > li+ li {
+	margin-left: 2px
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 	color: #fff;
 	background-color: #ff6600;
 	border-style: none;
@@ -64,9 +78,15 @@
 	box-shadow: 0 6px 12px rgba(0,0,0,.175)
 }
 /*.dropdown-menu.pull-right {
+<<<<<<< HEAD
 	right: 0;
 	left: auto
 }*/
+=======
+ right: 0;
+ left: auto
+ }*/
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 
 .dropdown-menu .divider {
 	height: 1px;
@@ -74,7 +94,11 @@
 	overflow: hidden;
 	background-color: #e5e5e5
 }
+<<<<<<< HEAD
 .dropdown-menu>li>a {
+=======
+.dropdown-menu > li > a {
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 	display: block;
 	padding: 3px 20px;
 	clear: both;
@@ -83,24 +107,43 @@
 	color: #333;
 	white-space: nowrap
 }
+<<<<<<< HEAD
 .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+=======
+.dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover {
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 	color: #262626;
 	text-decoration: none;
 	background-color: #f5f5f5
 }
+<<<<<<< HEAD
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+=======
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover {
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 	color: #fff;
 	text-decoration: none;
 	background-color: #337ab7;
 	outline: 0
 }
+<<<<<<< HEAD
 .dropdown-menu>.disabled>a, .dropdown-menu>.disabled>a:focus, .dropdown-menu>.disabled>a:hover {
 	color: #777
 }
 .dropdown-menu>.disabled>a:focus, .dropdown-menu>.disabled>a:hover {
+=======
+.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:focus, .dropdown-menu > .disabled > a:hover {
+	color: #777
+}
+.dropdown-menu > .disabled > a:focus, .dropdown-menu > .disabled > a:hover {
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 	text-decoration: none;
 	cursor: not-allowed;
 	background-color: transparent;
 	background-image: none;
+<<<<<<< HEAD
 filter:progid:DXImageTransform.Microsoft.gradient(enabled=false)
+=======
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false)
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 }

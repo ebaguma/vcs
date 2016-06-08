@@ -45,6 +45,7 @@
             }
         }
         ?>
+<<<<<<< HEAD
         
         <!-- Adds tab persistence to bootstrap tabs -->
         <script type="text/javascript">
@@ -60,6 +61,8 @@
                  });
             });
         </script>
+=======
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 
 		<div class="ContentParent">
 			<div class="Content">
@@ -204,7 +207,11 @@
 											<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
 										</tr>
 									</table>
+<<<<<<< HEAD
 									<table class="detailGrid" style="width:380px; ">
+=======
+									<table class="detailGrid" style="width:360px; ">
+>>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 										<tr>
 											<td class = "detailGridHead">#</td>
 											<td class = "detailGridHead">Neighbour:</td>
