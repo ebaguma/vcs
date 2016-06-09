@@ -43,11 +43,9 @@ Class ProjectSection {
             $SECT_LENGTH = $row -> SECT_LENGTH;
             $PROJ_ID = $row -> PROJ_ID;
             $OTHER_DTL = $row -> OTHER_DTL;
-            
-            // $proj_sect_page = 1;
+            $proj_sect_page = 1;
 
-            // $confirm = "Are You Sure?";
-            
+            $confirm = "Are You Sure?";
             $ACTION = '../ui/ui_project_detail.php?Mode=ViewSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#Sections';
             $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#Sections';
             $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';

@@ -1825,10 +1825,10 @@
 								</tr>
 								<tr>
 									<td><span class="formSingleLineBox">
-										<select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()">
+										<select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()" >
 										    <option value="">-- Select Category --</option>
 											<?php if (isset($_GET['ProjectID']) || isset($_GET['Cat'])) { BindBudgetCat(); } ?>
-										</select>
+										</select><!-- a class="LinkInBox" href="#">New</a -->
 										</span></td>
 									<td><span class="formSingleLineBox">
 										<select name="SubCategories" id="SelectBudgetSubCat">

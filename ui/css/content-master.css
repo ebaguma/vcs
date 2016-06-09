@@ -317,6 +317,7 @@ textarea {
 	border: 1px solid #E0E0E0;
 	padding: 5px 20px;/*border-radius:5px;*/
 }
+
 .LinkInBox {
 	float: right;
 	padding: 0px 10px;
@@ -324,6 +325,23 @@ textarea {
 	font-size: 14px;
 	color: #868686;
 }
+
+/* select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 30px 2px 2px;
+    border: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+option{
+	width: 250px;
+} */
+
 .EditDeleteButtons {
 	width: 20px;
 	height: 15px;
