@@ -1,5 +1,4 @@
 ﻿<! doctype html >
-<<<<<<< HEAD
 <?php
 ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
 //global $load_client_page;
@@ -93,146 +92,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 }
 
 ?>
-=======
-    
-    <?php
-    ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
-    //global $load_client_page;
-
-    if (isset($_GET['LogOut'])) {
-        include_once ('../code/code_index.php');
-
-        $logout = new LogInOut();
-        // session_start();
-        if (isset($_SESSION['session_user_id'])) {
-            $logout -> user_id = $_SESSION['session_user_id'];
-        } else {
-            $logout -> user_id = $_COOKIE["last_user"];
-        }
-        $logout -> LogOff();
-    }
-
-    if (isset($_POST['Mode']) && $_POST['Mode'] == 'EditDetails') {
-        UpdateProjectDetails();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {
-        LoadProjDetails();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'EditClients') {
-        UpdateProjectClients();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewClients') {
-        SelectProjectClient();
-        LoadProjDetails();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertClients') {
-        InsertProjectClients();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteClients') {
-        DeleteProjectClient();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertStaff') {
-        InsertClientStaff();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateStaff') {
-        UpdateClientStaff();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteStaff') {
-        DeleteClientStaff();
-    }
-
-    if (isset($_GET['StaffID'])) {
-        SelectClientStaff();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewBudget') {
-        LoadProjDetails();
-        SelectBudgetItem();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertBudget') {
-        InsertBudgetItem();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBudget') {
-        UpdateBudgetItem();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteBudget') {
-        DeleteBudgetItem();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewExpense') {
-        LoadProjDetails();
-        SelectExpense();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateExpense') {
-        UpdateExpense();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertExpense') {
-        InsertExpense();
-    }
-
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense') {
-        DeleteExpense();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPersonnel') {
-        LoadProjDetails();
-        SelectProjectStaff();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePersonnel') {
-        UpdateProjectStaff();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertPersonnel') {
-        InsertProjectStaff();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePersonnel') {
-        DeleteProjectStaff();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPap') {
-        LoadProjDetails();
-        SelectProjectPap();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'SearchPap') {
-        LoadProjDetails();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePap') {
-        UpdateProjectPap();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertPap') {
-        InsertProjectPap();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePap') {
-        DeleteProjectPap();
-    }
-    
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewDispute') {
-        LoadProjDetails();
-        SelectProjectDispute();
-    }
-    
-    ?>
-
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 <html>
 	<head>
 		
@@ -247,11 +106,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 
         // <!--#include virtual="ui_header.php"-->
 
-<<<<<<< HEAD
         // function CheckReturnUser or which user is login
-=======
-        // Project Details
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
         function CheckReturnUser() {
             $time = $_SERVER['REQUEST_TIME'];
 
@@ -287,11 +142,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 header('Location: ../index.php?Message=Session_Expired');
             }
         }
-<<<<<<< HEAD
 		//logout funcation
-=======
-
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
         function LogOut() {
             include_once ('../code/code_index.php');
 
@@ -378,11 +229,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 $project_clients -> client_data_offset = ($GLOBALS['load_page'] - 1) * $project_clients -> client_page_rows;
                 $project_clients -> client_record_num = ($GLOBALS['load_page'] - 1) * $project_clients -> client_page_rows; ;
             } else {
-<<<<<<< HEAD
                 echo '<script>alert("Page Is Out Of Range");</script>';
-=======
-                // echo '<script>alert("Page Is Out Of Range");</script>';
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                 $GLOBALS['load_page'] = 1;
                 $project_clients -> client_record_num = 0;
                 $project_clients -> client_data_offset = 0;
@@ -402,15 +249,9 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 
             //Loading Projects
             $project_clients -> LoadProjectClients();
-<<<<<<< HEAD
         } 
 
        function SelectProjectClient() {
-=======
-        }
-
-        function SelectProjectClient() {
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
             // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
             include_once ('../code/code_project_client.php');
             $project_client = new ProjectClient();
@@ -425,11 +266,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
             $GLOBALS['client_addr'] = $project_client -> client_addr;
         }
 
-<<<<<<< HEAD
        function UpdateProjectClients() {
-=======
-        function UpdateProjectClients() {
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
             // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
             include_once ('../code/code_project_client.php');
             $update_client = new ProjectClient();
@@ -512,11 +349,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 $load_client_staff -> staff_data_offset = ($GLOBALS['staff_load_page'] - 1) * $load_client_staff -> staff_page_rows;
                 $load_client_staff -> staff_record_num = ($GLOBALS['staff_load_page'] - 1) * $load_client_staff -> staff_page_rows; ;
             } else {
-<<<<<<< HEAD
                 echo '<script>alert("Page Is Out Of Range");</script>';
-=======
-                // echo '<script>alert("Page Is Out Of Range");</script>';
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                 $GLOBALS['staff_load_page'] = 1;
                 $load_client_staff -> staff_record_num = 0;
                 $load_client_staff -> staff_data_offset = 0;
@@ -630,11 +463,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 $load_budget_items -> budget_data_offset = ($GLOBALS['budget_load_page'] - 1) * $load_budget_items -> budget_page_rows;
                 $load_budget_items -> budget_record_num = ($GLOBALS['budget_load_page'] - 1) * $load_budget_items -> budget_page_rows; ;
             } else {
-<<<<<<< HEAD
                 echo '<script>alert("Page Is Out Of Range");</script>';
-=======
-                // echo '<script>alert("Page Is Out Of Range");</script>';
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                 $GLOBALS['budget_load_page'] = 1;
                 $load_budget_items -> budget_record_num = 0;
                 $load_budget_items -> budget_data_offset = 0;
@@ -773,11 +602,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 $load_expense_items -> expense_data_offset = ($GLOBALS['expense_load_page'] - 1) * $load_expense_items -> expense_page_rows;
                 $load_expense_items -> expense_record_num = ($GLOBALS['expense_load_page'] - 1) * $load_expense_items -> expense_page_rows; ;
             } else {
-<<<<<<< HEAD
                 echo '<script>alert("Page Is Out Of Range");</script>';
-=======
-                // echo '<script>alert("Page Is Out Of Range");</script>';
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                 $GLOBALS['expense_load_page'] = 1;
                 $load_expense_items -> expense_record_num = 0;
                 $load_expense_items -> expense_data_offset = 0;
@@ -875,24 +700,14 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 		?>
 
         <?php
-<<<<<<< HEAD
         
         function LoadProjectStaff(){
-=======
-
-        function LoadProjectStaff() {
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
             include_once ('../code/code_project_personnel.php');
             $load_personnel_items = new ProjectStaff();
             $load_personnel_items -> selected_project_id = $_GET["ProjectID"];
 
-<<<<<<< HEAD
             if (isset($_GET['PersonnelPage'])) {
                 $GLOBALS['personnel_load_page'] = $_GET['PersonnelPage'];
-=======
-            if (isset($_GET['StaffPage'])) {
-                $GLOBALS['personnel_load_page'] = $_GET['StaffPage'];
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
             } else {
                 $GLOBALS['personnel_load_page'] = 1;
             }
@@ -907,16 +722,9 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 $load_personnel_items -> personnel_data_offset = 0;
             } else if ($GLOBALS['personnel_load_page'] <= $load_personnel_items -> personnel_last_page) {
                 $load_personnel_items -> personnel_data_offset = ($GLOBALS['personnel_load_page'] - 1) * $load_personnel_items -> personnel_page_rows;
-<<<<<<< HEAD
                 $load_personnel_items -> personnel_record_num = ($GLOBALS['personnel_load_page'] - 1) * $load_personnel_items -> personnel_page_rows; ;
             } else {
                 echo '<script>alert("Page Is Out Of Range");</script>';
-=======
-                $load_personnel_items -> personnel_record_num = ($GLOBALS['personnel_load_page'] - 1) * $load_personnel_items -> personnel_page_rows;
-                ;
-            } else {
-                // echo '<script>alert("Page Is Out Of Range");</script>';
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                 $GLOBALS['personnel_load_page'] = 1;
                 $load_personnel_items -> personnel_record_num = 0;
                 $load_personnel_items -> personnel_data_offset = 0;
@@ -937,361 +745,8 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
             //Loading Projects
             $load_personnel_items -> LoadProjectStaff();
         }
-<<<<<<< HEAD
         
         ?>
-=======
-
-        function SelectProjectStaff(){
-            include_once ('../code/code_project_personnel.php');
-            $select_project_staff = new ProjectStaff();
-            $select_project_staff -> selected_project_id = $_GET["ProjectID"];
-            $select_project_staff -> personnel_user_id = $_GET["UserID"];
-            $select_project_staff -> personnel_role_id = $_GET["RoleID"];
-            
-            $select_project_staff -> SelectProjectStaff();
-
-            $GLOBALS['personnel_id'] = $select_project_staff -> personnel_id;
-            $GLOBALS['personnel_user_id'] = $select_project_staff -> personnel_user_id;
-            $GLOBALS['personnel_role_id'] = $select_project_staff -> personnel_role_id;
-            $GLOBALS['personnel_other_dtl'] = $select_project_staff -> personnel_other_dtl;
-        }
-
-        function BindAllUsers() {
-            include_once ('../code/code_project_personnel.php');
-            $bind_all_users = new ProjectStaff();
-            $bind_all_users -> BindAllUsers();
-        }
-        
-        function BindAllRoles() {
-            include_once ('../code/code_project_personnel.php');
-            $bind_all_roles = new ProjectStaff();
-            $bind_all_roles -> BindAllRoles();
-        }
-        
-        function UpdateProjectStaff(){
-            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
-            include_once ('../code/code_project_personnel.php');
-            $update_project_staff = new ProjectStaff();
-            //$client_name = $project_client -> client_name;
-            $update_project_staff -> personnel_id = $_POST['ID'];
-            $update_project_staff->personnel_user_id = $_POST['UserID'];
-            $update_project_staff -> personnel_role_id = $_POST['RoleID'];
-            $update_project_staff -> personnel_other_dtl = $_POST['OtherDetail'];
-            
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-                $update_project_staff -> session_user_id = $_SESSION['session_user_id'];
-            }else if (session_status() == PHP_SESSION_ACTIVE){
-                $update_project_staff -> session_user_id = $_SESSION['session_user_id'];
-            }
-            
-            $update_project_staff -> selected_project_id = $_POST['ProjectID'];
-            $update_project_staff -> selected_project_code = $_POST['ProjectCode'];
-
-            $update_project_staff -> UpdateProjectStaff();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_project_staff -> selected_project_id . '&ProjectCode=' . $update_project_staff -> selected_project_code . '#Personnel');
-            exit();    
-        }
-
-        function InsertProjectStaff(){
-            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
-            include_once ('../code/code_project_personnel.php');
-            $insert_project_staff = new ProjectStaff();
-            $insert_project_staff->personnel_user_id = $_POST['UserID'];
-            $insert_project_staff -> personnel_role_id = $_POST['RoleID'];
-            $insert_project_staff -> personnel_other_dtl = $_POST['OtherDetail'];
-            
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-                $insert_project_staff -> session_user_id = $_SESSION['session_user_id'];
-            }else if (session_status() == PHP_SESSION_ACTIVE){
-                $update_project_staff -> session_user_id = $_SESSION['session_user_id'];
-            }
-            
-            $insert_project_staff -> selected_project_id = $_POST['ProjectID'];
-            $insert_project_staff -> selected_project_code = $_POST['ProjectCode'];
-
-            $insert_project_staff -> InsertProjectStaff();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_staff -> selected_project_id . '&ProjectCode=' . $insert_project_staff -> selected_project_code . '#Personnel');
-            exit();    
-        }
-
-        function DeleteProjectStaff(){
-            include_once ('../code/code_project_personnel.php');
-            $delete_project_staff = new ProjectStaff;
-            $delete_project_staff -> personnel_id = $_GET['ID'];
-
-            $delete_project_staff -> selected_project_id = $_GET['ProjectID'];
-            $delete_project_staff -> selected_project_code = $_GET['ProjectCode'];
-
-            $delete_project_staff ->DeleteProjectStaff();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_staff -> selected_project_id . '&ProjectCode=' . $delete_project_staff -> selected_project_code . '#Personnel');
-            exit();
-        }
-        
-		?>
-		
-		<?php
-
-        function LoadProjectPaps() {
-            include_once ('../code/code_project_pap.php');
-            $load_project_paps = new ProjectPap();
-            $load_project_paps -> selected_project_id = $_GET["ProjectID"];
-
-            if (isset($_GET['GridPage'])) {
-                $GLOBALS['pap_load_page'] = $_GET['GridPage'];
-            } else {
-                $GLOBALS['pap_load_page'] = 1;
-            }
-
-            //set pagination parameters
-            $load_project_paps -> ProjectPapGridParams();
-            $GLOBALS['pap_num_pages'] = $load_project_paps -> pap_last_page;
-
-            //Handling grid pages and navigation
-            if ($GLOBALS['pap_load_page'] == 1) {
-                $load_project_paps -> pap_record_num = 0;
-                $load_project_paps -> pap_data_offset = 0;
-            } else if ($GLOBALS['pap_load_page'] <= $load_project_paps -> pap_last_page) {
-                $load_project_paps -> pap_data_offset = ($GLOBALS['pap_load_page'] - 1) * $load_project_paps -> pap_page_rows;
-                $load_project_paps -> pap_record_num = ($GLOBALS['pap_load_page'] - 1) * $load_project_paps -> pap_page_rows; ;
-            } else {
-                // echo '<script>alert("Page Is Out Of Range");</script>';
-                $GLOBALS['pap_load_page'] = 1;
-                $load_project_paps -> pap_record_num = 0;
-                $load_project_paps -> pap_data_offset = 0;
-            }
-
-            if (($GLOBALS['pap_load_page'] + 1) <= $load_project_paps -> pap_last_page) {
-                $GLOBALS['pap_next_page'] = $GLOBALS['pap_load_page'] + 1;
-            } else {
-                $GLOBALS['pap_next_page'] = 1;
-            }
-
-            if (($GLOBALS['pap_load_page'] - 1) >= 1) {
-                $GLOBALS['pap_prev_page'] = $GLOBALS['pap_load_page'] - 1;
-            } else {
-                $GLOBALS['pap_prev_page'] = 1;
-            }
-
-            //Loading Projects
-            $load_project_paps -> LoadProjectPaps();
-        }
-
-        function SearchProjectPaps() {
-            include_once ('../code/code_project_pap.php');
-            $search_project_paps = new ProjectPap();
-            $search_project_paps -> selected_project_id = $_GET["ProjectID"];
-            $search_project_paps -> pap_search = $_GET["KeyWord"];
-
-            if (isset($_GET['GridPage'])) {
-                $GLOBALS['pap_load_page'] = $_GET['GridPage'];
-            } else {
-                $GLOBALS['pap_load_page'] = 1;
-            }
-
-            //set pagination parameters
-            $search_project_paps -> ProjectPapSearchParams();
-            $GLOBALS['pap_num_pages'] = $search_project_paps -> pap_last_page;
-
-            //Handling grid pages and navigation
-            if ($GLOBALS['pap_load_page'] == 1) {
-                $search_project_paps -> pap_record_num = 0;
-                $search_project_paps -> pap_data_offset = 0;
-            } else if ($GLOBALS['pap_load_page'] <= $search_project_paps -> pap_last_page) {
-                $search_project_paps -> pap_data_offset = ($GLOBALS['pap_load_page'] - 1) * $search_project_paps -> pap_page_rows;
-                $search_project_paps -> pap_record_num = ($GLOBALS['pap_load_page'] - 1) * $search_project_paps -> pap_page_rows; ;
-            } else {
-                // echo '<script>alert("Page Is Out Of Range");</script>';
-                $GLOBALS['pap_load_page'] = 1;
-                $search_project_paps -> pap_record_num = 0;
-                $search_project_paps -> pap_data_offset = 0;
-            }
-
-            if (($GLOBALS['pap_load_page'] + 1) <= $search_project_paps -> pap_last_page) {
-                $GLOBALS['pap_next_page'] = $GLOBALS['pap_load_page'] + 1;
-            } else {
-                $GLOBALS['pap_next_page'] = 1;
-            }
-
-            if (($GLOBALS['pap_load_page'] - 1) >= 1) {
-                $GLOBALS['pap_prev_page'] = $GLOBALS['pap_load_page'] - 1;
-            } else {
-                $GLOBALS['pap_prev_page'] = 1;
-            }
-
-            //Loading Projects
-            $search_project_paps -> SearchProjectPaps();
-        }
-
-        function SelectProjectPap() {
-            include_once ('../code/code_project_pap.php');
-            $select_project_pap = new ProjectPap();
-            $select_project_pap -> pap_hhid = $_GET["HHID"];
-
-            $select_project_pap -> SelectProjectPap();
-
-            $GLOBALS['pap_name'] = $select_project_pap -> pap_name;
-            $GLOBALS['pap_plot_ref'] = $select_project_pap -> pap_plot_ref;
-            $GLOBALS['pap_design'] = $select_project_pap -> pap_design;
-            $GLOBALS['pap_type'] = $select_project_pap -> pap_type;
-        }
-
-        function InsertProjectPap() {
-            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
-            include_once ('../code/code_project_pap.php');
-            $insert_project_pap = new ProjectPap();
-            $insert_project_pap -> pap_name = $_POST['PapName'];
-            $insert_project_pap -> pap_plot_ref = $_POST['PlotRef'];
-            $insert_project_pap -> pap_design = $_POST['PapDesign'];
-            $insert_project_pap -> pap_type = $_POST['PapType'];
-
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-                $insert_project_pap -> session_user_id = $_SESSION['session_user_id'];
-            } else if (session_status() == PHP_SESSION_ACTIVE) {
-                $insert_project_pap -> session_user_id = $_SESSION['session_user_id'];
-            }
-
-            $insert_project_pap -> selected_project_id = $_POST['ProjectID'];
-            $insert_project_pap -> selected_project_code = $_POST['ProjectCode'];
-
-            $insert_project_pap -> InsertProjectPap();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_pap -> selected_project_id . '&ProjectCode=' . $insert_project_pap -> selected_project_code . '#PAP');
-            exit();
-        }
-
-        function UpdateProjectPap() {
-            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
-            include_once ('../code/code_project_pap.php');
-            $update_project_pap = new ProjectPap();
-            //$client_name = $project_client -> client_name;
-            $update_project_pap -> pap_hhid = $_POST['HHID'];
-            $update_project_pap -> pap_name = $_POST['PapName'];
-            $update_project_pap -> pap_plot_ref = $_POST['PlotRef'];
-            $update_project_pap -> pap_design = $_POST['PapDesign'];
-            $update_project_pap -> pap_type = $_POST['PapType'];
-
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-                $update_project_pap -> session_user_id = $_SESSION['session_user_id'];
-            } else if (session_status() == PHP_SESSION_ACTIVE) {
-                $update_project_pap -> session_user_id = $_SESSION['session_user_id'];
-            }
-
-            $update_project_pap -> selected_project_id = $_POST['ProjectID'];
-            $update_project_pap -> selected_project_code = $_POST['ProjectCode'];
-
-            $update_project_pap -> UpdateProjectPap();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewPap&ProjectID=' . $update_project_pap -> selected_project_id . '&ProjectCode=' . $update_project_pap -> selected_project_code . '&HHID=' . $update_project_pap -> pap_hhid . '#PAP');
-            exit();
-        }
-
-        function DeleteProjectPap() {
-            include_once ('../code/code_project_pap.php');
-            $delete_project_pap = new ProjectPap();
-            $delete_project_pap -> pap_hhid = $_GET['HHID'];
-
-            $delete_project_pap -> selected_project_id = $_GET['ProjectID'];
-            $delete_project_pap -> selected_project_code = $_GET['ProjectCode'];
-
-            $delete_project_pap -> DeleteProjectPap();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_pap -> selected_project_id . '&ProjectCode=' . $delete_project_pap -> selected_project_code . '#PAP');
-            exit();
-        }
-		?>
-		
-		<?php
-
-        function BindDisputeCategory() {
-            include_once ('../code/code_project_dispute.php');
-            $bind_dispute_category = new ProjectDispute();
-            $bind_dispute_category -> BindProjectDisputes();
-        }
-
-        function LoadProjectDisputes() {
-            include_once ('../code/code_project_dispute.php');
-            $load_proj_disp = new ProjectDispute();
-            $load_proj_disp -> selected_project_id = $_GET["ProjectID"];
-
-            if (isset($_GET['GridPage'])) {
-                $GLOBALS['proj_disp_load_page'] = $_GET['GridPage'];
-            } else {
-                $GLOBALS['proj_disp_load_page'] = 1;
-            }
-
-            //set pagination parameters
-            $load_proj_disp -> DisputePageParams();
-            $GLOBALS['proj_disp_num_pages'] = $load_proj_disp -> proj_disp_last_page;
-
-            //Handling grid pages and navigation
-            if ($GLOBALS['proj_disp_load_page'] == 1) {
-                $load_proj_disp -> proj_disp_record_num = 0;
-                $load_proj_disp -> proj_disp_data_offset = 0;
-            } else if ($GLOBALS['proj_disp_load_page'] <= $load_proj_disp -> proj_disp_last_page) {
-                $load_proj_disp -> proj_disp_data_offset = ($GLOBALS['proj_disp_load_page'] - 1) * $load_proj_disp -> proj_disp_page_rows;
-                $load_proj_disp -> proj_disp_record_num = ($GLOBALS['proj_disp_load_page'] - 1) * $load_proj_disp -> proj_disp_page_rows;
-            } else {
-                // echo '<script>alert("Page Is Out Of Range");</script>';
-                $GLOBALS['proj_disp_load_page'] = 1;
-                $load_proj_disp -> proj_disp_record_num = 0;
-                $load_proj_disp -> proj_disp_data_offset = 0;
-            }
-
-            if (($GLOBALS['proj_disp_load_page'] + 1) <= $load_proj_disp -> proj_disp_last_page) {
-                $GLOBALS['proj_disp_next_page'] = $GLOBALS['proj_disp_load_page'] + 1;
-            } else {
-                $GLOBALS['proj_disp_next_page'] = 1;
-            }
-
-            if (($GLOBALS['proj_disp_load_page'] - 1) >= 1) {
-                $GLOBALS['proj_disp_prev_page'] = $GLOBALS['proj_disp_load_page'] - 1;
-            } else {
-                $GLOBALS['proj_disp_prev_page'] = 1;
-            }
-
-            //Loading Projects
-            $load_proj_disp -> LoadProjectDisputes();
-        }
-
-        function SearchDisputePaps() {
-            include_once ('../code/code_project_dispute.php');
-            $search_project_paps = new ProjectDispute();
-            $search_project_paps -> selected_project_id = $_GET["ProjectID"];
-            $search_project_paps -> pap_search = $_GET["KeyWord"];
-            $search_project_paps -> BindProjectPaps();
-        }
-
-        function BindAllProjectPaps() {
-            include_once ('../code/code_project_dispute.php');
-            $bind_all_project_paps = new ProjectDispute();
-            $bind_all_project_paps -> selected_project_id = $_GET["ProjectID"];
-            $bind_all_project_paps -> BindAllProjectPaps();
-        }
-
-        function SelectProjectDispute() {
-            include_once ('../code/code_project_dispute.php');
-            $select_project_dispute = new ProjectDispute();
-            $select_project_dispute -> proj_disp_id = $_GET["DispID"];
-
-            $select_project_dispute -> SelectProjectDispute();
-
-            $GLOBALS['proj_disp_pap_id'] = $select_project_dispute -> proj_disp_pap_id;
-            $GLOBALS['proj_disp_catg_id'] = $select_project_dispute -> proj_disp_catg_id;
-            $GLOBALS['proj_disp_status'] = $select_project_dispute -> proj_disp_status;
-            $GLOBALS['proj_disp_date_log'] = $select_project_dispute -> proj_disp_date_log;
-            $GLOBALS['proj_disp_log_by'] = $select_project_dispute -> proj_disp_log_by;
-            $GLOBALS['proj_disp_other_dtl'] = $select_project_dispute -> proj_disp_other_dtl;
-        }
-		?>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 
         <?php
         
@@ -1320,7 +775,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
         
 		?>
 
-<<<<<<< HEAD
 		<!-- Adds tab persistence to bootstrap tabs -->
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -1337,22 +791,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 		</script>
 		
 		
-=======
-		<script type="text/javascript">
-		    $(function(){
-		       $(document).on('Click','input[type=text]',function(){this.select(); }); 
-		    });
-		</script>
-		
-		<script type="text/javascript">
-            $(function(){
-             $(".auto").autocomplete({
-                 source: "code_project_autocomplete.php",
-                 minLength: 1
-             });   
-            });
-        </script>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 		
 		<script type="text/javascript">
 			function SelectSubCat() {
@@ -1664,7 +1102,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 										<!-- @formatter:on -->
 										<?php if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ProjectID'])) { LoadProjectClients(); } ?>
 									</table>
-<<<<<<< HEAD
 									<table class="detailNavigation">
 										<tr>
 											<td><a href="<?php
@@ -1672,19 +1109,10 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                                                 echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients';
                                             } else {
                                                 echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients';
-=======
-									
-									<!-- table class="detailNavigation">
-										<tr>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients';
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                                             }
 											?>" >Previous</a></td>
 											<td class="PageJump" style="width: 70px;"> <?php echo $load_page; ?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php echo $num_pages; ?></td>
 											<td><a href="<?php
-<<<<<<< HEAD
                                             if (isset($_GET['ClientID'])) {
                                                 echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients';
                                             } else {
@@ -1693,49 +1121,22 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 											?>" >Next</a></td>
 										</tr>
 									</table>
-=======
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients';
-                                            }
-											?>" >Next</a></td>
-										</tr>
-									</table -->
-									
-									<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ClientPage'])) { echo $load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients'; } ?>" >Next</a>
-                                    </span>
-									
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 								</div>
 							</div>
 
 							<!-- Side Form for Client Staff -->
-<<<<<<< HEAD
 							<div style="width: 325px; float: left; margin-top: 10px; margin-left: 10px;">
-=======
-							<div
-							style="width: 325px; float: left; margin-top: 10px; margin-left: 10px;">
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 								<!-- form -->
 								<fieldset class="fieldset" style="padding: 20px; width: 350px;">
 									<legend class="legend" style="width: 120px;">
 										<span class="legendText">Client Staff:</span>
 									</legend>
 
-<<<<<<< HEAD
 									<form action="<?php
                                     if (!isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients';
                                     } else if (isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients';
                                     }
 										?>" method="POST" autocomplete="off" >
-=======
-									<form action="<?php if (!isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients';
-                                    } else if (isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients'; } ?>" method="POST" autocomplete="off" >
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 										<table class="formTable" style="width:300px; margin-bottom: 20px;">
 											<tr>
 												<td class="formLabel">Staff Name:</td>
@@ -1816,7 +1217,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                                         }?>
 									</table>
 
-<<<<<<< HEAD
 									<table class="detailNavigation">
 										<tr>
 											<td><a href="<?php
@@ -1840,34 +1240,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 											?>" >Next</a></td>
 										</tr>
 									</table>
-=======
-									<!-- table class="detailNavigation">
-										<tr>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_prev_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; }
-											?>" >Previous</a></td>
-											<td class="PageJump" style="width: 70px;"> <?php
-                                            if (isset($GLOBALS['staff_load_page'])) {echo $GLOBALS['staff_load_page']; } else { echo 1; }
-											?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php
-                                            if (isset($GLOBALS['staff_num_pages'])) { echo $GLOBALS['staff_num_pages']; } else { echo 0; }
-											?></td>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_next_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; }
-											?>" >Next</a></td>
-										</tr>
-									</table -->
-									
-									<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_prev_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ClientID'])) { echo $GLOBALS['staff_load_page'] . ' / ' . $GLOBALS['staff_num_pages'] ; } else { echo '1 / 0'; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_next_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; } ?>" >Next</a>
-                                    </span>
-									
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 								</fieldset>
 								<!-- /form -->
 							</div>
@@ -1903,11 +1275,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox">
-<<<<<<< HEAD
 											<select name="Categories" id="SelectBudgetCat" onChange="SelectSubCat()">
-=======
-											<select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()">
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 											    <option value="">-- Select Category --</option>
 												<?php if (isset($_GET['ProjectID']) || isset($_GET['Cat'])) { BindBudgetCat(); } ?>
 											</select>
@@ -1984,11 +1352,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 									<?php if (isset($_GET['ProjectID'])) { LoadBudgetItems(); } ?>
 								</table>
 								
-<<<<<<< HEAD
 								<table class="detailNavigation">
-=======
-								<!-- table class="detailNavigation">
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                                         <tr>
                                             <td><a href="<?php
                                             if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget';
@@ -2000,20 +1364,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                                             } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget'; }
                                             ?>" >Next</a></td>
                                         </tr>
-<<<<<<< HEAD
                                     </table>
-=======
-                                </table -->
-                                
-                                <span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['BudgetPage'])) { echo $budget_load_page . ' / ' . $budget_num_pages ; } else {echo '1 / ' . $budget_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget'; } ?>" >Next</a>
-                                </span>
-                                
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 						</div>
 
@@ -2047,11 +1398,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox">
-<<<<<<< HEAD
 										    <select name="ExpCategories" id="SelectExpenseCat" onChange="SelectExpSubCat()">
-=======
-										    <select name="ExpCategories" id="SelectExpenseCat" onchange="SelectExpSubCat()">
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                                                 <option value="">-- Select Category --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['ExpCat'])) { BindBudgetCat(); } ?>
                                             </select>
@@ -2127,11 +1474,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 									<?php if (isset($_GET['ProjectID'])) { LoadExpenses(); } ?>
 								</table>
 								
-<<<<<<< HEAD
 								<table class="detailNavigation">
-=======
-								<!-- table class="detailNavigation">
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									<tr>
                                             <td><a href="<?php
                                             if (isset($_GET['ExpenseID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses';
@@ -2143,20 +1486,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                                             } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses'; }
                                             ?>" >Next</a></td>
                                     </tr>
-<<<<<<< HEAD
 								</table>
-=======
-								</table -->
-								
-								<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['ExpenseID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ExpensePage'])) { echo $expense_load_page . ' / ' . $expense_num_pages ; } else {echo '1 / ' . $expense_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses'; } ?>" >Next</a>
-                                </span>
-								
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 						</div>
 
@@ -2166,50 +1496,22 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 								This is the Project Personnel Screen
 							</p>
 							<div class="left-form">
-<<<<<<< HEAD
 								<table>
-=======
-							    <form name="SavePersonnel" action="<?php 
-                                if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Personnel'; }
-                                else if ($_GET['Mode'] == 'ViewPersonnel') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Personnel'; } ?>" method="POST" autocomplete="off">
-								<table class="formTable">
-								    <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                        <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                        <input type="hidden" name="ID" value="<?php echo $_GET['ID']; ?>" />
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									<tr>
 										<td class="formLabel">Select User</td>
 										<td class="formLabel">User Role</td>
 									</tr>
 									<tr>
-<<<<<<< HEAD
 										<td><span class="formSingleLineBox">User Selection<a
 											class="LinkInBox" href="#">New</a></span></td>
 										<td><span class="formSingleLineBox">Role Selection<a
 											class="LinkInBox" href="#">New</a></span></td>
-=======
-										<td>
-										    <span class="formSingleLineBox">
-										        <select name="UserID" onchange="">
-                                                    <option value="">-- Select User --</option>
-                                                        <?php if (isset($_GET['ProjectID']) ) { BindAllUsers(); } ?>
-                                                </select>
-										    </span></td>
-										<td>
-										    <span class="formSingleLineBox">
-										        <select name="RoleID" id="SelectRole" onchange="">
-                                                    <option value="">-- Select Role --</option>
-                                                        <?php if (isset($_GET['ProjectID']) ) { BindAllRoles(); } ?>
-                                                </select>
-											</span></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									</tr>
 									<tr>
 									    <td class="formLabel">Other User Details</td>
 									</tr>
 									<tr>
 									    <td colspan="2"><span class="formMultiLineBox" style="width: 610px;">
-<<<<<<< HEAD
                                             <textarea type="text" name = "ExpenseDetails" placeholder="Any Other Details"></textarea>
                                             </span></td>
 									</tr>
@@ -2217,22 +1519,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 										<td><a class="saveButtonArea" href="#">Save Button</a></td>
 									</tr>
 								</table>
-=======
-                                            <textarea type="text" name = "OtherDetail" placeholder="Any Other Details"><?php if(isset($_GET['UserID'])){ echo $GLOBALS['personnel_other_dtl']; } ?></textarea>
-                                            </span></td>
-									</tr>
-									<tr>
-										<td><span class="saveButtonArea">
-                                            <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewPersonnel') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                            <?php $new_expense = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Personnel';
-                                                if ($_GET['Mode'] == 'ViewPersonnel') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_expense . '>New Staff</a></span>'; } ?>
-                                        </span></td>
-                                        <td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-                                        class="formLinks"><a href="#">Photos</a></span></td>
-									</tr>
-								</table>
-								</form>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 							
 							<div class="GridArea">
@@ -2243,16 +1529,11 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 										<td class="detailGridHead">Display Name</td>
 										<!-- td class="detailGridHead">Job Title</td -->
 										<td class="detailGridHead">System Role</td>
-<<<<<<< HEAD
 										<!-- td class="detailGridHead">Delete</td -->
-=======
-										<td class="detailGridHead">Delete</td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									</tr>
 									<?php if (isset($_GET['ProjectID'])) { LoadProjectStaff(); } ?>
 								</table>
 								
-<<<<<<< HEAD
 								<table class="detailNavigation">
 									<tr>
 										<td><a href="<?php
@@ -2266,30 +1547,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                                             ?>" >Next</a></td>
 									</tr>
 								</table>
-=======
-								<!-- table class="detailNavigation">
-									<tr>
-										<td><a href="<?php
-                                            if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&UserPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel'; }
-                                            ?>" >Previous</a></td>
-                                            <td class="PageJump" style="width: 70px;"> <?php echo $personnel_load_page; ?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php echo $personnel_num_pages; ?></td>
-                                            <td><a href="<?php
-                                            if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&UserPage=' . $GLOBALS['personnel_next_page'] . '#Personnel';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_next_page'] . '#Personnel'; }
-                                            ?>" >Next</a></td>
-									</tr>
-								</table -->
-								
-								<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&StaffPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['StaffPage'])) { echo $personnel_load_page . ' / ' . $personnel_num_pages ; } else {echo '1 / ' . $personnel_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&StaffPage=' . $GLOBALS['personnel_next_page'] . '#Personnel'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_next_page'] . '#Personnel'; } ?>" >Next</a>
-                                </span>
-								
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 						</div>
 
@@ -2299,16 +1556,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 								This is the PAP Definition Screen
 							</p>
 							<div class="left-form">
-<<<<<<< HEAD
 								<table>
-=======
-							    <form name="SavePersonnel" action="<?php 
-                                if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; }
-                                else if ($_GET['Mode'] == 'ViewPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } ?>" method="POST" autocomplete="off">
-								<table class="formTable">
-						             <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                     <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									<tr>
 										<td></td>
 										<td></td>
@@ -2317,7 +1565,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 										<td colspan="2" class="formLabel">PAP Name</td>
 									</tr>
 									<tr>
-<<<<<<< HEAD
 										<td colspan="2"><span class="formSingleLineBox"
 										style="width: 610px;">Enter Name e.g FirstName LastName <a
 											class="LinkInBox" href="#">New</a> <a
@@ -2330,70 +1577,26 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 									<tr>
 										<td><span class="formSingleLineBox">Internal Ref No</span></td>
 										<td><span class="formSingleLineBox">Affected Land Ref No</span></td>
-=======
-										<td colspan="2"><span class="formSingleLineBox" style="width: 610px;" >
-										    <input type="text" name="PapName" value="<?php if (isset($GLOBALS['pap_name'])){ echo $GLOBALS['pap_name']; } ?>" placeholder="Enter PAP Name" style="width: 580px;" />
-										    </span></td>
-									</tr>
-									<tr>
-										<td class="formLabel">PAP HHID</td>
-										<td class="formLabel">Land Plot Reference</td>
-									</tr>
-									<tr>
-										<td><span class="formSingleLineBox">
-										    <input type="text" name="HHID" value="<?php if (isset($_GET['HHID'])){ echo $_GET['HHID']; } ?>" placeholder="PAP HHID" readonly="true" />
-										</span></td>
-										<td><span class="formSingleLineBox">
-										    <input type="text" name="PlotRef" value="<?php if (isset($GLOBALS['pap_plot_ref'])){ echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="Enter PAP Plot Ref" />
-										</span></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									</tr>
 									<tr>
 										<td class="formLabel">PAP Designation</td>
 										<td class="formLabel">PAP Type</td>
 									</tr>
 									<tr>
-<<<<<<< HEAD
 										<td><span class="formSingleLineBox">Designation e.g LO, L1, T1</span></td>
 										<td><span class="formSingleLineBox">Enter PAP Type e.g. IND, INS</span></td>
 									</tr>
 									<tr>
 										<td><a class="saveButtonArea" href="#">Save Button</a></td>
-=======
-										<td><span class="formSingleLineBox">
-										    <input type="text" name="PapDesign" value="<?php if (isset($GLOBALS['pap_design'])){ echo $GLOBALS['pap_design']; } ?>" placeholder="Enter PAP Designation" />
-										</span></td>
-										<td><span class="formSingleLineBox">
-										    <select name="PapType" onchange="">
-                                                    <option value="">-- Select PAP Type --</option>
-                                                    <option value="IND" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Individual</option>
-                                                    <option value="INS" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Institution</option> 
-                                            </select>
-										</span></td>
-									</tr>
-									<tr>
-										<td><span class="saveButtonArea">
-                                            <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewPap') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                            <?php $new_pap_defn = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP';
-                                                if ($_GET['Mode'] == 'ViewPap') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_pap_defn . '>New PAP</a></span>'; } ?>
-                                        </span></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
 										class="formLinks"><a href="#">Photos</a></span></td>
 									</tr>
 								</table>
-<<<<<<< HEAD
 							</div>
-=======
-								</form>
-							</div>
-							
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							<div class="GridArea">
 								<table class="detailGrid" style="width: 800px;">
 									<tr>
 										<td class="detailGridHead">#</td>
-<<<<<<< HEAD
 										<td class="detailGridHead">PAP Name</td>
 										<td class="detailGridHead">Plot Ref No</td>
 										<td class="detailGridHead">Internal Ref No</td>
@@ -2480,46 +1683,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 										<td><a href="#">Next</a></td>
 									</tr>
 								</table>
-=======
-										<td class="detailGridHead">HHID</td>
-										<td class="detailGridHead">PAP Name</td>
-										<td class="detailGridHead">Plot Ref</td>
-										<td class="detailGridHead">Designation</td>
-										<td class="detailGridHead">PAP Type</td>
-										<td class="detailGridHead">Delete</td>
-									</tr>
-									<?php if ($_GET['Mode'] == 'Read') { LoadProjectPaps(); } else if ($_GET['Mode'] == 'SearchPap'){ SearchProjectPaps();  } else { LoadProjectPaps(); } ?>
-								</table>
-								
-								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#PAP'; ?>" method="GET" autocomplete="off" >
-                                    <input type="hidden" name="Mode" value="<?php if ($_GET['Mode'] == 'SearchPap') { echo 'SearchPap'; } else { echo 'Read'; } ?>" />
-                                    <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                                    <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                                    <input type="hidden" name="KeyWord" value="<?php if (isset($_GET['KeyWord'])) {echo $_GET['KeyWord']; } else {echo ''; } ?>" />
-								    <span style="white-space: nowrap; float:left;">
-								        <a href="<?php if (isset($_GET['PapID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PapID=' . $_GET['HHID'] . '&GridPage=' . $GLOBALS['pap_prev_page'] . '#PAP'; }
-                                        else if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_prev_page'] . '#PAP'; } 
-								        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_prev_page'] . '#PAP'; } ?>" >Previous</a>
-								        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $_GET['GridPage'] . ' / ' . $GLOBALS['pap_num_pages'] ; } else {echo '1 / ' . $GLOBALS['pap_num_pages'] ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-							            <a href="<?php if (isset($_GET['PapID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PapID=' . $_GET['HHID'] . '&GridPage=' . $GLOBALS['pap_next_page'] . '#PAP'; }
-                                        else if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_next_page'] . '#PAP'; } 
-							            else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_next_page'] . '#PAP'; } ?>" >Next</a>
-                                    </span>
-								    <input type="submit" style="position: absolute; left: -99999px;" />
-                                </form>
-                                
-                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#PAP'; ?>" method="GET" autocomplete="off" >
-                                    <input type="hidden" name="Mode" value="<?php echo 'SearchPap'; ?>" />
-                                    <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                                    <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                                    <span style="white-space: nowrap; margin-left: 50px; font-weight: bold; color: #ff6600;">
-                                        Search:&nbsp;&nbsp;<input name="KeyWord" type="text" value="<?php if (isset($_GET['KeyWord'])) { echo $_GET['KeyWord'];  } ?>" style="width: 200px; margin-right: 0px; border: 1px solid #337ab7;" placeholder="Search For PAP" />&nbsp;&nbsp;
-                                        <a href="<?php if ($_GET['Mode'] == 'SearchPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } else { echo '#'; } ?>" >Reset</a>    
-                                    </span>
-                                    <input type="submit" style="position: absolute; left: -99999px;" />
-                                </form>
-                                
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 						</div>
 
@@ -2529,134 +1692,42 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 								This is the Project Disputes Screen
 							</p>
 							<div class="left-form">
-<<<<<<< HEAD
 								<table>
-=======
-							    
-								<table class="formTable">
-								    <tr>
-                                        <td class="formLabel" style="font-weight: bold; color: #ff6600;" >
-                                            Search PAP:&nbsp;&nbsp;&nbsp;  
-                                        </td>
-                                        <td class="formLabel">PAP Name:</td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                            <span class="formSingleLineBox" style="color: #ff6600;" >
-                                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#Disputes'; ?>" method="GET" autocomplete="off" >
-                                                    <input type="hidden" name="Mode" value="<?php echo 'SearchPap'; ?>" />
-                                                    <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                                                    <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                                                    <input name="KeyWord" type="text" value="<?php if (isset($_GET['KeyWord'])) { echo $_GET['KeyWord'];  } ?>" placeholder="Search For PAP By Name" style="width:200px;" />
-                                                        <!-- a href="<?php if ($_GET['Mode'] == 'SearchPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } else { echo '#'; } ?>" >Reset</a -->    
-                                                    <input type="submit" style="position: absolute; left: -99999px;" />
-                                                    <a class="LinkInBox" href="<?php if ($_GET['Mode'] == 'SearchPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Disputes'; } else { echo '#'; } ?>" >Clear</a>
-                                                </form> 
-                                            </span>
-                                        </td>
-                                        
-                                        <!-- form name="SavePersonnel" action="<?php 
-                                        if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; }
-                                        else if ($_GET['Mode'] == 'ViewPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } ?>" method="POST" autocomplete="off" -->
-                                        
-                                        <td>
-                                            <span class="formSingleLineBox" >
-                                                <select name="HHID" onchange="" >
-                                                    <option value="">-- Select PAP --</option>
-                                                        <?php if ($_GET['Mode'] == 'SearchPap') { SearchDisputePaps(); } else { BindAllProjectPaps(); } ?>
-                                                </select>
-                                                
-                                                <!-- form action='' method='post'>
-                                                <input type="text" name="country" value="<?php // echo 'SearchPap'; ?>" class="auto" placeholder="Enter PAP Name" />
-                                                </form -->
-                                            </span>
-                                        </td>
-                                        
-                                    </tr>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									<tr>
 										<td class="formLabel">Dispute Type</td>
 										<td class="formLabel">Dispute Status</td>
 									</tr>
 									<tr>
-<<<<<<< HEAD
 										<td><span class="formSingleLineBox">Select Dispute Type <a
 											class="LinkInBox" href="#">New</a> </span></td>
 										<td><span class="formSingleLineBox">Select Status</span></td>
-=======
-										<td><span class="formSingleLineBox">
-										    <select name="DispID" onchange="">
-                                                    <option value="">-- Select Dispute Type --</option>
-                                                        <?php if (isset($_GET['ProjectID']) ) { BindDisputeCategory(); } ?>
-                                            </select>
-										</span></td>
-										<td><span class="formSingleLineBox">
-										    <select name="DispStatus" onchange="">
-                                                    <option value="">-- Select Dispute Status --</option>
-                                                    <option value='Pending' <?php if (isset($GLOBALS['proj_disp_status']) && $GLOBALS['proj_disp_status'] == 'Pending' ) { echo 'selected'; }  ?> >Pending</option>
-                                                    <option value='Resolved' <?php if (isset($GLOBALS['proj_disp_status']) && $GLOBALS['proj_disp_status'] == 'Resolved' ) { echo 'selected'; }  ?> >Resolved</option> 
-                                            </select>
-										</span></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									</tr>
 									<tr>
 										<td class="formLabel">Date Logged</td>
 										<td class="formLabel">Logged By</td>
 									</tr>
 									<tr>
-<<<<<<< HEAD
 										<td><span class="formSingleLineBox">Select Date</span></td>
 										<td><span class="formSingleLineBox">Select User</span></td>
-=======
-										<td><span class="formSingleLineBox">
-										    <input title="DD/MM/YYYY" type="text" id="dispute_date" 
-                                            value="<?php if (isset($GLOBALS['proj_disp_date_log'])) { echo $GLOBALS['proj_disp_date_log']; } ?>" 
-                                            placeholder="DD/MM/YYYY" name="DisputeDate" readonly />
-										</span></td>
-										<td><span class="formSingleLineBox">
-										    <select name="UserID" onchange="">
-                                                    <option value="">-- Select User --</option>
-                                                        <?php if (isset($_GET['ProjectID']) ) { BindAllUsers(); } ?>
-                                            </select>
-										</span></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 									</tr>
 									<tr>
 										<td class="formLabel">Dispute Details</td>
 									</tr>
 									<tr>
-<<<<<<< HEAD
 										<td colspan="2"><span class="formMultiLineBox">Enter Dispute
 											Details ... </span></td>
 									</tr>
 									<tr>
 										<td><a class="saveButtonArea" href="#">Save Button</a></td>
-=======
-										<td colspan="2"><span class="formMultiLineBox">
-										    <textarea type="text" name = "DisputeDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_disp_other_dtl'])){ echo $GLOBALS['proj_disp_other_dtl']; } ?></textarea>
-										</span></td>
-									</tr>
-									<tr>
-										<td><span class="saveButtonArea" href="#">
-										    <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewDispute') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                            <?php $new_dispute = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Disputes';
-                                                if ($_GET['Mode'] == 'ViewDispute') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_dispute . '>New Dispute</a></span>'; } ?>
-										</span></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
 										class="formLinks"><a href="#">Photos</a></span></td>
 									</tr>
 								</table>
-<<<<<<< HEAD
-=======
-								<!-- /form -->
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 							<div class="GridArea">
 								<table class="detailGrid" style="width: 800px;">
 									<tr>
 										<td class="detailGridHead">#</td>
-<<<<<<< HEAD
 										<td class="detailGridHead">Dispute Type</td>
 										<td class="detailGridHead">Date Logged</td>
 										<td class="detailGridHead">Logged By</td>
@@ -2737,25 +1808,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
 										<td><a href="#">Next</a></td>
 									</tr>
 								</table>
-=======
-										<td class="detailGridHead">PAP Name</td>
-										<td class="detailGridHead">Dispute Category</td>
-										<td class="detailGridHead">Date Log</td>
-										<td class="detailGridHead">Edit:</td>
-									</tr>
-									<?php if (isset($_GET['ProjectID'])) { LoadProjectDisputes(); } ?>
-								</table>
-								
-								
-								<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['DispID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $_GET['DispID'] . '&UserID=' . $_GET['UserID'] . '&DispStatus=' . $_GET['DispStatus'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $proj_disp_load_page . ' / ' . $proj_disp_num_pages ; } else {echo '1 / ' . $proj_disp_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['DispID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $_GET['DispID'] . '&UserID=' . $_GET['UserID'] . '&DispStatus=' . $_GET['DispStatus'] . '&GridPage=' . $GLOBALS['proj_disp_next_page'] . '#Disputes'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } ?>" >Next</a>
-                                </span>
-                                
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</div>
 						</div>
 
@@ -2925,18 +1977,6 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                 maxDate : new Date(2050, 12, 31),
                 yearRange : [1980, 2050]
             });
-<<<<<<< HEAD
-=======
-            
-            var picker = new Pikaday({
-                field : document.getElementById('dispute_date'),
-                format : 'DD/MM/YYYY',
-                firstDay : 1,
-                minDate : new Date(1980, 0, 1),
-                maxDate : new Date(2050, 12, 31),
-                yearRange : [1980, 2050]
-            });
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 
 		</script>
 		</body>

@@ -18,12 +18,8 @@
             }
 
             if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
-<<<<<<< HEAD
                #if (($time - $_SESSION['Last_Activity']) < 1800) {
 				if (($time - $_SESSION['Last_Activity']) < 900000000) {
-=======
-                if (($time - $_SESSION['Last_Activity']) < 1800) {
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
                     // isset($_SESSION['session_user_id'])
                     include ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();

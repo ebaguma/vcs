@@ -323,7 +323,6 @@ ob_start();
 						</table>
 						<table id="GridNav" class="detailNavigation" style="margin: 20px 10px;">
 							<tr>
-<<<<<<< HEAD
 								<td><a href="<?php
                                 if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") {
                                     echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $prev_page;
@@ -368,23 +367,6 @@ ob_start();
                                     echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $next_page;
                                 }
 								?>" >Next</a></td>
-=======
-								<td><a href="<?php if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $prev_page; } 
-								else if (isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PageNumber=' . $prev_page; } 
-								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $prev_page; } ?>" >Previous</a></td>
-								<td class="PageJump" style="width:70px;">
-								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" autocomplete="false" >
-									<input type="hidden" name="Mode" value="<?php if (isset($_GET['Mode'])) {echo $_GET['Mode']; } else {echo 'Read'; } ?>" />
-									<input type="hidden" name="ProjectName" value="<?php if (isset($_GET['ProjectName'])) {echo $_GET['ProjectName']; } else {echo ''; } ?>" />
-									<input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-									<input name="PageNumber" type="text" value="<?php if (isset($_GET['PageNumber'])) {echo $_GET['PageNumber']; } else {echo 1; } ?>" class="NavBoxes" />
-									/&nbsp;&nbsp;<?php echo $num_pages; ?>
-									<input type="submit" style="position: absolute; left: -99999px;" />
-								</form></td>
-								<td><a href="<?php if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $next_page; } 
-								else if (isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PageNumber=' . $next_page; } 
-								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $next_page; } ?>" >Next</a></td>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 							</tr>
 						</table>
 

@@ -1,23 +1,11 @@
-<<<<<<< HEAD
 <link rel='shortcut icon' type='image/x-icon' href='images/favicon.png' />
 <link rel="stylesheet" type="text/css" href="css/site-master.css">
-=======
-<link rel="stylesheet" type="text/css" href="css/site-master.css">
-<link rel='shortcut icon' type='image/x-icon' href='images/favicon.png' />
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 <link rel="stylesheet" type="text/css" href="css/content-master.css">
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <script src="js/date_picker/moment.min.js"></script>
 <link rel="stylesheet" href="css/date_picker/pikaday.css">
 <link rel="stylesheet" href="css/date_picker/site.css">
-<<<<<<< HEAD
 <script src="js/jquery-2.1.4.min.js"></script>
-=======
-<link rel="stylesheet" href="css/jquery-ui.min.css">
-<script src="js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 <script src="js/bootstrap.js"></script>
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
@@ -29,7 +17,6 @@
 			<div id="MainHeader" class="Navigation">
 				<ul class="nav nav-pills">
 					<li  id="Index">
-<<<<<<< HEAD
 						<a href="<?php echo 'ui_home.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>" >VCS HOME</a>
 					</li>
 					<li id="Projects">
@@ -41,28 +28,12 @@
 					</li>
 					<li id="Bio">
 						<a href="<?php echo 'ui_bio.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">BIO DATA</a>
-=======
-						<a href="<?php echo 'ui_home.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>" >HOME</a>
-					</li>
-					<li id="Projects">
-						<a href="<?php echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Details'; ?>">PROJECT</a>
-					</li>
-					<li id="Masters">
-						<a href="<?php echo 'ui_masters.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BioID'; ?>">MASTERS</a>
-					</li>
-					<li id="Bio">
-						<a href="<?php echo 'ui_bio.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">PAP INFO</a>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 					</li>
 					<li id="Valuation">
 						<a href="<?php echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Land'; ?>">VALUATION</a>
 					</li>
 					<li id="Reports">
-<<<<<<< HEAD
 						<a href="Reports.html">DOCUMENTATION</a>
-=======
-						<a href="Reports.html">REPORTS</a>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 					</li>
 				</ul>
 			</div>
@@ -102,28 +73,6 @@
 		}
 
 	</script>
-<<<<<<< HEAD
-=======
-	
-	<script type="text/javascript">
-            $(document).ready(function() {
-                // show active tab on reload
-                if (location.hash !== '') 
-                $('a[href="' + location.hash + '"]').tab('show');
-
-                // remember the hash in the URL without jumping
-                 $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                 if (history.pushState) { history.pushState(null, null, '#' + $(e.target).attr('href').substr(1)); } 
-                 else { location.hash = '#' + $(e.target).attr('href').substr(1); }
-                 });
-                
-                // important line, prevents scroll to content on load
-                window.scrollTo(0,0);
-                // document.documentElement.scrollTop = 0;
-                // document.body.scrollLeft = 0; 
-            });
-        </script>
->>>>>>> bd5e3fa0efd989c0071c01ec33304d8e710f6619
 
 	<!-- script>
 	function OpenProjectList(){
