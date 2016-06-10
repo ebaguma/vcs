@@ -6,46 +6,28 @@
 
     if(isset($_GET['LogOut'])){ LogOut(); }
 
-    if (isset($_POST['Mode']) && $_POST['Mode'] == 'EditDetails') {
-        UpdateProjectDetails();
-    }
+    if (isset($_POST['Mode']) && $_POST['Mode'] == 'EditDetails') { UpdateProjectDetails(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {
-        LoadProjDetails();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') { LoadProjDetails(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'EditClients') {
-        UpdateProjectClients();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'EditClients') { UpdateProjectClients(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewClients') {
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewClients') { 
         SelectProjectClient();
         LoadProjDetails();
     }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertClients') {
-        InsertProjectClients();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertClients') { InsertProjectClients(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteClients') {
-        DeleteProjectClient();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteClients') { DeleteProjectClient(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertStaff') {
-        InsertClientStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertStaff') { InsertClientStaff(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateStaff') {
-        UpdateClientStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateStaff') { UpdateClientStaff(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteStaff') {
-        DeleteClientStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteStaff') { DeleteClientStaff(); }
 
-    if (isset($_GET['StaffID'])) {
-        SelectClientStaff();
-    }
+    if (isset($_GET['StaffID'])) { SelectClientStaff(); }
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewBudget') {
         LoadProjDetails();
@@ -1516,7 +1498,7 @@
                                             </span></td>
                                     </tr>
                                     <tr>
-                                        <td><span class="saveButtonArea"> <input type="submit" value="Save" name="SaveDetails"/> 
+                                        <td><span class="saveButtonArea"> <input type="submit" value="Update" name="SaveDetails"/> 
                                                 <!-- input type="submit" value="Delete" style="background-color: #FF0616;" / --> 
                                             </span></td>
                                         <td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span

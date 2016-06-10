@@ -8,6 +8,8 @@
         
     if (isset($_GET['HHID'])) { SelectPap(); }
     
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') { LoadPapBasicInfo(); }
+    
     ?>
 
 <html>
@@ -102,6 +104,60 @@
         
         
 		?>
+		
+		<?php
+		
+		function LoadPapBasicInfo(){
+		    include_once ('../code/code_pap_basic_info.php');
+
+            $pap_basic_info = new PapBasicInfo();
+            
+            $pap_basic_info -> selected_project_id = $_GET['ProjectID'];
+            $pap_basic_info -> selected_project_code = $_GET['ProjectCode'];
+            
+            if (isset($_GET['HHID'])) { $pap_basic_info -> pap_hhid = $_GET['HHID']; } 
+            else if (session_status() == PHP_SESSION_NONE) { session_start(); $pap_basic_info -> pap_hhid = $_SESSION['session_pap_hhid']; } 
+            else if (session_status() == PHP_SESSION_ACTIVE) { $pap_basic_info -> pap_hhid = $_SESSION['session_pap_hhid']; }
+            
+            $pap_basic_info -> LoadBasicInfo();
+            
+            $GLOBALS['pap_hhid'] = $pap_basic_info -> pap_hhid;
+            $GLOBALS['pap_name'] = $pap_basic_info -> pap_name;
+            #$this -> pap_dob = $row -> DOB;
+            #$this -> pap_sex = $row -> SEX;
+            $GLOBALS['pap_plot_ref'] = $pap_basic_info -> pap_plot_ref;
+            #$this -> pap_birth_place = $row -> BIRTH_PLACE;
+            #$this -> pap_is_married = $row -> IS_MARRIED;
+            #$this -> pap_tribe_id = $row -> TRIBE_ID;
+            #$this -> pap_religion_id = $row -> RELGN_ID;
+            #$this -> pap_occupation_id = $row -> OCCUPN_ID;
+            #$this -> pap_status_id = $row -> PAP_STATUS_ID;
+
+            
+		}
+		
+		function BindTribe(){
+		    include_once ('../code/code_pap_basic_info.php');
+            $bind_pap_tribes = new PapBasicInfo();
+            $bind_pap_tribes -> selected_project_id = $_GET["ProjectID"];
+            $bind_pap_tribes -> BindTribe();
+		}
+
+        function BindReligion(){
+            include_once ('../code/code_pap_basic_info.php');
+            $bind_pap_religion = new PapBasicInfo();
+            $bind_pap_religion -> selected_project_id = $_GET["ProjectID"];
+            $bind_pap_religion -> BindReligion();
+        }
+        
+        function BindOccupation(){
+            include_once ('../code/code_pap_basic_info.php');
+            $bind_pap_occupation = new PapBasicInfo();
+            $bind_pap_occupation -> selected_project_id = $_GET["ProjectID"];
+            $bind_pap_occupation -> BindOccupation();
+        }
+		
+		?>
 
 		<div class="ContentParent">
 			<div class="Content">
@@ -138,20 +194,26 @@
 								This is the Basic Info Screen
 							</p>
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
-								<table>
+								<table class="formTable">
 									<tr>
 										<td class="formLabel">HHID:</td>
 										<td class="formLabel">Reference Number</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">HHID</span></td>
-										<td><span class="formSingleLineBox">Enter Reference Number</span></td>
+										<td><span class="formSingleLineBox">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" />
+										</span></td>
+										<td><span class="formSingleLineBox">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" name="PlotRef" />
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">PAP Name:</td>
 									</tr>
 									<tr>
-										<td colspan="2" ><span class="formSingleLineBox" style="width:610px;">Enter PAP Name</span></td>
+										<td colspan="2" ><span class="formSingleLineBox" style="width:610px;">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="PapName" style="width: 580px;" /> 
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Date Of Birth:</td>
@@ -174,15 +236,30 @@
 										<td class="formLabel">Religion:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select A Tribe</span></td>
-										<td><span class="formSingleLineBox">Enter A Religion</span></td>
+										<td><span class="formSingleLineBox">
+										    <select name="Tribes" id="SelectTribe" >
+                                                <option value="">-- Select Tribe --</option>
+                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
+                                            </select><!-- a class="LinkInBox" href="#">New</a -->
+										</span></td>
+										<td><span class="formSingleLineBox">
+										    <select name="Religions" id="SelectReligion" >
+                                                <option value="">-- Select Religion --</option>
+                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
+                                            </select><!-- a class="LinkInBox" href="#">New</a -->
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Occupation:</td>
 										<td class="formLabel">Phone Number:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select Occupation</span></td>
+										<td><span class="formSingleLineBox">
+										    <select name="Occupation" id="SelectOccupation" >
+                                                <option value="">-- Select Occupation --</option>
+                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
+                                            </select><!-- a class="LinkInBox" href="#">New</a -->
+										</span></td>
 										<td><span class="formSingleLineBox">Enter Phone Number</span></td>
 									</tr>
 									<tr>
@@ -192,7 +269,7 @@
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Email Address</span></td>
 									</tr>
 									<tr>
-										<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
+										<td><span class="saveButtonArea"> <input type="submit" value="Update" name="UpdateBasicInfo"/></span></td>
 										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
 									</tr>
 								</table>
