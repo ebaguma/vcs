@@ -34,72 +34,46 @@
         SelectBudgetItem();
     }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertBudget') {
-        InsertBudgetItem();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertBudget') { InsertBudgetItem(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBudget') {
-        UpdateBudgetItem();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBudget') { UpdateBudgetItem(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteBudget') {
-        DeleteBudgetItem();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteBudget') { DeleteBudgetItem(); }
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewExpense') {
         LoadProjDetails();
         SelectExpense();
     }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateExpense') {
-        UpdateExpense();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateExpense') { UpdateExpense(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertExpense') {
-        InsertExpense();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertExpense') { InsertExpense(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense') {
-        DeleteExpense();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense') { DeleteExpense(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPersonnel') {
         LoadProjDetails();
         SelectProjectStaff();
     }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePersonnel') {
-        UpdateProjectStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePersonnel') { UpdateProjectStaff(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertPersonnel') {
-        InsertProjectStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertPersonnel') { InsertProjectStaff(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePersonnel') {
-        DeleteProjectStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePersonnel') { DeleteProjectStaff(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPap') {
         LoadProjDetails();
         SelectProjectPap();
     }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'SearchPap') {
-        LoadProjDetails();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'SearchPap') { LoadProjDetails(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePap') {
-        UpdateProjectPap();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePap') { UpdateProjectPap(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertPap') {
-        InsertProjectPap();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertPap') { InsertProjectPap(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePap') {
-        DeleteProjectPap();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePap') { DeleteProjectPap(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewDispute') {
         LoadProjDetails();
@@ -111,21 +85,13 @@
         SelectProjectSection();
     }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertSection') {
-        InsertProjectSection();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertSection') { InsertProjectSection(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteSection') {
-        DeleteProjectSection();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteSection') { DeleteProjectSection(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateSection') {
-        UpdateProjectSection();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateSection') { UpdateProjectSection(); }
     
-    if (isset($_GET['Select'])) {
-        SelectProject();
-    }
+    if (isset($_GET['Select'])) {  SelectProject(); }
     
     ?>
 
