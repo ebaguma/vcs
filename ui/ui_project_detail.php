@@ -1768,21 +1768,21 @@
 									</span></td>
 								</tr>
 								<tr>
-									<td class="formLabel">Budget Category</td>
-									<td class="formLabel">Item Sub Category</td>
+									<td class="formLabel">Select Category</td>
+									<td class="formLabel">Select Sub Category</td>
 								</tr>
 								<tr>
-									<td><span class="formSingleLineBox">
+									<td><span class="formDropDownBox">
 										<select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()" >
 										    <option value="">-- Select Category --</option>
 											<?php if (isset($_GET['ProjectID']) || isset($_GET['Cat'])) { BindBudgetCat(); } ?>
-										</select><!-- a class="LinkInBox" href="#">New</a -->
+										</select><a class="LinkInBox" href="#">New</a>
 										</span></td>
-									<td><span class="formSingleLineBox">
+									<td><span class="formDropDownBox">
 										<select name="SubCategories" id="SelectBudgetSubCat">
 											<option value="">-- Select Sub Category --</option>
 											<?php if(isset($_GET['Cat']) && isset($_GET['SubCat'])){ BindBudgetSubCat(); } ?>
-										</select>
+										</select><a class="LinkInBox" href="#">New</a>
 										</span></td>
 								</tr>
 								<tr>
@@ -1900,21 +1900,21 @@
                                     </span></td> 
 							    </tr>
 								<tr>
-									<td class="formLabel">Expense Category</td>
-									<td class="formLabel">Expense Sub Category</td>
+									<td class="formLabel">Select Category</td>
+									<td class="formLabel">Select Sub Category</td>
 								</tr>
 								<tr>
-									<td><span class="formSingleLineBox">
+									<td><span class="formDropDownBox">
 									    <select name="ExpCategories" id="SelectExpenseCat" onchange="SelectExpSubCat()">
                                             <option value="">-- Select Category --</option>
                                             <?php if (isset($_GET['ProjectID']) || isset($_GET['ExpCat'])) { BindBudgetCat(); } ?>
-                                        </select>
+                                        </select><a class="LinkInBox" href="#">New</a>
 									</span></td>
-									<td><span class="formSingleLineBox">
+									<td><span class="formDropDownBox">
 									    <select name="ExpSubCategories" id="SelectExpenseSubCat">
                                             <option value="">-- Select Sub Category --</option>
                                             <?php if(isset($_GET['ExpCat']) && isset($_GET['ExpSubCat'])){ BindBudgetSubCat(); } ?>
-                                            </select>
+                                            </select><a class="LinkInBox" href="#">New</a>
 									</span></td>
 								</tr>
 								<tr>
@@ -2143,8 +2143,8 @@
 									    <input type="text" name="PapDesign" value="<?php if (isset($GLOBALS['pap_design'])){ echo $GLOBALS['pap_design']; } ?>" placeholder="Enter PAP Designation" />
 									</span></td>
 									<td><span class="formSingleLineBox">
-									    <select name="PapType" onchange="">
-                                                <option value="">-- Select PAP Type --</option>
+									    <select name="PapType" onchange="" >
+                                                <option value="">-- Select Type --</option>
                                                 <option value="IND" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Individual</option>
                                                 <option value="INS" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Institution</option> 
                                         </select>
@@ -2420,10 +2420,10 @@
 				</div>
 			</div>
 		</div>
+		
 		<!--#include virtual="Footer.html" -->
-		<?php
-        include ('ui_footer.php');
-		?>
+		<?php include ('ui_footer.php'); ?>
+		
 		<script src="js/date_picker/pikaday.js"></script>
 		<script>
 			var picker = new Pikaday({

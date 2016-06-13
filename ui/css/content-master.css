@@ -102,6 +102,36 @@ a {
 	margin-right: 10px;
 	color: #797979/*#B7B7B7*/;
 }
+
+.formDropDownBox {
+	height: 37px;
+	border: 1px solid #C7D8E4;
+	display: block;
+	width: 300px;
+	line-height: 25px;
+	padding: 0px 10px;
+	margin-right: 10px;
+	color: #797979/*#B7B7B7*/;
+}
+
+.formDropDownBox select {
+	border: none;
+	display: block;
+	width: 220px;
+	height: 35px;
+	float: left;
+	-webkit-appearance: none;
+}
+
+.LinkInBox {
+	float: right;
+	padding: 0px 10px;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 35px;
+	color: #868686;
+}
+
 .formSingleLineBox input[type=text] {
 	border-style: none;
 	height: 25px;
@@ -129,13 +159,7 @@ a {
 .formSingleLineBox:focus {
 	border: 1px solid #337ab7;
 }
-.formSingleLineBox select {
-	border: none;
-	display: block;
-	width: 280px;
-	height: 25px;
-	-webkit-appearance: none;
-}
+
 .formLabel {
 	height: 30px;
 	padding: 5px 10px;
@@ -318,15 +342,7 @@ textarea {
 	padding: 5px 20px;/*border-radius:5px;*/
 }
 
-.LinkInBox {
-	float: right;
-	padding: 0px 10px;
-	font-weight: bold;
-	font-size: 14px;
-	color: #868686;
-}
-
-/* select {
+select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -338,9 +354,6 @@ select::-ms-expand {
     display: none;
 }
 
-option{
-	width: 250px;
-} */
 
 .EditDeleteButtons {
 	width: 20px;

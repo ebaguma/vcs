@@ -220,33 +220,49 @@
 										<td class="formLabel">Place Of Birth:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select DOB</span></td>
-										<td><span class="formSingleLineBox">Enter Place Of Birth</span></td>
+										<td><span class="formSingleLineBox">
+											<input title="DD/MM/YYYY" type="text" id="birth_date" value="<?php if (isset($project_name)) { echo $start_date; } ?>" placeholder="DD/MM/YYYY" name="BirthDate" readonly />
+										</span></td>
+										<td><span class="formSingleLineBox">
+											<input type="text" value="<?php # if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="BirthPlace" placeholder="Enter Birth Place" />
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Sex:</td>
 										<td class="formLabel">Marital Status:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select Sex</span></td>
-										<td><span class="formSingleLineBox">Select Marital Status</span></td>
+										<td><span class="formDropDownBox">
+											<select name="PapType" onchange="" >
+                                                <option value="">-- Select Sex --</option>
+                                                <option value="IND" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Female</option>
+                                                <option value="INS" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Male</option> 
+                                        	</select>
+										</span></td>
+										<td><span class="formDropDownBox">
+											<select name="PapType" onchange="" >
+                                                <option value="">-- Select Status --</option>
+                                                <option value="IND" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Married</option>
+                                                <option value="INS" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Single</option> 
+                                        	</select>
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Tribe:</td>
 										<td class="formLabel">Religion:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">
+										<td><span class="formDropDownBox">
 										    <select name="Tribes" id="SelectTribe" >
-                                                <option value="">-- Select Tribe --</option>
+                                               <option value="">-- Select Tribe --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
-                                            </select><!-- a class="LinkInBox" href="#">New</a -->
+                                            </select><a class="LinkInBox" href="#">New</a>
 										</span></td>
-										<td><span class="formSingleLineBox">
+										<td><span class="formDropDownBox">
 										    <select name="Religions" id="SelectReligion" >
                                                 <option value="">-- Select Religion --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
-                                            </select><!-- a class="LinkInBox" href="#">New</a -->
+                                            </select><a class="LinkInBox" href="#">New</a>
 										</span></td>
 									</tr>
 									<tr>
@@ -254,19 +270,23 @@
 										<td class="formLabel">Phone Number:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">
+										<td><span class="formDropDownBox">
 										    <select name="Occupation" id="SelectOccupation" >
                                                 <option value="">-- Select Occupation --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
-                                            </select><!-- a class="LinkInBox" href="#">New</a -->
+                                            </select><a class="LinkInBox" href="#">New</a>
 										</span></td>
-										<td><span class="formSingleLineBox">Enter Phone Number</span></td>
+										<td><span class="formSingleLineBox">
+											<input type="text" value="<?php # if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="ContactNo" placeholder="Enter Phone No" />
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Email Address:</td>
 									</tr>
 									<tr>
-										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Email Address</span></td>
+										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
+											<input type="text" value="<?php # if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="ContactEmail" style="width: 580px;" placeholder="Enter Contact Email" />
+										</span></td>
 									</tr>
 									<tr>
 										<td><span class="saveButtonArea"> <input type="submit" value="Update" name="UpdateBasicInfo"/></span></td>
@@ -314,8 +334,16 @@
 										<td class="formLabel">Sub County Or Town:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select District<a class="LinkInBox" href="#">New</a></span></td>
-										<td><span class="formSingleLineBox">Enter Town Details<a class="LinkInBox" href="#">New</a></span></td>
+										<td><span class="formDropDownBox" >
+											<select name="Occupation" id="SelectOccupation" >
+                                                <option value="" >-- Select District --</option>
+                                            </select><a class="LinkInBox" href="#" >New</a>
+                                            </span></td>
+										<td><span class="formDropDownBox">
+											<select name="Occupation" id="SelectOccupation" >
+                                                <option value="" >-- Select Sub County --</option>
+                                            </select><a class="LinkInBox" href="#" >New</a>
+                                            </span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">LC 1 Or Village:</td>
@@ -473,6 +501,18 @@
 		</div>
 
 		<?php include ('ui_footer.php'); ?>
+		
+		<script src="js/date_picker/pikaday.js"></script>
+		<script>
+			var picker = new Pikaday({
+				field : document.getElementById('birth_date'),
+				format : 'DD/MM/YYYY',
+				firstDay : 1,
+				minDate : new Date(1980, 0, 1),
+				maxDate : new Date(2050, 12, 31),
+				yearRange : [1980, 2050]
+			});
+		</script>
 
 		</body>
 </html>
