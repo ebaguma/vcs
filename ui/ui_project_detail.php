@@ -12,10 +12,7 @@
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'EditClients') { UpdateProjectClients(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewClients') { 
-        SelectProjectClient();
-        LoadProjDetails();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewClients') { SelectProjectClient(); LoadProjDetails(); }
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertClients') { InsertProjectClients(); }
 
@@ -29,10 +26,7 @@
 
     if (isset($_GET['StaffID'])) { SelectClientStaff(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewBudget') {
-        LoadProjDetails();
-        SelectBudgetItem();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewBudget') { LoadProjDetails(); SelectBudgetItem(); }
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertBudget') { InsertBudgetItem(); }
 
@@ -40,10 +34,7 @@
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteBudget') { DeleteBudgetItem(); }
 
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewExpense') {
-        LoadProjDetails();
-        SelectExpense();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewExpense') { LoadProjDetails(); SelectExpense(); }
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateExpense') { UpdateExpense(); }
 
@@ -51,10 +42,7 @@
 
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense') { DeleteExpense(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPersonnel') {
-        LoadProjDetails();
-        SelectProjectStaff();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPersonnel') { LoadProjDetails(); SelectProjectStaff(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdatePersonnel') { UpdateProjectStaff(); }
     
@@ -62,10 +50,7 @@
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePersonnel') { DeleteProjectStaff(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPap') {
-        LoadProjDetails();
-        SelectProjectPap();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewPap') { LoadProjDetails(); SelectProjectPap(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'SearchPap') { LoadProjDetails(); }
     
@@ -75,15 +60,9 @@
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeletePap') { DeleteProjectPap(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewDispute') {
-        LoadProjDetails();
-        SelectProjectDispute();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewDispute') { LoadProjDetails(); SelectProjectDispute(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewSection') {
-        LoadProjDetails();
-        SelectProjectSection();
-    }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewSection') { LoadProjDetails(); SelectProjectSection(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertSection') { InsertProjectSection(); }
     
@@ -1772,17 +1751,17 @@
 									<td class="formLabel">Select Sub Category</td>
 								</tr>
 								<tr>
-									<td><span class="formDropDownBox">
+									<td><span class="formSingleLineBox">
 										<select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()" >
 										    <option value="">-- Select Category --</option>
 											<?php if (isset($_GET['ProjectID']) || isset($_GET['Cat'])) { BindBudgetCat(); } ?>
-										</select><a class="LinkInBox" href="#">New</a>
+										</select>
 										</span></td>
-									<td><span class="formDropDownBox">
+									<td><span class="formSingleLineBox">
 										<select name="SubCategories" id="SelectBudgetSubCat">
 											<option value="">-- Select Sub Category --</option>
 											<?php if(isset($_GET['Cat']) && isset($_GET['SubCat'])){ BindBudgetSubCat(); } ?>
-										</select><a class="LinkInBox" href="#">New</a>
+										</select>
 										</span></td>
 								</tr>
 								<tr>
@@ -1904,17 +1883,17 @@
 									<td class="formLabel">Select Sub Category</td>
 								</tr>
 								<tr>
-									<td><span class="formDropDownBox">
-									    <select name="ExpCategories" id="SelectExpenseCat" onchange="SelectExpSubCat()">
+									<td><span class="formSingleLineBox">
+									    <select name="ExpCategories" id="SelectExpenseCat" onchange="SelectExpSubCat()" >
                                             <option value="">-- Select Category --</option>
                                             <?php if (isset($_GET['ProjectID']) || isset($_GET['ExpCat'])) { BindBudgetCat(); } ?>
-                                        </select><a class="LinkInBox" href="#">New</a>
+                                        </select>
 									</span></td>
-									<td><span class="formDropDownBox">
+									<td><span class="formSingleLineBox">
 									    <select name="ExpSubCategories" id="SelectExpenseSubCat">
                                             <option value="">-- Select Sub Category --</option>
                                             <?php if(isset($_GET['ExpCat']) && isset($_GET['ExpSubCat'])){ BindBudgetSubCat(); } ?>
-                                            </select><a class="LinkInBox" href="#">New</a>
+                                            </select>
 									</span></td>
 								</tr>
 								<tr>

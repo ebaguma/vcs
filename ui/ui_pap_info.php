@@ -9,6 +9,10 @@
     if (isset($_GET['HHID'])) { SelectPap(); }
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') { LoadPapBasicInfo(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBasicInfo') { UpdatePapBasicInfo(); }
+	
+	
     
     ?>
 
@@ -106,57 +110,99 @@
 		?>
 		
 		<?php
-		
-		function LoadPapBasicInfo(){
-		    include_once ('../code/code_pap_basic_info.php');
 
-            $pap_basic_info = new PapBasicInfo();
-            
-            $pap_basic_info -> selected_project_id = $_GET['ProjectID'];
-            $pap_basic_info -> selected_project_code = $_GET['ProjectCode'];
-            
-            if (isset($_GET['HHID'])) { $pap_basic_info -> pap_hhid = $_GET['HHID']; } 
-            else if (session_status() == PHP_SESSION_NONE) { session_start(); $pap_basic_info -> pap_hhid = $_SESSION['session_pap_hhid']; } 
-            else if (session_status() == PHP_SESSION_ACTIVE) { $pap_basic_info -> pap_hhid = $_SESSION['session_pap_hhid']; }
-            
-            $pap_basic_info -> LoadBasicInfo();
-            
-            $GLOBALS['pap_hhid'] = $pap_basic_info -> pap_hhid;
-            $GLOBALS['pap_name'] = $pap_basic_info -> pap_name;
-            #$this -> pap_dob = $row -> DOB;
-            #$this -> pap_sex = $row -> SEX;
-            $GLOBALS['pap_plot_ref'] = $pap_basic_info -> pap_plot_ref;
-            #$this -> pap_birth_place = $row -> BIRTH_PLACE;
-            #$this -> pap_is_married = $row -> IS_MARRIED;
-            #$this -> pap_tribe_id = $row -> TRIBE_ID;
-            #$this -> pap_religion_id = $row -> RELGN_ID;
-            #$this -> pap_occupation_id = $row -> OCCUPN_ID;
-            #$this -> pap_status_id = $row -> PAP_STATUS_ID;
+		function LoadPapBasicInfo() {
+			include_once ('../code/code_pap_basic_info.php');
 
-            
+			$pap_basic_info = new PapBasicInfo();
+
+			$pap_basic_info -> selected_project_id = $_GET['ProjectID'];
+			$pap_basic_info -> selected_project_code = $_GET['ProjectCode'];
+
+			if (isset($_GET['HHID'])) { $pap_basic_info -> pap_hhid = $_GET['HHID'];
+			} else if (session_status() == PHP_SESSION_NONE) { session_start();
+				$pap_basic_info -> pap_hhid = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) { $pap_basic_info -> pap_hhid = $_SESSION['session_pap_hhid'];
+			}
+
+			$pap_basic_info -> LoadBasicInfo();
+
+			$GLOBALS['pap_hhid'] = $pap_basic_info -> pap_hhid;
+			$GLOBALS['pap_name'] = $pap_basic_info -> pap_name;
+			$GLOBALS['pap_dob'] = $pap_basic_info -> pap_dob;
+			$GLOBALS['pap_sex'] = $pap_basic_info -> pap_sex;
+			$GLOBALS['pap_plot_ref'] = $pap_basic_info -> pap_plot_ref;
+			$GLOBALS['pap_birth_place'] = $pap_basic_info -> pap_birth_place;
+			$GLOBALS['pap_is_married'] = $pap_basic_info -> pap_is_married;
+			$GLOBALS['pap_phone_no'] = $pap_basic_info -> pap_phone_no;
+			$GLOBALS['other_pap_phone_no'] = $pap_basic_info -> pap_other_phone_no;
+			$GLOBALS['email'] = $pap_basic_info -> pap_email;
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$_SESSION['pap_religion_id'] = $pap_basic_info -> pap_religion_id;
+				$_SESSION['pap_tribe_id'] = $pap_basic_info -> pap_tribe_id;
+				$_SESSION['pap_occupation_id'] = $pap_basic_info -> pap_occupation_id;
+			} else {
+				$_SESSION['pap_religion_id'] = $pap_basic_info -> pap_religion_id;
+				$_SESSION['pap_tribe_id'] = $pap_basic_info -> pap_tribe_id;
+				$_SESSION['pap_occupation_id'] = $pap_basic_info -> pap_occupation_id;
+
+			}
+
+			#$this -> pap_status_id = $row -> PAP_STATUS_ID;
+
 		}
-		
-		function BindTribe(){
-		    include_once ('../code/code_pap_basic_info.php');
-            $bind_pap_tribes = new PapBasicInfo();
-            $bind_pap_tribes -> selected_project_id = $_GET["ProjectID"];
-            $bind_pap_tribes -> BindTribe();
+
+		function BindTribe() {
+			include_once ('../code/code_pap_basic_info.php');
+			$bind_pap_tribes = new PapBasicInfo();
+			$bind_pap_tribes -> selected_project_id = $_GET["ProjectID"];
+			$bind_pap_tribes -> BindTribe();
 		}
 
-        function BindReligion(){
-            include_once ('../code/code_pap_basic_info.php');
-            $bind_pap_religion = new PapBasicInfo();
-            $bind_pap_religion -> selected_project_id = $_GET["ProjectID"];
-            $bind_pap_religion -> BindReligion();
-        }
-        
-        function BindOccupation(){
-            include_once ('../code/code_pap_basic_info.php');
-            $bind_pap_occupation = new PapBasicInfo();
-            $bind_pap_occupation -> selected_project_id = $_GET["ProjectID"];
-            $bind_pap_occupation -> BindOccupation();
-        }
-		
+		function BindReligion() {
+			include_once ('../code/code_pap_basic_info.php');
+			$bind_pap_religion = new PapBasicInfo();
+			$bind_pap_religion -> selected_project_id = $_GET["ProjectID"];
+			$bind_pap_religion -> BindReligion();
+		}
+
+		function BindOccupation() {
+			include_once ('../code/code_pap_basic_info.php');
+			$bind_pap_occupation = new PapBasicInfo();
+			$bind_pap_occupation -> selected_project_id = $_GET["ProjectID"];
+			$bind_pap_occupation -> BindOccupation();
+		}
+
+		function UpdatePapBasicInfo() {
+			include_once ('../code/code_pap_basic_info.php');
+			$update_basic_info = new PapBasicInfo();
+			// set update parameters
+			$update_basic_info -> pap_hhid = $_POST['HHID'];
+			$update_basic_info -> pap_name = $_POST['PapName'];
+			$update_basic_info -> pap_dob = $_POST['BirthDate'];
+			$update_basic_info -> pap_sex = $_POST['PapSex'];
+			$update_basic_info -> pap_plot_ref = $_POST['PlotRef'];
+			$update_basic_info -> pap_birth_place = $_POST['BirthPlace'];
+			$update_basic_info -> pap_is_married = $_POST['MaritalStatus'];
+			# $update_basic_info->pap_address_id=$_POST[''];
+			$update_basic_info -> pap_tribe_id = $_POST['PapTribe'];
+			$update_basic_info -> pap_phone_no = $_POST['PhoneNo'];
+			$update_basic_info -> pap_other_phone_no = $_POST['OtherPhoneNo'];
+			$update_basic_info -> pap_email = $_POST['PapEmail'];
+			$update_basic_info -> pap_religion_id = $_POST['PapReligion'];
+			$update_basic_info -> pap_occupation_id = $_POST['PapOccupation'];
+			# $update_basic_info->pap_status_id=$_POST['PapStatus'];
+
+			$update_basic_info -> selected_project_id = $_POST['ProjectID'];
+			$update_basic_info -> selected_project_code = $_POST['ProjectCode'];
+
+			$update_basic_info -> UpdatePapBasicInfo();
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $update_basic_info -> selected_project_id . '&ProjectCode=' . $update_basic_info -> selected_project_code . '&HHID=' . $update_basic_info -> pap_hhid . '#BasicInfo');
+			exit();
+		}
 		?>
 
 		<div class="ContentParent">
@@ -194,14 +240,17 @@
 								This is the Basic Info Screen
 							</p>
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>" method="post" autocomplete="off">
 								<table class="formTable">
+									<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                    <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
 									<tr>
 										<td class="formLabel">HHID:</td>
 										<td class="formLabel">Reference Number</td>
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox">
-										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" />
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" readonly />
 										</span></td>
 										<td><span class="formSingleLineBox">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" name="PlotRef" />
@@ -221,71 +270,75 @@
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox">
-											<input title="DD/MM/YYYY" type="text" id="birth_date" value="<?php if (isset($project_name)) { echo $start_date; } ?>" placeholder="DD/MM/YYYY" name="BirthDate" readonly />
+											<input title="DD/MM/YYYY" type="text" id="birth_date" value="<?php if (isset($GLOBALS['pap_dob'])) { echo $GLOBALS['pap_dob']; } ?>" placeholder="DD/MM/YYYY" name="BirthDate" readonly />
 										</span></td>
 										<td><span class="formSingleLineBox">
-											<input type="text" value="<?php # if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="BirthPlace" placeholder="Enter Birth Place" />
+											<input type="text" value="<?php if (isset($GLOBALS['pap_birth_place'])) { echo $GLOBALS['pap_birth_place']; } ?>" name="BirthPlace" placeholder="Enter Birth Place" />
 										</span></td>
 									</tr>
 									<tr>
-										<td class="formLabel">Sex:</td>
-										<td class="formLabel">Marital Status:</td>
+										<td class="formLabel">Select Sex:</td>
+										<td class="formLabel">Select Marital Status:</td>
 									</tr>
 									<tr>
 										<td><span class="formDropDownBox">
-											<select name="PapType" onchange="" >
+											<select name="PapSex" >
                                                 <option value="">-- Select Sex --</option>
-                                                <option value="IND" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Female</option>
-                                                <option value="INS" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Male</option> 
+                                                <option value="Female" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Female') { echo 'selected'; }  ?> >Female</option>
+                                                <option value="Male" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Male') { echo 'selected'; }  ?> >Male</option> 
                                         	</select>
 										</span></td>
 										<td><span class="formDropDownBox">
-											<select name="PapType" onchange="" >
+											<select name="MaritalStatus" >
                                                 <option value="">-- Select Status --</option>
-                                                <option value="IND" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Married</option>
-                                                <option value="INS" <?php # if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Single</option> 
+                                                <option value='true' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "true") { echo 'selected'; }  ?> >Married</option>
+                                                <option value='false' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "false") { echo 'selected'; }  ?> >Single</option> 
                                         	</select>
 										</span></td>
 									</tr>
 									<tr>
-										<td class="formLabel">Tribe:</td>
-										<td class="formLabel">Religion:</td>
+										<td class="formLabel">Select Tribe:</td>
+										<td class="formLabel">Select Religion:</td>
 									</tr>
 									<tr>
 										<td><span class="formDropDownBox">
-										    <select name="Tribes" id="SelectTribe" >
+										    <select name="PapTribe" id="SelectTribe" >
                                                <option value="">-- Select Tribe --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
                                             </select><a class="LinkInBox" href="#">New</a>
 										</span></td>
 										<td><span class="formDropDownBox">
-										    <select name="Religions" id="SelectReligion" >
+										    <select name="PapReligion" id="SelectReligion" >
                                                 <option value="">-- Select Religion --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
                                             </select><a class="LinkInBox" href="#">New</a>
 										</span></td>
 									</tr>
 									<tr>
-										<td class="formLabel">Occupation:</td>
+										<td class="formLabel">Select Occupation:</td>
 										<td class="formLabel">Phone Number:</td>
 									</tr>
 									<tr>
 										<td><span class="formDropDownBox">
-										    <select name="Occupation" id="SelectOccupation" >
+										    <select name="PapOccupation" id="SelectOccupation" >
                                                 <option value="">-- Select Occupation --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
                                             </select><a class="LinkInBox" href="#">New</a>
 										</span></td>
-										<td><span class="formSingleLineBox">
-											<input type="text" value="<?php # if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="ContactNo" placeholder="Enter Phone No" />
-										</span></td>
+										<td><span class="formSingleLineBox" style="width: 145px; float: left;">
+											<input type="text" value="<?php if (isset($GLOBALS['pap_phone_no'])) { echo $GLOBALS['pap_phone_no']; } ?>" name="PhoneNo" placeholder="Phone No" style="width: 125px;"/>
+										</span>
+										<span class="formSingleLineBox" style="width: 145px; float:left;">
+											<input type="text" value="<?php if (isset($GLOBALS['other_pap_phone_no'])) { echo $GLOBALS['other_pap_phone_no']; } ?>" name="OtherPhoneNo" placeholder="Alternate Phone" style="width: 125px;" />
+										</span>
+										</td>
 									</tr>
 									<tr>
 										<td class="formLabel">Email Address:</td>
 									</tr>
 									<tr>
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
-											<input type="text" value="<?php # if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="ContactEmail" style="width: 580px;" placeholder="Enter Contact Email" />
+											<input type="text" value="<?php if (isset($GLOBALS['email'])) { echo $GLOBALS['email']; } ?>" name="PapEmail" style="width: 580px;" placeholder="Enter Contact Email" />
 										</span></td>
 									</tr>
 									<tr>
@@ -293,7 +346,10 @@
 										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
 									</tr>
 								</table>
+								</form>
 							</div>
+							
+							
 							<div style="width:300px; float:left; margin-top:10px; margin-left:20px;">
 								<table  style="margin-bottom:20px; width:250px;">
 									<tr>
