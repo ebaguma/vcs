@@ -25,9 +25,9 @@
 					<li id="Projects">
 						<a href="<?php echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Details'; ?>">PROJECT</a>
 					</li>
-					<li id="Masters">
+					<!-- li id="Masters">
 						<a href="<?php echo 'ui_masters.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BioID'; ?>">MASTERS</a>
-					</li>
+					</li -->
 					<li id="Bio">
 						<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">PAP INFO</a>
 					</li>

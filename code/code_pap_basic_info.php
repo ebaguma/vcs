@@ -18,7 +18,7 @@ class PapBasicInfo {
 	public $pap_plot_ref;
 	public $pap_birth_place;
 	public $pap_is_married;
-	public $pap_address_id;
+	# public $pap_address_id;
 	public $pap_tribe_id;
 	public $pap_phone_no;
 	public $pap_other_phone_no;

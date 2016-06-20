@@ -1,8 +1,8 @@
-<?Php
+<?php
 
 	# Do not source format this code!
 
-	@$cat_id = $_GET['cat_id'];
+	@$element_id = $_GET['Element'];
 	
 	$dbhost_name = "192.168.7.3";
 	$database = "VCS_DB";
@@ -15,13 +15,13 @@
 		print "Error!: " . $e -> getMessage() . "<br/>";
 		die();
 	}
-	
-	$sql = "CALL USP_GET_PROJ_FIN_SUBCATG (" . $cat_id . ")";
+
+	$sql = "CALL USP_GET_VILLAGE(" . $element_id . ")";
 	$row = $dbo -> prepare($sql);
 	$row -> execute();
 	$result = $row -> fetchAll(PDO::FETCH_ASSOC);
 	
 	$main = array('data' => $result);
 	echo json_encode($main);
-
+	
 ?>

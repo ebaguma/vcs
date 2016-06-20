@@ -97,7 +97,7 @@
             }
 
             if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
-                if (($time - $_SESSION['Last_Activity']) < 1800) {
+                if (($time - $_SESSION['Last_Activity']) < 10800) {
                     // isset($_SESSION['session_user_id'])
                     include ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();
@@ -1289,24 +1289,25 @@
 						for ( j = document.SaveBudget.SubCategories.options.length - 1; j >= 0; j--) {
 							document.SaveBudget.SubCategories.remove(j);
 						}
+						
+						var default_subcatg = document.createElement("option");
+                        default_subcatg.text = "-- Select Sub Category --";
+                        document.SaveBudget.SubCategories.options.add(default_subcatg);
 
 						for ( i = 0; i < myarray.data.length; i++) {
 							var optn = document.createElement("option");
 							optn.text = myarray.data[i].SUB_CATG;
 							optn.value = myarray.data[i].ID;
-							// You can change this to subcategory
 							document.SaveBudget.SubCategories.options.add(optn);
 
 						}
 					}
-				}// end of function stateck
+				}
 
 				var url = "../code/code_project_drop_down.php";
 				var cat_id = document.getElementById('SelectBudgetCat').value;
 				url = url + "?cat_id=" + cat_id;
-				// url = url + "&sid=" + Math.random();
 				httpxml.onreadystatechange = stateck;
-				//alert(url);
 				httpxml.open("GET", url, true);
 				httpxml.send(null);
 			}
@@ -1340,12 +1341,15 @@
                         for ( j = document.SaveExpense.ExpSubCategories.options.length - 1; j >= 0; j--) {
                             document.SaveExpense.ExpSubCategories.remove(j);
                         }
+                        
+                        var default_subcatg = document.createElement("option");
+                        default_subcatg.text = "-- Select Sub Category --";
+                        document.SaveExpense.ExpSubCategories.options.add(default_subcatg);
 
                         for ( i = 0; i < myarray.data.length; i++) {
                             var optn = document.createElement("option");
                             optn.text = myarray.data[i].SUB_CATG;
                             optn.value = myarray.data[i].ID;
-                            // You can change this to subcategory
                             document.SaveExpense.ExpSubCategories.options.add(optn);
 
                         }
@@ -1355,9 +1359,7 @@
                 var url = "../code/code_project_drop_down.php";
                 var cat_id = document.getElementById('SelectExpenseCat').value;
                 url = url + "?cat_id=" + cat_id;
-                // url = url + "&sid=" + Math.random();
                 httpxml.onreadystatechange = stateck;
-                //alert(url);
                 httpxml.open("GET", url, true);
                 httpxml.send(null);
             }
