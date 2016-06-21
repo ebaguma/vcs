@@ -104,7 +104,7 @@
                     $CheckReturnUser = new LogInOut();
                     $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
                     $CheckReturnUser -> CheckLoginStatus();
-                    CheckPapSelection();
+                    # CheckPapSelection();
                     if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
                         // header('Location: ui/ui_project_list.php?PageNumber=1');
                         echo 'SetActivePage()';

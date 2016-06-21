@@ -43,7 +43,6 @@
 
             if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
                 if (($time - $_SESSION['Last_Activity']) < 1800) {
-                    // isset($_SESSION['session_user_id'])
                     # include ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();
                     $CheckReturnUser -> user_id = $_SESSION['session_user_id'];

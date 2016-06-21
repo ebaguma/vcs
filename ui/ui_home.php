@@ -10,6 +10,7 @@
     include ('ui_header.php');
 
     function CheckReturnUser() {
+    	include ('../code/code_index.php');
         $time = $_SERVER['REQUEST_TIME'];
 
         if (session_status() == PHP_SESSION_NONE) {
@@ -18,8 +19,7 @@
 
         if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
             if (($time - $_SESSION['Last_Activity']) < 1800) {
-                // isset($_SESSION['session_user_id'])
-                include ('../code/code_index.php');
+                # include ('../code/code_index.php');
                 $CheckReturnUser = new LogInOut();
                 $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
                 $CheckReturnUser -> CheckLoginStatus();
@@ -33,12 +33,17 @@
                     header('Location: ../index.php?Message=DB_Session_Expired');
                 }
             } else {
-
+				$InactiveReturnUser = new LogInOut();
+                $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $InactiveReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Inactive_Session_Expired');
             }
         } else {
+        	$InactiveReturnUser = new LogInOut();
+            $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+            $InactiveReturnUser -> LogOff();
             session_unset();
             session_destroy();
             header('Location: ../index.php?Message=Session_Expired');
