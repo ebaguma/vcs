@@ -62,7 +62,7 @@ Class PapAddress {
 			$ADDR_STR = $ROAD . ', ' . $DISTRICT . ', ' . $VILLAGE;
 
 			$this -> pap_addr_record_num = $this -> pap_addr_record_num + 1;
-			printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td></tr>", $this -> pap_addr_record_num, $ACTION, $ADDR_STR, $DEL_ACTION);
+			printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> pap_addr_record_num, $ACTION, $ROAD, $VILLAGE, $DISTRICT, $DEL_ACTION);
 		}
 		//recuperate resources
 		$result -> free();
@@ -158,10 +158,12 @@ Class PapAddress {
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
-				$District = $_SESSION['pap_addr_dist'];
+				$District = $_SESSION['pap_addr_dist_id'];
 			} else {
-				$District = $_SESSION['pap_addr_dist'];
+				$District = $_SESSION['pap_addr_dist_id'];
+
 			}
+			
 
 			if (isset($District) && $District == $ID) {
 				printf("<option value='%s' selected >%s</option>", $ID, $DISTRICT);
@@ -174,7 +176,8 @@ Class PapAddress {
 
 	function BindCounties() {
 		include ('code_connect.php');
-		$sql = "CALL USP_GET_COUNTY()";
+		$sql = "CALL USP_GET_COUNTY(@DIST_ID_ )";
+		$mysqli -> query("SET @DIST_ID_ = " . $this -> pap_addr_dist_id);
 		$result = $mysqli -> query($sql);
 
 		//iterate through the result set
@@ -186,9 +189,10 @@ Class PapAddress {
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
-				$County = $_SESSION['$pap_addr_cty'];
+				$County = $_SESSION['pap_addr_cty_id'];
 			} else {
-				$County = $_SESSION['$pap_addr_cty'];
+				$County = $_SESSION['pap_addr_cty_id'];
+
 			}
 
 			if (isset($County) && $County == $ID) {
@@ -202,7 +206,8 @@ Class PapAddress {
 
 	function BindSubCounties() {
 		include ('code_connect.php');
-		$sql = "CALL USP_GET_SUBCOUNTY()";
+		$sql = "CALL USP_GET_SUBCOUNTY(@CTY_ID_)";
+		$mysqli -> query("SET @CTY_ID_ = " . $this -> pap_addr_cty_id);
 		$result = $mysqli -> query($sql);
 
 		//iterate through the result set
@@ -214,9 +219,10 @@ Class PapAddress {
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
-				$SubCounty = $_SESSION['$pap_addr_subcty'];
+				$SubCounty = $_SESSION['pap_addr_subcty_id'];
 			} else {
-				$SubCounty = $_SESSION['$pap_addr_subcty'];
+				$SubCounty = $_SESSION['pap_addr_subcty_id'];
+
 			}
 
 			if (isset($SubCounty) && $SubCounty == $ID) {
@@ -230,7 +236,8 @@ Class PapAddress {
 
 	function BindVillage() {
 		include ('code_connect.php');
-		$sql = "CALL USP_GET_VILLAGE()";
+		$sql = "CALL USP_GET_VILLAGE(@SUBCTY_ID_)";
+		$mysqli -> query("SET @SUBCTY_ID_ = " . $this -> pap_addr_subcty_id);
 		$result = $mysqli -> query($sql);
 
 		//iterate through the result set
@@ -242,8 +249,10 @@ Class PapAddress {
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
-				$Village = $_SESSION['$pap_addr_vill'];
-			} else { $Village = $_SESSION['$pap_addr_vill'];
+				$Village = $_SESSION['pap_addr_vill_id'];
+			} else {
+				$Village = $_SESSION['pap_addr_vill_id'];
+
 			}
 
 			if (isset($Village) && $Village == $ID) {

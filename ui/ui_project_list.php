@@ -19,39 +19,46 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 	<?php
 
     function CheckReturnUser() {
-        $time = $_SERVER['REQUEST_TIME'];
+        # include ('../code/code_index.php');
+            $time = $_SERVER['REQUEST_TIME'];
 
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
 
-        if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
-            if (($time - $_SESSION['Last_Activity']) < 1800) {
-                //isset($_SESSION['session_user_id'])
-                include ('../code/code_index.php');
-                $CheckReturnUser = new LogInOut();
-                $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
-                $CheckReturnUser -> CheckLoginStatus();
-                if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
-                    //header('Location: ui/ui_project_list.php?PageNumber=1');
-                    echo 'CheckThis()';
-                    $_SESSION['Last_Activity'] = $time;
+            if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
+                if (($time - $_SESSION['Last_Activity']) < 1800) {
+                    // isset($_SESSION['session_user_id'])
+                   	include ('../code/code_index.php');
+                    $CheckReturnUser = new LogInOut();
+                    $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
+                    $CheckReturnUser -> CheckLoginStatus();
+                    CheckPapSelection();
+                    if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
+                        // header('Location: ui/ui_project_list.php?PageNumber=1');
+                        echo 'SetActivePage()';
+                        $_SESSION['Last_Activity'] = $time;
+                    } else {
+                        session_unset();
+                        session_destroy();
+                        header('Location: ../index.php?Message=DB_Session_Expired');
+                    }
                 } else {
+					# $InactiveReturnUser = new LogInOut();
+                    # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                    # $InactiveReturnUser -> LogOff();
                     session_unset();
                     session_destroy();
-                    header('Location: ../index.php?Message=DB_Session_Expired');
+                    header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
             } else {
-
+            	# $InactiveReturnUser = new LogInOut();
+                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                # $InactiveReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
-                header('Location: ../index.php?Message=Inactive_Session_Expired');
+                header('Location: ../index.php?Message=Session_Expired');
             }
-        } else {
-            session_unset();
-            session_destroy();
-            header('Location: ../index.php?Message=Session_Expired');
-        }
     }
 
     function ReadProjects() {

@@ -12,7 +12,13 @@
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBasicInfo') { UpdatePapBasicInfo(); }
 	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { LoadPapBasicInfo(); SelectPapAddr(); }
 	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertAddress') { InsertPapAddr(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateAddress') { UpdatePapAddr(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteAddress') { DeletePapAddr(); }
     
     ?>
 
@@ -28,6 +34,7 @@
         include ('ui_header.php');
 
         function CheckReturnUser() {
+        	include ('../code/code_index.php');
             $time = $_SERVER['REQUEST_TIME'];
 
             if (session_status() == PHP_SESSION_NONE) {
@@ -37,7 +44,7 @@
             if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
                 if (($time - $_SESSION['Last_Activity']) < 1800) {
                     // isset($_SESSION['session_user_id'])
-                    include ('../code/code_index.php');
+                    # include ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();
                     $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
                     $CheckReturnUser -> CheckLoginStatus();
@@ -52,12 +59,17 @@
                         header('Location: ../index.php?Message=DB_Session_Expired');
                     }
                 } else {
-
+					$InactiveReturnUser = new LogInOut();
+                    $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                    $InactiveReturnUser -> LogOff();
                     session_unset();
                     session_destroy();
                     header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
             } else {
+            	$InactiveReturnUser = new LogInOut();
+                $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $InactiveReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Session_Expired');
@@ -206,16 +218,16 @@
 		?>
 		
 		<?php
-		
-		function LoadPapAddr(){
+
+		function LoadPapAddr() {
 			include_once ('../code/code_pap_address.php');
-            $load_pap_addr = new PapAddress();
-			
+			$load_pap_addr = new PapAddress();
+
 			$load_pap_addr -> selected_project_id = $_GET['ProjectID'];
 			$load_pap_addr -> selected_project_code = $_GET['ProjectCode'];
-			
-            if (isset($_GET['HHID'])) {
-            	$load_pap_addr -> pap_addr_pap_id = $_GET['HHID'];
+
+			if (isset($_GET['HHID'])) {
+				$load_pap_addr -> pap_addr_pap_id = $_GET['HHID'];
 			} else if (session_status() == PHP_SESSION_NONE) {
 				session_start();
 				$load_pap_addr -> pap_addr_pap_id = $_SESSION['session_pap_hhid'];
@@ -223,157 +235,177 @@
 				$load_pap_addr -> pap_addr_pap_id = $_SESSION['session_pap_hhid'];
 			}
 
-            if (isset($_GET['GridPage'])) {
-                $GLOBALS['pap_addr_load_page'] = $_GET['GridPage'];
-            } else {
-                $GLOBALS['pap_addr_load_page'] = 1;
-            }
+			if (isset($_GET['GridPage'])) {
+				$GLOBALS['pap_addr_load_page'] = $_GET['GridPage'];
+			} else {
+				$GLOBALS['pap_addr_load_page'] = 1;
+			}
 
-            # set pagination parameters
-            $load_pap_addr -> PapAddrPageParams();
-            $GLOBALS['pap_addr_num_pages'] = $load_pap_addr -> pap_addr_last_page;
+			# set pagination parameters
+			$load_pap_addr -> PapAddrPageParams();
+			$GLOBALS['pap_addr_num_pages'] = $load_pap_addr -> pap_addr_last_page;
 
-            # Handling grid pages and navigation
-            if ($GLOBALS['pap_addr_load_page'] == 1) {
-                $load_pap_addr -> pap_addr_record_num = 0;
-                $load_pap_addr -> pap_addr_data_offset = 0;
-            } else if ($GLOBALS['pap_addr_load_page'] <= $load_pap_addr -> pap_addr_last_page) {
-                $load_pap_addr -> pap_addr_data_offset = ($GLOBALS['pap_addr_load_page'] - 1) * $load_pap_addr -> pap_addr_page_rows;
-                $load_pap_addr -> pap_addr_record_num = ($GLOBALS['pap_addr_load_page'] - 1) * $load_pap_addr -> pap_addr_page_rows; ;
-            } else {
-                // echo '<script>alert("Page Is Out Of Range");</script>';
-                $GLOBALS['pap_addr_load_page'] = 1;
-                $load_pap_addr -> pap_addr_record_num = 0;
-                $load_pap_addr -> pap_addr_data_offset = 0;
-            }
-			
+			# Handling grid pages and navigation
+			if ($GLOBALS['pap_addr_load_page'] == 1) {
+				$load_pap_addr -> pap_addr_record_num = 0;
+				$load_pap_addr -> pap_addr_data_offset = 0;
+			} else if ($GLOBALS['pap_addr_load_page'] <= $load_pap_addr -> pap_addr_last_page) {
+				$load_pap_addr -> pap_addr_data_offset = ($GLOBALS['pap_addr_load_page'] - 1) * $load_pap_addr -> pap_addr_page_rows;
+				$load_pap_addr -> pap_addr_record_num = ($GLOBALS['pap_addr_load_page'] - 1) * $load_pap_addr -> pap_addr_page_rows;
+				;
+			} else {
+				// echo '<script>alert("Page Is Out Of Range");</script>';
+				$GLOBALS['pap_addr_load_page'] = 1;
+				$load_pap_addr -> pap_addr_record_num = 0;
+				$load_pap_addr -> pap_addr_data_offset = 0;
+			}
+
 			# Setting next, and previous page numbers
-            if (($GLOBALS['pap_addr_load_page'] + 1) <= $load_pap_addr -> pap_addr_last_page) {
-                $GLOBALS['pap_addr_next_page'] = $GLOBALS['pap_addr_load_page'] + 1;
-            } else {
-                $GLOBALS['pap_addr_next_page'] = 1;
-            }
+			if (($GLOBALS['pap_addr_load_page'] + 1) <= $load_pap_addr -> pap_addr_last_page) {
+				$GLOBALS['pap_addr_next_page'] = $GLOBALS['pap_addr_load_page'] + 1;
+			} else {
+				$GLOBALS['pap_addr_next_page'] = 1;
+			}
 
-            if (($GLOBALS['pap_addr_load_page'] - 1) >= 1) {
-                $GLOBALS['pap_addr_prev_page'] = $GLOBALS['pap_addr_load_page'] - 1;
-            } else {
-                $GLOBALS['pap_addr_prev_page'] = 1;
-            }
+			if (($GLOBALS['pap_addr_load_page'] - 1) >= 1) {
+				$GLOBALS['pap_addr_prev_page'] = $GLOBALS['pap_addr_load_page'] - 1;
+			} else {
+				$GLOBALS['pap_addr_prev_page'] = 1;
+			}
 
-            # Loading Pap Addresses
-            $load_pap_addr -> LoadPapAddr();
+			# Loading Pap Addresses
+			$load_pap_addr -> LoadPapAddr();
 		}
-		
-		function SelectPapAddr(){
-			include_once ('../code/code_project_budget.php');
-            $select_budget_item = new ProjectBudget();
-            $select_budget_item -> selected_project_id = $_GET["ProjectID"];
-            $select_budget_item -> budget_item_id = $_GET["BudgetID"];
 
-            $select_budget_item -> SelectBudgetItem();
+		function SelectPapAddr() {
+			include_once ('../code/code_pap_address.php');
+			$select_pap_addr = new PapAddress();
 
-            $GLOBALS['budget_item_id'] = $select_budget_item -> budget_item_id;
-            //$GLOBALS['budget_item_catg'] = $select_budget_item -> budget_item_catg;
-            //$GLOBALS['budget_item_sub_catg'] = $select_budget_item -> budget_item_sub_catg;
-            $GLOBALS['budget_grand_total'] = $select_budget_item -> budget_grand_total;
-            $GLOBALS['budget_item_amount'] = $select_budget_item -> budget_item_amount;
-            $GLOBALS['budget_item_pct'] = $select_budget_item -> budget_item_pct;
-            $GLOBALS['budget_other_dtl'] = $select_budget_item -> budget_other_dtl;
-			
+			$select_pap_addr -> selected_project_id = $_GET['ProjectID'];
+			$select_pap_addr -> selected_project_code = $_GET['ProjectCode'];
+			$select_pap_addr -> pap_addr_id = $_GET['AddrID'];
+
+			$select_pap_addr -> SelectPapAddr();
+
+			$GLOBALS['pap_addr_road'] = $select_pap_addr -> pap_addr_road;
+
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
-				$_SESSION['pap_religion_id'] = $pap_basic_info -> pap_religion_id;
-				$_SESSION['pap_tribe_id'] = $pap_basic_info -> pap_tribe_id;
-				$_SESSION['pap_occupation_id'] = $pap_basic_info -> pap_occupation_id;
+				$_SESSION['pap_addr_dist_id'] = $select_pap_addr -> pap_addr_dist_id;
+				$_SESSION['pap_addr_cty_id'] = $select_pap_addr -> pap_addr_cty_id;
+				$_SESSION['pap_addr_subcty_id'] = $select_pap_addr -> pap_addr_subcty_id;
+				$_SESSION['pap_addr_vill_id'] = $select_pap_addr -> pap_addr_vill_id;
 			} else {
-				$_SESSION['pap_religion_id'] = $pap_basic_info -> pap_religion_id;
-				$_SESSION['pap_tribe_id'] = $pap_basic_info -> pap_tribe_id;
-				$_SESSION['pap_occupation_id'] = $pap_basic_info -> pap_occupation_id;
-
+				$_SESSION['pap_addr_dist_id'] = $select_pap_addr -> pap_addr_dist_id;
+				$_SESSION['pap_addr_cty_id'] = $select_pap_addr -> pap_addr_cty_id;
+				$_SESSION['pap_addr_subcty_id'] = $select_pap_addr -> pap_addr_subcty_id;
+				$_SESSION['pap_addr_vill_id'] = $select_pap_addr -> pap_addr_vill_id;
 			}
+
 		}
-		
-		function InsertPapAddr(){
+
+		function InsertPapAddr() {
 			// echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
-            include_once ('../code/code_project_budget.php');
-            $insert_budget_item = new ProjectBudget();
-            //$client_name = $project_client -> client_name;
-            $insert_budget_item -> selected_project_id = $_POST['ProjectID'];
-            $insert_budget_item -> selected_project_code = $_POST['ProjectCode'];
-            $insert_budget_item -> budget_item_sub_catg = $_POST['SubCategories'];
-            $insert_budget_item -> budget_item_amount = $_POST['BudgetValue'];
-            $insert_budget_item -> budget_other_dtl = $_POST['BudgetDetails'];
-
-            $insert_budget_item -> InsertBudgetItem();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_budget_item -> selected_project_id . '&ProjectCode=' . $insert_budget_item -> selected_project_code . '#Budget');
-            exit();
-		}
-		
-		function UpdatePapAddr(){
-			// echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
-            include_once ('../code/code_project_budget.php');
-            $update_budget_item = new ProjectBudget();
-            //$client_name = $project_client -> client_name;
-            $update_budget_item -> budget_item_id = $_POST['BudgetID'];
-            $update_budget_item -> selected_project_id = $_POST['ProjectID'];
-            $update_budget_item -> selected_project_code = $_POST['ProjectCode'];
-            $update_budget_item -> budget_item_sub_catg = $_POST['SubCategories'];
-            $update_budget_item -> budget_item_amount = $_POST['BudgetValue'];
-            $update_budget_item -> budget_other_dtl = $_POST['BudgetDetails'];
-
-            $update_budget_item -> UpdateBudgetItem();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_budget_item -> selected_project_id . '&ProjectCode=' . $update_budget_item -> selected_project_code . '#Budget');
-            exit();
-		}
-		
-		function DeletePapAddr(){
-			include_once ('../code/code_project_budget.php');
-            $delete_budget_item = new ProjectBudget();
-            $delete_budget_item -> budget_item_id = $_GET['BudgetID'];
-
-            $delete_budget_item -> selected_project_id = $_GET['ProjectID'];
-            $delete_budget_item -> selected_project_code = $_GET['ProjectCode'];
-
-            $delete_budget_item -> DeleteBudgetItem();
-            unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_budget_item -> selected_project_id . '&ProjectCode=' . $delete_budget_item -> selected_project_code . '#Budget');
-            exit();
-		}
-		
-		function BindDistricts(){
 			include_once ('../code/code_pap_address.php');
-            $bind_districts = new PapAddress();
-            # $bind_districts -> selected_project_id = $_GET["ProjectID"];
-            $bind_districts -> BindDistrict();
-			
+			$insert_pap_addr = new PapAddress();
+
+			$insert_pap_addr -> selected_project_id = $_GET['ProjectID'];
+			$insert_pap_addr -> selected_project_code = $_GET['ProjectCode'];
+
+			$insert_pap_addr -> pap_addr_road = $_POST['Road'];
+			$insert_pap_addr -> pap_addr_vill_id = $_POST['Villages'];
+
+			if (isset($_GET['HHID'])) {
+				$insert_pap_addr -> pap_addr_pap_id = $_GET['HHID'];
+			}
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$insert_pap_addr -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_addr -> pap_addr_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$insert_pap_addr -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_addr -> pap_addr_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			$insert_pap_addr -> InsertPapAddr();
+
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_pap_addr -> selected_project_id . '&ProjectCode=' . $insert_pap_addr -> selected_project_code . '#PapAddress');
+			exit();
 		}
-		
-		function BindCounties(){
+
+		function UpdatePapAddr() {
 			include_once ('../code/code_pap_address.php');
-            $bind_districts = new PapAddress();
-            # $bind_districts -> selected_project_id = $_GET["ProjectID"];
-            $bind_districts -> BindDistrict();
+			$update_pap_addr = new PapAddress();
+
+			$update_pap_addr -> selected_project_id = $_GET['ProjectID'];
+			$update_pap_addr -> selected_project_code = $_GET['ProjectCode'];
+
+			$update_pap_addr -> pap_addr_road = $_POST['Road'];
+			$update_pap_addr -> pap_addr_vill_id = $_POST['Villages'];
+			$update_pap_addr -> pap_addr_id = $_POST['AddrID'];
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$update_pap_addr -> session_user_id = $_SESSION['session_user_id'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$update_pap_addr -> session_user_id = $_SESSION['session_user_id'];
+			}
+
+			$update_pap_addr -> UpdatePapAddr();
 			
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=ViewAddress&ProjectID=' . $update_pap_addr -> selected_project_id . '&ProjectCode=' . $update_pap_addr -> selected_project_code . '&AddrID=' . $update_pap_addr -> pap_addr_id . '#PapAddress');
+			exit();
 		}
-		
-		function BindSubCounties(){
+
+		function DeletePapAddr() {
 			include_once ('../code/code_pap_address.php');
-            $bind_districts = new PapAddress();
-            # $bind_districts -> selected_project_id = $_GET["ProjectID"];
-            $bind_districts -> BindDistrict();
-			
+			$delete_pap_addr = new PapAddress();
+
+			$delete_pap_addr -> selected_project_id = $_GET['ProjectID'];
+			$delete_pap_addr -> selected_project_code = $_GET['ProjectCode'];
+
+			$delete_pap_addr -> pap_addr_id = $_GET['AddrID'];
+
+			$delete_pap_addr -> DeletePapAddr();
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_pap_addr -> selected_project_id . '&ProjectCode=' . $delete_pap_addr -> selected_project_code . '#PapAddress');
+			exit();
 		}
-		
-		function BindVillages(){
+
+		function SelectDistrict() {
 			include_once ('../code/code_pap_address.php');
-            $bind_districts = new PapAddress();
-            # $bind_districts -> selected_project_id = $_GET["ProjectID"];
-            $bind_districts -> BindDistrict();
-			
+			$bind_districts = new PapAddress();
+			# $bind_districts -> selected_project_id = $_GET["ProjectID"];
+			$bind_districts -> BindDistrict();
+
 		}
-		
+
+		function SelectCounty() {
+			include_once ('../code/code_pap_address.php');
+			$bind_counties = new PapAddress();
+			$bind_counties -> pap_addr_dist_id = $_SESSION['pap_addr_dist_id'];
+			$bind_counties -> BindCounties();
+
+		}
+
+		function SelectSubCounty() {
+			include_once ('../code/code_pap_address.php');
+			$bind_sub_cty = new PapAddress();
+			$bind_sub_cty -> pap_addr_cty_id = $_SESSION['pap_addr_cty_id'];
+			$bind_sub_cty -> BindSubCounties();
+
+		}
+
+		function SelectVillage() {
+			include_once ('../code/code_pap_address.php');
+			$bind_village = new PapAddress();
+			$bind_village -> pap_addr_subcty_id = $_SESSION['pap_addr_subcty_id'];
+			$bind_village -> BindVillage();
+
+		}
 		?>
 		
 		<script type="text/javascript" >
@@ -582,7 +614,7 @@
 					<div class="tab-content">
 
 						<!-- This is the Basic Info Screen -->
-						<div id="BasicInfo" class="tab-pane active">
+						<div id="BasicInfo" class="tab-pane fade in active">
 							<p>
 								This is the Basic Info Screen
 							</p>
@@ -652,13 +684,13 @@
 										    <select name="PapTribe" id="SelectTribe" >
                                                <option value="">-- Select Tribe --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
-                                            </select><a class="LinkInBox" href="#">New</a>
+                                            </select><a class="LinkInBoxOther" href="#">New</a>
 										</span></td>
 										<td><span class="formDropDownBox">
 										    <select name="PapReligion" id="SelectReligion" >
                                                 <option value="">-- Select Religion --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
-                                            </select><a class="LinkInBox" href="#">New</a>
+                                            </select><a class="LinkInBoxOther" href="#">New</a>
 										</span></td>
 									</tr>
 									<tr>
@@ -670,7 +702,7 @@
 										    <select name="PapOccupation" id="SelectOccupation" >
                                                 <option value="">-- Select Occupation --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
-                                            </select><a class="LinkInBox" href="#">New</a>
+                                            </select><a class="LinkInBoxOther" href="#">New</a>
 										</span></td>
 										<td><span class="formSingleLineBox" style="width: 145px; float: left;">
 											<input type="text" value="<?php if (isset($GLOBALS['pap_phone_no'])) { echo $GLOBALS['pap_phone_no']; } ?>" name="PhoneNo" placeholder="Phone No" style="width: 125px;"/>
@@ -717,13 +749,18 @@
 						</div>
 
 						<!-- This is the PAP Address Screen -->
-						<div id="PapAddress" class="tab-pane">
+						<div id="PapAddress" class="tab-pane fade">
 							<p>
 								This is the PAP Address Screen
 							</p>
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
-								<form name="Address" >
-								<table>
+								<form name="Address" action="<?php 
+		                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress'; }
+		                            else if ($_GET['Mode'] == 'ViewAddress') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress'; } ?>" method="POST" autocomplete="off">
+								<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                <input type="hidden" name="AddrID" value="<?php if (isset($_GET['AddrID'])) { echo $_GET['AddrID']; } ?>" />
+								<table class="formTable">
 									<tr>
 										<td class="formLabel">Plot No, Road:</td>
 										<td class="formLabel">
@@ -731,7 +768,9 @@
 										&nbsp;&nbsp;Is Main Residence?</td>
 									</tr>
 									<tr>
-										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Address Details</span></td>
+										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_addr_road'])) { echo $GLOBALS['pap_addr_road']; } ?>" name="Road" placeholder="Enter Address" />
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Select District:</td>
@@ -740,16 +779,16 @@
 									<tr>
 										<td><span class="formDropDownBox" >
 											<select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
-                                                <option value="" >-- Select District --</option>
-                                                <?php if (isset($_GET['ProjectID']) ) { BindDistricts(); } ?>
-                                            </select><a class="LinkInBox" href="#" >New</a>
+                                                <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['pap_addr_dist_id']); } ?> >-- Select District --</option>
+                                                <?php if (isset($_GET['ProjectID']) ) { SelectDistrict(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#" >New</a>
                                             </span>
                                         </td>
 										<td><span class="formDropDownBox">
 											<select name="Counties" id="SelectCounty" onchange="BindSubCounties()" >
                                                 <option value="" >-- Select County --</option>
-                                                <?php # if (isset($_GET['ProjectID']) ) { BindCounties(); } ?>
-                                            </select><a class="LinkInBox" href="#" >New</a>
+                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectCounty(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#" >New</a>
                                             </span>
                                         </td>
 									</tr>
@@ -761,30 +800,43 @@
 										<td><span class="formDropDownBox" >
 											<select name="SubCounties" id="SelectSubCty" onchange="BindVillages()" >
                                                 <option value="" >-- Select Sub County --</option>
-                                                <?php # if (isset($_GET['ProjectID']) ) { BindSubCounties(); } ?>
-                                            </select><a class="LinkInBox" href="#" >New</a>
+                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectSubCounty(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#" >New</a>
                                             </span>
                                         </td>
 										<td><span class="formDropDownBox" >
 											<select name="Villages" id="SelectVillage" >
                                                 <option value="" >-- Select Village --</option>
-                                                <?php # if (isset($_GET['ProjectID']) ) { BindVillages(); } ?>
-                                            </select><a class="LinkInBox" href="#" >New</a>
+                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectVillage(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#" >New</a>
                                             </span>
                                         </td>
 									</tr>
 									<tr>
-										<td><a class="saveButtonArea" href="#">Save / Finish </a></td>
+										<td> 
+											<span class="saveButtonArea">
+												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewAddress') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
+												<?php $new_address = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
+                                                if ($_GET['Mode'] == 'ViewAddress') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_address . '>New Address</a></span>'; } ?>
+                                            </span>
+                                        </td>
+										<td align="right">
+											<span class="formLinks SideBar"><a href="#">Documents</a></span>
+											<span class="formLinks"><a href="#">Photos</a></span>
+										</td>
 									</tr>
 								</table>
 								</form>
-								
-								
-								<table class="detailGrid" style="width:560px; margin-top:25px;">
+							</div>
+							
+							<div class="GridArea" style="width: 750px;">	
+								<table class="detailGrid" style="width:800px; margin-top:25px;">
 									<tr>
 										<td class = "detailGridHead">#</td>
-										<td  class = "detailGridHead">Address Details:</td>
-										<td  class = "detailGridHead">Modify:</td>
+										<td  class = "detailGridHead">Address</td>
+										<td  class = "detailGridHead">Village</td>
+										<td  class = "detailGridHead">District</td>
+										<td  class = "detailGridHead">Modify</td>
 									</tr>
 									<?php if (isset($_GET['ProjectID'])) { LoadPapAddr(); } ?>
 								</table>
@@ -801,7 +853,7 @@
                                     <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } 
                                     else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } ?>" >Previous</a>
                                     &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $pap_addr_load_page . ' / ' . $pap_addr_num_pages ; } else {echo '1 / ' . $pap_addr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } 
+                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } 
                                     else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } ?>" >Next</a>
                             	</span>
 								
