@@ -634,35 +634,39 @@
                     if (httpxml.readyState == 4) {
                         var myarray = JSON.parse(httpxml.responseText);
                         // Remove the options from 2nd dropdown list
-                        for ( j = document.Address.Counties.options.length - 1; j >= 0; j--) {
-                            document.Address.Counties.remove(j);
+                        counties = document.getElementById('SelectCounty');
+                        sub_counties = document.getElementById('SelectSubCty');
+                        villages = document.getElementById('SelectVillage');
+                        
+                        for ( j = counties.options.length - 1; j >= 0; j--) {
+                            counties.remove(j);
                         }
                         
-                        for ( j = document.Address.SubCounties.options.length - 1; j >= 0; j--) {
-                            document.Address.SubCounties.remove(j);
+                        for ( j = sub_counties.options.length - 1; j >= 0; j--) {
+                            sub_counties.remove(j);
                         }
                         
-                        for ( j = document.Address.Villages.options.length - 1; j >= 0; j--) {
-                            document.Address.Villages.remove(j);
+                        for ( j = villages.options.length - 1; j >= 0; j--) {
+                            villages.remove(j);
                         }
                         
                         var default_cty = document.createElement("option");
                         default_cty.text = "-- Select County --";
-                        document.Address.Counties.options.add(default_cty);
+                        counties.options.add(default_cty);
                         
                         var default_scty = document.createElement("option");
                         default_scty.text = "-- Select Sub County --";
-                        document.Address.SubCounties.options.add(default_scty);
+                        sub_counties.options.add(default_scty);
                         
                         var default_vill = document.createElement("option");
                         default_vill.text = "-- Select Village --";
-                        document.Address.Villages.options.add(default_vill);
+                        villages.options.add(default_vill);
 						
                         for ( i = 0; i < myarray.data.length; i++) {
 	                            var optn = document.createElement("option");
 	                            optn.text = myarray.data[i].COUNTY;
 	                            optn.value = myarray.data[i].ID;
-	                            document.Address.Counties.options.add(optn);
+	                            counties.options.add(optn);
                         }
                     }
                 }// end of function stateck
@@ -699,27 +703,30 @@
                     if (httpxml.readyState == 4) {
                         var myarray = JSON.parse(httpxml.responseText);
                         // Remove the options from 2nd dropdown list
-                        for ( j = document.Address.SubCounties.options.length - 1; j >= 0; j--) {
-                            document.Address.SubCounties.remove(j);
+                        sub_counties = document.getElementById('SelectSubCty');
+                        villages = document.getElementById('SelectVillage');
+                        
+                        for ( j = sub_counties.options.length - 1; j >= 0; j--) {
+                            sub_counties.remove(j);
                         }
                         
-                        for ( j = document.Address.Villages.options.length - 1; j >= 0; j--) {
-                            document.Address.Villages.remove(j);
+                        for ( j = villages.options.length - 1; j >= 0; j--) {
+                            villages.remove(j);
                         }
                         
                         var default_scty = document.createElement("option");
                         default_scty.text = "-- Select Sub County --";
-                        document.Address.SubCounties.options.add(default_scty);
+                        sub_counties.options.add(default_scty);
                         
                         var default_vill = document.createElement("option");
                         default_vill.text = "-- Select Village --";
-                        document.Address.Villages.options.add(default_vill);
+						villages.options.add(default_vill);
 						
                         for ( i = 0; i < myarray.data.length; i++) {
 	                            var optn = document.createElement("option");
 	                            optn.text = myarray.data[i].SUBCOUNTY;
 	                            optn.value = myarray.data[i].ID;
-	                            document.Address.SubCounties.options.add(optn);
+	                            sub_counties.options.add(optn);
                         }
                     }
                 }// end of function stateck
@@ -755,19 +762,21 @@
                     if (httpxml.readyState == 4) {
                         var myarray = JSON.parse(httpxml.responseText);
                         // Remove the options from 2nd dropdown list
-                        for ( j = document.Address.Villages.options.length - 1; j >= 0; j--) {
-                            document.Address.Villages.remove(j);
+                        villages = document.getElementById('SelectVillage');
+                        
+                        for ( j = villages.options.length - 1; j >= 0; j--) {
+                            villages.remove(j);
                         }
                         
                         var default_vill = document.createElement("option");
                         default_vill.text = "-- Select Village --";
-                        document.Address.Villages.options.add(default_vill);
+                        villages.options.add(default_vill);
 						
                         for ( i = 0; i < myarray.data.length; i++) {
 	                            var optn = document.createElement("option");
 	                            optn.text = myarray.data[i].VILLAGE;
 	                            optn.value = myarray.data[i].ID;
-	                            document.Address.Villages.options.add(optn);
+	                            villages.options.add(optn);
                         }
                     }
                 }// end of function stateck
