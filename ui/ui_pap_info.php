@@ -19,6 +19,14 @@
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateAddress') { UpdatePapAddr(); }
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteAddress') { DeletePapAddr(); }
+	
+	/* if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertMember') { InsertFamilyMember(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateMember') { UpdateFamilyMember(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteMember') { DeleteFamilyMember(); } */
     
     ?>
 
@@ -407,8 +415,202 @@
 		}
 		?>
 		
-		<script type="text/javascript" >
+		<?php
+
+		function LoadFamilyMember() {
+			include_once ('../code/code_pap_family.php');
+			$load_fam_mbr = new FamilyMember();
+
+			$load_fam_mbr -> selected_project_id = $_GET['ProjectID'];
+			$load_fam_mbr -> selected_project_code = $_GET['ProjectCode'];
+
+			if (isset($_GET['HHID'])) {
+				$load_fam_mbr -> fam_mbr_pap_id = $_GET['HHID'];
+			} else if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$load_fam_mbr -> fam_mbr_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$load_fam_mbr -> fam_mbr_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			if (isset($_GET['GridPage'])) {
+				$GLOBALS['fam_mbr_load_page'] = $_GET['GridPage'];
+			} else {
+				$GLOBALS['fam_mbr_load_page'] = 1;
+			}
+
+			# set pagination parameters
+			$load_fam_mbr -> FamilyPageParams();
+			$GLOBALS['fam_mbr_num_pages'] = $load_fam_mbr -> fam_mbr_last_page;
+
+			# Handling grid pages and navigation
+			if ($GLOBALS['fam_mbr_load_page'] == 1) {
+				$load_fam_mbr -> fam_mbr_record_num = 0;
+				$load_fam_mbr -> fam_mbr_data_offset = 0;
+			} else if ($GLOBALS['fam_mbr_load_page'] <= $load_fam_mbr -> fam_mbr_last_page) {
+				$load_fam_mbr -> fam_mbr_data_offset = ($GLOBALS['fam_mbr_load_page'] - 1) * $load_fam_mbr -> fam_mbr_page_rows;
+				$load_fam_mbr -> fam_mbr_record_num = ($GLOBALS['fam_mbr_load_page'] - 1) * $load_fam_mbr -> fam_mbr_page_rows;
+			} else {
+				// echo '<script>alert("Page Is Out Of Range");</script>';
+				$GLOBALS['fam_mbr_load_page'] = 1;
+				$load_fam_mbr -> fam_mbr_record_num = 0;
+				$load_fam_mbr -> fam_mbr_data_offset = 0;
+			}
+
+			# Setting next, and previous page numbers
+			if (($GLOBALS['fam_mbr_load_page'] + 1) <= $load_fam_mbr -> fam_mbr_last_page) {
+				$GLOBALS['fam_mbr_next_page'] = $GLOBALS['fam_mbr_load_page'] + 1;
+			} else {
+				$GLOBALS['fam_mbr_next_page'] = 1;
+			}
+
+			if (($GLOBALS['fam_mbr_load_page'] - 1) >= 1) {
+				$GLOBALS['fam_mbr_prev_page'] = $GLOBALS['fam_mbr_load_page'] - 1;
+			} else {
+				$GLOBALS['fam_mbr_prev_page'] = 1;
+			}
+
+			# Loading Pap Addresses
+			$load_fam_mbr -> LoadFamilyMember();
+		}
+
+		function SelectFamilyMember() {
+			include_once ('../code/code_pap_family.php');
+			$select_fam_mbr = new FamilyMember();
+
+			$select_fam_mbr -> selected_project_id = $_GET['ProjectID'];
+			$select_fam_mbr -> selected_project_code = $_GET['ProjectCode'];
+			$select_fam_mbr -> fam_mbr_id = $_GET['MemberID'];
+
+			$select_fam_mbr -> SelectFamilyMember();
+
+			$GLOBALS['fam_mbr_name'] = $select_fam_mbr -> fam_mbr_name;
+			$GLOBALS['fam_mbr_sex'] = $select_fam_mbr -> fam_mbr_sex;
+			$GLOBALS['fam_mbr_dob'] = $select_fam_mbr -> fam_mbr_dob;
+			$GLOBALS['fam_mbr_birth_place'] = $select_fam_mbr -> fam_mbr_birth_place;
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$_SESSION['fam_mbr_rltn_id'] = $select_fam_mbr -> fam_mbr_rltn_id;
+				$_SESSION['fam_mbr_tribe_id'] = $select_fam_mbr -> fam_mbr_tribe_id;
+				$_SESSION['fam_mbr_relgn_id'] = $select_fam_mbr -> fam_mbr_relgn_id;
+			} else {
+				$_SESSION['fam_mbr_rltn_id'] = $select_fam_mbr -> fam_mbr_rltn_id;
+				$_SESSION['fam_mbr_tribe_id'] = $select_fam_mbr -> fam_mbr_tribe_id;
+				$_SESSION['fam_mbr_relgn_id'] = $select_fam_mbr -> fam_mbr_relgn_id;
+			}
+
+		}
+
+		function InsertFamilyMember() {
+			// echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
+			include_once ('../code/code_pap_family.php');
+			$insert_fam_mbr = new FamilyMember();
+
+			$insert_fam_mbr -> selected_project_id = $_GET['ProjectID'];
+			$insert_fam_mbr -> selected_project_code = $_GET['ProjectCode'];
+
+			$insert_fam_mbr -> fam_mbr_name = $_POST['MemberName'];
+			$insert_fam_mbr -> fam_mbr_rltn_id = $_POST['MemberRelation'];
+			$insert_fam_mbr -> fam_mbr_dob = $_POST['MemberBirthDate'];
+			$insert_fam_mbr -> fam_mbr_birth_place = $_POST['MemberBirthPlace'];
+			$insert_fam_mbr -> fam_mbr_sex = $_POST['MemberSex'];
+			$insert_fam_mbr -> fam_mbr_tribe_id = $_POST['MemberTribe'];
+			$insert_fam_mbr -> fam_mbr_relgn_id = $_POST['MemberReligion'];
+			# $insert_fam_mbr -> fam_mbr_other_dtl = $_POST['MemberOtherDtl'];
+
+			if (isset($_GET['HHID'])) {
+				$insert_fam_mbr -> fam_mbr_pap_id = $_GET['HHID'];
+			}
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$insert_fam_mbr -> session_user_id = $_SESSION['session_user_id'];
+				$insert_fam_mbr -> fam_mbr_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$insert_fam_mbr -> session_user_id = $_SESSION['session_user_id'];
+				$insert_fam_mbr -> fam_mbr_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			$insert_fam_mbr -> InsertFamilyMember();
+
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_fam_mbr -> selected_project_id . '&ProjectCode=' . $insert_fam_mbr -> selected_project_code . '#Family');
+			exit();
+		}
+
+		function UpdateFamilyMember() {
+			include_once ('../code/code_pap_family.php');
+			$update_fam_mbr = new FamilyMember();
+
+			$update_fam_mbr -> selected_project_id = $_GET['ProjectID'];
+			$update_fam_mbr -> selected_project_code = $_GET['ProjectCode'];
+			
+			$update_fam_mbr -> fam_mbr_id = $_POST['MemberID'];
+			$update_fam_mbr -> fam_mbr_name = $_POST['MemberName'];
+			$update_fam_mbr -> fam_mbr_rltn_id = $_POST['MemberRelation'];
+			$update_fam_mbr -> fam_mbr_dob = $_POST['MemberBirthDate'];
+			$update_fam_mbr -> fam_mbr_birth_place = $_POST['MemberBirthPlace'];
+			$update_fam_mbr -> fam_mbr_sex = $_POST['MemberSex'];
+			$update_fam_mbr -> fam_mbr_tribe_id = $_POST['MemberTribe'];
+			$update_fam_mbr -> fam_mbr_relgn_id = $_POST['MemberReligion'];
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$update_fam_mbr -> session_user_id = $_SESSION['session_user_id'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$update_fam_mbr -> session_user_id = $_SESSION['session_user_id'];
+			}
+
+			$update_fam_mbr -> UpdateFamilyMember();
+			
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=ViewMember&ProjectID=' . $update_fam_mbr -> selected_project_id . '&ProjectCode=' . $update_fam_mbr -> selected_project_code . '&MemberID=' . $update_fam_mbr -> fam_mbr_id . '#Family');
+			exit();
+		}
+
+		function DeleteFamilyMember() {
+			include_once ('../code/code_pap_family.php');
+			$delete_fam_mbr = new FamilyMember();
+
+			$delete_fam_mbr -> selected_project_id = $_GET['ProjectID'];
+			$delete_fam_mbr -> selected_project_code = $_GET['ProjectCode'];
+
+			$delete_fam_mbr -> fam_mbr_id = $_GET['MemberID'];
+
+			$delete_fam_mbr -> DeleteFamilyMember();
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_fam_mbr -> selected_project_id . '&ProjectCode=' . $delete_fam_mbr -> selected_project_code . '#Family');
+			exit();
+		}
 		
+		function BindMemberTribe() {
+			include_once ('../code/code_pap_family.php');
+			$bind_fam_tribes = new FamilyMember();
+			$bind_fam_tribes -> selected_project_id = $_GET["ProjectID"];
+			$bind_fam_tribes -> BindTribe();
+		}
+
+		function BindMemberReligion() {
+			include_once ('../code/code_pap_family.php');
+			$bind_fam_religion = new FamilyMember();
+			$bind_fam_religion -> selected_project_id = $_GET["ProjectID"];
+			$bind_fam_religion -> BindReligion();
+		}
+		
+		function BindMemberRelation() {
+			include_once ('../code/code_pap_family.php');
+			$bind_fam_relation = new FamilyMember();
+			$bind_fam_relation -> selected_project_id = $_GET["ProjectID"];
+			$bind_fam_relation -> BindRelation();
+		}
+
+		
+		?>
+		
+		
+		<script type="text/javascript">
+			
 		function BindCounties(){
 			var httpxml;
                 try {
@@ -465,10 +667,9 @@
                     }
                 }// end of function stateck
 				
-				var iMode = arguments[1];
                 var url = "../code/code_drop_county.php";
                 var element_id = document.getElementById('SelectDistrict').value;
-                url = url + "?Mode=County&Element=" + element_id;
+                url = url + "?Element=" + element_id;
                 httpxml.onreadystatechange = stateck;
                 httpxml.open("GET", url, true);
                 httpxml.send(null);
@@ -523,7 +724,6 @@
                     }
                 }// end of function stateck
 				
-				var iMode = arguments[1];
                 var url = "../code/code_drop_subcty.php";
                 var element_id = document.getElementById('SelectCounty').value;
                 url = url + "?Element=" + element_id;
@@ -572,7 +772,6 @@
                     }
                 }// end of function stateck
 				
-				var iMode = arguments[1];
                 var url = "../code/code_drop_village.php";
                 var element_id = document.getElementById('SelectSubCty').value;
                 url = url + "?Element=" + element_id;
@@ -580,7 +779,8 @@
                 httpxml.open("GET", url, true);
                 httpxml.send(null);
 		}
-		
+			
+			
 		</script>
 
 		<div class="ContentParent">
@@ -865,94 +1065,117 @@
 								This is the Family Info Screen
 							</p>
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
-								<table>
+								<form name="Address" action="<?php 
+		                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family'; }
+		                            else if ($_GET['Mode'] == 'ViewMember') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family'; } ?>" method="POST" autocomplete="off">
+	                            <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
+								<table class="formTable">
 									<tr>
 										<td class="formLabel">Family Member Name:</td>
 									</tr>
 									<tr>
-										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
+										    <input type="text" value="<?php if (isset($GLOBALS['fam_mbr_name'])) { echo $GLOBALS['fam_mbr_name']; } ?>" name="MemberName" placeholder="Enter Family Member Name" />
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Sex:</td>
 										<td class="formLabel">Relation Type:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select Sex</span></td>
-										<td><span class="formSingleLineBox">Select Relation Type</span></td>
+										<td><span class="formDropDownBox">
+											<select name="MemberSex" >
+                                                <option value="">-- Select Sex --</option>
+                                                <option value="Female" <?php if (isset($GLOBALS['fam_mbr_sex']) && $GLOBALS['fam_mbr_sex'] == 'Female') { echo 'selected'; }  ?> >Female</option>
+                                                <option value="Male" <?php if (isset($GLOBALS['fam_mbr_sex']) && $GLOBALS['fam_mbr_sex'] == 'Male') { echo 'selected'; }  ?> >Male</option> 
+                                        	</select>
+										</span></td>
+										<td><span class="formDropDownBox">
+										    <select name="MemberRelation" id="SelectRelation" >
+                                                <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_rltn_id']); } ?> >-- Select Relation --</option>
+                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['RelationID'])) { BindMemberRelation(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#">New</a>
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Date Of Birth:</td>
 										<td class="formLabel">Place Of Birth:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select DOB</span></td>
-										<td><span class="formSingleLineBox">Enter POB</span></td>
+										<td><span class="formSingleLineBox">
+											<input title="DD/MM/YYYY" type="text" id="member_birth_date" value="<?php if (isset($GLOBALS['fam_mbr_dob'])) { echo $GLOBALS['fam_mbr_dob']; } ?>" placeholder="DD/MM/YYYY" name="MemberBirthDate" readonly />
+										</span></td>
+										<td><span class="formSingleLineBox">
+											<input type="text" value="<?php if (isset($GLOBALS['fam_mbr_birth_place'])) { echo $GLOBALS['fam_mbr_birth_place']; } ?>" name="MemberBirthPlace" placeholder="Enter Birth Place" />
+										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Tribe:</td>
 										<td class="formLabel">Religion:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">Select Tribe</span></td>
-										<td><span class="formSingleLineBox">Select Religion</span></td>
+										<td><span class="formDropDownBox">
+										    <select name="MemberTribe" id="SelectMemberTribe" >
+                                               <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_tribe_id']); } ?> >-- Select Tribe --</option>
+                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['MemberID'])) { BindMemberTribe(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#">New</a>
+										</span></td>
+										<td><span class="formDropDownBox">
+										    <select name="MemberReligion" id="SelectMemberReligion" >
+                                                <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_relgn_id']); } ?> >-- Select Religion --</option>
+                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['MemberID'])) { BindMemberReligion(); } ?>
+                                            </select><a class="LinkInBoxOther" href="#">New</a>
+										</span></td>
 									</tr>
 									<tr>
-										<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
-										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
+										<td> 
+											<span class="saveButtonArea">
+												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewMember') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
+												<?php $new_member = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family';
+                                                if ($_GET['Mode'] == 'ViewMember') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_member . '>New Member</a></span>'; } ?>
+                                            </span>
+                                        </td>
+										<td align="right">
+											<span class="formLinks SideBar"><a href="#">Documents</a></span>
+											<span class="formLinks"><a href="#">Photos</a></span>
+										</td>
 									</tr>
 								</table>
-
-								<table class="detailGrid" style="width:560px; margin-top:25px;">
+								</form>
+							</div>
+							
+							<div class="GridArea" style="width: 750px;">	
+								<table class="detailGrid" style="width:700px; margin-top:25px;">
 									<tr>
 										<td class = "detailGridHead">#</td>
-										<td  class = "detailGridHead">Address Details:</td>
-										<td  class = "detailGridHead">Age:</td>
-										<td  class = "detailGridHead">Relation:</td>
-										<td  class = "detailGridHead">Modify:</td>
+										<td  class = "detailGridHead">Member Name</td>
+										<td  class = "detailGridHead">Sex</td>
+										<td  class = "detailGridHead">Age</td>
+										<td  class = "detailGridHead">Relation</td>
+										<td  class = "detailGridHead">Modify</td>
 									</tr>
-									<tr>
-										<td>1</td>
-										<td>Karuma, Project</td>
-										<td>30</td>
-										<td>Son, Daughter</td>
-										<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>Standard, Gauge, Railway</td>
-										<td>30</td>
-										<td>Son, Daughter</td>
-										<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>Uganda, Kenya Oil, Pipeline</td>
-										<td>30</td>
-										<td>Son, Daughter</td>
-										<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>Kasese, Kinshasa, Super Highway</td>
-										<td>30</td>
-										<td>Son, Daughter</td>
-										<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>Entebbe, Express, Project</td>
-										<td>30</td>
-										<td>Son, Daughter</td>
-										<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-									</tr>
+									<?php if (isset($_GET['ProjectID'])) { LoadFamilyMember(); } ?>
 								</table>
-								<table class="detailNavigation">
+								
+								
+								<!-- table class="detailNavigation">
 									<tr>
 										<td><a href="#">Previous</a></td>
 										<td class="PageJump">1 / 2</td>
 										<td><a href="#">Next</a></td>
 									</tr>
-								</table>
+								</table -->
+								
+								<span style="white-space: nowrap;">
+                                    <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#Family'; } 
+                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#Family'; } ?>" >Previous</a>
+                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $fam_mbr_load_page . ' / ' . $fam_mbr_num_pages ; } else {echo '1 / ' . $fam_mbr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                                    <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#Family'; } 
+                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#Family'; } ?>" >Next</a>
+                            	</span>
 
 							</div>
 						</div>
@@ -966,6 +1189,7 @@
 		
 		<script src="js/date_picker/pikaday.js"></script>
 		<script>
+		
 			var picker = new Pikaday({
 				field : document.getElementById('birth_date'),
 				format : 'DD/MM/YYYY',
@@ -974,6 +1198,17 @@
 				maxDate : new Date(2050, 12, 31),
 				yearRange : [1980, 2050]
 			});
+			
+			var picker = new Pikaday({
+				field : document.getElementById('member_birth_date'),
+				format : 'DD/MM/YYYY',
+				firstDay : 1,
+				minDate : new Date(1980, 0, 1),
+				maxDate : new Date(2050, 12, 31),
+				yearRange : [1980, 2050]
+			});
+			
+			
 		</script>
 
 		</body>

@@ -16,7 +16,7 @@
 		die();
 	}
 
-	$sql = "CALL USP_GET_COUNTY(" . $element_id . ")";
+	$sql = "CALL USP_GET_COUNTY (" . $element_id . ")";
 	$row = $dbo -> prepare($sql);
 	$row -> execute();
 	$result = $row -> fetchAll(PDO::FETCH_ASSOC);
