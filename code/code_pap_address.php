@@ -58,7 +58,7 @@ Class PapAddress {
 			$confirm = "Are You Sure?";
 			$ACTION = '../ui/ui_pap_info.php?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $ID . '#PapAddress';
 			$DEL_URL = '../ui/ui_pap_info.php?Mode=DeleteAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $ID . '#PapAddress';
-			$DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+			$DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Address?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 			$ADDR_STR = $ROAD . ', ' . $DISTRICT . ', ' . $VILLAGE;
 
 			$this -> pap_addr_record_num = $this -> pap_addr_record_num + 1;

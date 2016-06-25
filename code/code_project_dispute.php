@@ -52,7 +52,7 @@ Class ProjectDispute {
 
             $ACTION = '../ui/ui_project_detail.php?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $ID . '&HHID=' . $PAP_ID . '&CatID=' . $CATG_ID . '&UserID=' . $LOG_BY . '&DispStatus=' . $DISP_STATUS . '#Disputes';
             $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $ID . '#Disputes';
-            $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+            $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Dispute?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> proj_disp_record_num = $this -> proj_disp_record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> proj_disp_record_num, $ACTION, $PAP_NAME, $DISP_CATG, $DATE_LOG, $DEL_ACTION);

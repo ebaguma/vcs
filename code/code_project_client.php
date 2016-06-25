@@ -57,7 +57,7 @@ class ProjectClient {
             $client_page = 1;
             $ACTION = '../ui/ui_project_detail.php?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $client_page . '&ClientID=' . $ID . '#Clients';
             $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $ID . '#Clients';
-            $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+            $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Client?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> client_record_num = $this -> client_record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> client_record_num, $ACTION, $CLIENT_NAME, $CLIENT_EMAIL, $CLIENT_WEBSITE, $DEL_ACTION);

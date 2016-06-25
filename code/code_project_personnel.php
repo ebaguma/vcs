@@ -52,7 +52,7 @@ Class ProjectStaff {
             $confirm = "Are You Sure?";
             $ACTION = '../ui/ui_project_detail.php?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ID=' . $ID . '&UserID=' . $USER_ID . '&RoleID=' . $ROLE_ID . '#Personnel';
             $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ID=' . $ID . '#Personnel';
-             $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+             $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Personnel?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> personnel_record_num = $this -> personnel_record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> personnel_record_num, $ACTION, $USER_NAME, $DISP_NAME, $ROLE, $DEL_ACTION);

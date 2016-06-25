@@ -50,7 +50,7 @@ Class ProjectSection {
             
             $ACTION = '../ui/ui_project_detail.php?Mode=ViewSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#Sections';
             $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#Sections';
-            $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+            $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Section?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> proj_sect_record_num = $this -> proj_sect_record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td></tr>", $this -> proj_sect_record_num, $ACTION, $SECT_NAME, $OTHER_DTL, $DEL_ACTION);
