@@ -34,7 +34,7 @@
                     $CheckReturnUser = new LogInOut();
                     $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
                     $CheckReturnUser -> CheckLoginStatus();
-                    CheckPapSelection();
+                    # CheckPapSelection();
                     if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
                         // header('Location: ui/ui_project_list.php?PageNumber=1');
                         echo 'SetActivePage()';
@@ -45,17 +45,17 @@
                         header('Location: ../index.php?Message=DB_Session_Expired');
                     }
                 } else {
-					$InactiveReturnUser = new LogInOut();
-                    $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $InactiveReturnUser -> LogOff();
+					# $InactiveReturnUser = new LogInOut();
+                    # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                    $CheckReturnUser -> LogOff();
                     session_unset();
                     session_destroy();
                     header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
             } else {
-            	$InactiveReturnUser = new LogInOut();
-                $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                $InactiveReturnUser -> LogOff();
+            	# $InactiveReturnUser = new LogInOut();
+                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $CheckReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Session_Expired');

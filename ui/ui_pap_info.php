@@ -20,13 +20,13 @@
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteAddress') { DeletePapAddr(); }
 	
-	/* if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); }
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); }
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertMember') { InsertFamilyMember(); }
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateMember') { UpdateFamilyMember(); }
 	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteMember') { DeleteFamilyMember(); } */
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteMember') { DeleteFamilyMember(); }
     
     ?>
 
@@ -66,17 +66,17 @@
                         header('Location: ../index.php?Message=DB_Session_Expired');
                     }
                 } else {
-					$InactiveReturnUser = new LogInOut();
-                    $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $InactiveReturnUser -> LogOff();
+					# $InactiveReturnUser = new LogInOut();
+                    # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                    $CheckReturnUser -> LogOff();
                     session_unset();
                     session_destroy();
                     header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
             } else {
-            	$InactiveReturnUser = new LogInOut();
-                $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                $InactiveReturnUser -> LogOff();
+            	# $InactiveReturnUser = new LogInOut();
+                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $CheckReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Session_Expired');
@@ -1203,18 +1203,18 @@
 				field : document.getElementById('birth_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
-				minDate : new Date(1980, 0, 1),
-				maxDate : new Date(2050, 12, 31),
-				yearRange : [1980, 2050]
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
 			});
 			
 			var picker = new Pikaday({
 				field : document.getElementById('member_birth_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
-				minDate : new Date(1980, 0, 1),
-				maxDate : new Date(2050, 12, 31),
-				yearRange : [1980, 2050]
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
 			});
 			
 			

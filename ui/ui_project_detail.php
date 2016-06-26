@@ -115,17 +115,17 @@
                         header('Location: ../index.php?Message=DB_Session_Expired');
                     }
                 } else {
-					$InactiveReturnUser = new LogInOut();
-                    $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $InactiveReturnUser -> LogOff();
+					# $InactiveReturnUser = new LogInOut();
+                    # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                    $CheckReturnUser -> LogOff();
                     session_unset();
                     session_destroy();
                     header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
             } else {
-            	$InactiveReturnUser = new LogInOut();
-                $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                $InactiveReturnUser -> LogOff();
+            	# $InactiveReturnUser = new LogInOut();
+                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $CheckReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Session_Expired');
@@ -2418,36 +2418,36 @@
 				field : document.getElementById('start_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
-				minDate : new Date(1980, 0, 1),
-				maxDate : new Date(2050, 12, 31),
-				yearRange : [1980, 2050]
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
 			});
 
 			var picker = new Pikaday({
 				field : document.getElementById('end_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
-				minDate : new Date(1980, 0, 1),
-				maxDate : new Date(2050, 12, 31),
-				yearRange : [1980, 2050]
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
 			});
 			
 			var picker = new Pikaday({
                 field : document.getElementById('expense_date'),
                 format : 'DD/MM/YYYY',
                 firstDay : 1,
-                minDate : new Date(1980, 0, 1),
-                maxDate : new Date(2050, 12, 31),
-                yearRange : [1980, 2050]
+                minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
             });
             
             var picker = new Pikaday({
                 field : document.getElementById('dispute_date'),
                 format : 'DD/MM/YYYY',
                 firstDay : 1,
-                minDate : new Date(1980, 0, 1),
-                maxDate : new Date(2050, 12, 31),
-                yearRange : [1980, 2050]
+                minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
             });
 
 		</script>
