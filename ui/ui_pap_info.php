@@ -39,93 +39,95 @@
 
 		<?php
 
-        include ('ui_header.php');
+		include ('ui_header.php');
 
-        function CheckReturnUser() {
-        	include ('../code/code_index.php');
-            $time = $_SERVER['REQUEST_TIME'];
+		function CheckReturnUser() {
+			# include ('../code/code_index.php');
+			$time = $_SERVER['REQUEST_TIME'];
 
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+			}
 
-            if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
-                if (($time - $_SESSION['Last_Activity']) < 1800) {
-                    # include ('../code/code_index.php');
-                    $CheckReturnUser = new LogInOut();
-                    $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $CheckReturnUser -> CheckLoginStatus();
-                    CheckPapSelection();
-                    if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
-                        // header('Location: ui/ui_project_list.php?PageNumber=1');
-                        echo 'SetActivePage()';
-                        $_SESSION['Last_Activity'] = $time;
-                    } else {
-                        session_unset();
-                        session_destroy();
-                        header('Location: ../index.php?Message=DB_Session_Expired');
-                    }
-                } else {
-					# $InactiveReturnUser = new LogInOut();
-                    # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $CheckReturnUser -> LogOff();
-                    session_unset();
-                    session_destroy();
-                    header('Location: ../index.php?Message=Inactive_Session_Expired');
-                }
-            } else {
-            	# $InactiveReturnUser = new LogInOut();
-                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                $CheckReturnUser -> LogOff();
-                session_unset();
-                session_destroy();
-                header('Location: ../index.php?Message=Session_Expired');
-            }
-        }
+			if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
+				if (($time - $_SESSION['Last_Activity']) < 1800) {
+					include_once ('../code/code_index.php');
+					$CheckReturnUser = new LogInOut();
+					$CheckReturnUser -> user_id = $_SESSION['session_user_id'];
+					$CheckReturnUser -> CheckLoginStatus();
+					CheckPapSelection();
+					if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
+						// header('Location: ui/ui_project_list.php?PageNumber=1');
+						echo 'SetActivePage()';
+						$_SESSION['Last_Activity'] = $time;
+					} else {
+						session_unset();
+						session_destroy();
+						header('Location: ../index.php?Message=DB_Session_Expired');
+					}
+				} else {
+					include_once ('../code/code_index.php');
+					$InactiveReturnUser = new LogInOut();
+					$InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+					$InactiveReturnUser -> LogOff();
+					session_unset();
+					session_destroy();
+					header('Location: ../index.php?Message=Inactive_Session_Expired');
+				}
+			} else {
+				include_once ('../code/code_index.php');
+				$InactiveReturnUser = new LogInOut();
+				$InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+				$InactiveReturnUser -> LogOff();
+				session_unset();
+				session_destroy();
+				header('Location: ../index.php?Message=Session_Expired');
+			}
+		}
 
-        function CheckPapSelection(){
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-                if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])){ header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1'); }
-            } else if (session_status() == PHP_SESSION_ACTIVE) {
-                if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])){ header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1'); }
-            }
-            
-        }
-        
-        function SelectPap(){
-            
-            include_once ('../code/code_pap_list.php');
-            $select_project_pap = new ProjectPapList();
-            $select_project_pap -> pap_hhid = $_GET["HHID"];
-            $select_project_pap -> SelectPap();
-            $GLOBALS['pap_name'] = $select_project_pap -> pap_name;
-            
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-                $_SESSION['session_pap_hhid'] = $_GET['HHID'];
-                $_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
-            } else if (session_status() == PHP_SESSION_ACTIVE) {
-                $_SESSION['session_pap_hhid'] = $_GET['HHID'];
-                $_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
-            }
-        }
+		function CheckPapSelection() {
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])) { header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1');
+				}
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])) { header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1');
+				}
+			}
 
-        function LogOut() {
-            include_once ('../code/code_index.php');
-    
-            $logout = new LogInOut();
-            //session_start();
-            if (isset($_SESSION['session_user_id'])) {
-                $logout -> user_id = $_SESSION['session_user_id'];
-            } else {
-                $logout -> user_id = $_COOKIE["last_user"];
-            }
-            $logout -> LogOff();
+		}
 
-        }
-        
-        
+		function SelectPap() {
+
+			include_once ('../code/code_pap_list.php');
+			$select_project_pap = new ProjectPapList();
+			$select_project_pap -> pap_hhid = $_GET["HHID"];
+			$select_project_pap -> SelectPap();
+			$GLOBALS['pap_name'] = $select_project_pap -> pap_name;
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$_SESSION['session_pap_hhid'] = $_GET['HHID'];
+				$_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$_SESSION['session_pap_hhid'] = $_GET['HHID'];
+				$_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
+			}
+		}
+
+		function LogOut() {
+			include_once ('../code/code_index.php');
+
+			$logout = new LogInOut();
+			//session_start();
+			if (isset($_SESSION['session_user_id'])) {
+				$logout -> user_id = $_SESSION['session_user_id'];
+			} else {
+				$logout -> user_id = $_COOKIE["last_user"];
+			}
+			$logout -> LogOff();
+
+		}
 		?>
 		
 		<?php
@@ -156,6 +158,7 @@
 			$GLOBALS['pap_phone_no'] = $pap_basic_info -> pap_phone_no;
 			$GLOBALS['other_pap_phone_no'] = $pap_basic_info -> pap_other_phone_no;
 			$GLOBALS['email'] = $pap_basic_info -> pap_email;
+			$GLOBALS['pap_photo'] = $pap_basic_info -> pap_photo;
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
@@ -945,7 +948,7 @@
 									<tr>
 										<td>
 										<div class="PhotoBox">
-											<img src="images/20150912_161516.png" width="250" height="250" alt=""/>
+											<img src="../code/code_show_image.php?HHID=<?php echo $_GET['HHID']; ?>" width="250" height="250" />'; ?>
 										</div></td>
 									</tr>
 									<tr>

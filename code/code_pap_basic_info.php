@@ -21,6 +21,8 @@ class PapBasicInfo {
 	# public $pap_address_id;
 	public $pap_tribe_id;
 	public $pap_phone_no;
+	public $pap_photo;
+	public $pap_photo_name;
 	public $pap_other_phone_no;
 	public $pap_email;
 	public $pap_religion_id;
@@ -58,6 +60,7 @@ class PapBasicInfo {
 			$this -> pap_occupation_id = $row -> OCCUPN_ID;
 			$this -> pap_status_id = $row -> PAP_STATUS_ID;
 			$this -> pap_phone_no = $row -> PHONE_NO;
+			$this -> pap_photo = $row -> PHOTO;
 			$this -> pap_other_phone_no = $row -> OTHR_PHONE_NO;
 			$this -> pap_email = $row -> EMAIL;
 
@@ -157,14 +160,14 @@ class PapBasicInfo {
 		$mysqli -> query("SET @PLOT_REF_ = " . "'" . $this -> pap_plot_ref . "'");
 		$mysqli -> query("SET @BIRTH_PLACE_ = " . "'" . $this -> pap_birth_place . "'");
 		$mysqli -> query("SET @IS_MARRIED_ = " . "'" . $this -> pap_is_married . "'");
-		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> pap_tribe_id );
-		$mysqli -> query("SET @RELGN_ID_ = " . $this -> pap_religion_id );
-		$mysqli -> query("SET @OCCUPN_ID_ = " . $this -> pap_occupation_id );
-		$mysqli -> query("SET @PAP_STATUS_ID_ = " . $this -> pap_status_id );
-		$mysqli -> query("SET @PHONE_NO_ = " . $this -> pap_phone_no );
-		$mysqli -> query("SET @OTHR_PHONE_NO_ = " . $this -> pap_other_phone_no );
+		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> pap_tribe_id);
+		$mysqli -> query("SET @RELGN_ID_ = " . $this -> pap_religion_id);
+		$mysqli -> query("SET @OCCUPN_ID_ = " . $this -> pap_occupation_id);
+		$mysqli -> query("SET @PAP_STATUS_ID_ = " . $this -> pap_status_id);
+		$mysqli -> query("SET @PHONE_NO_ = " . $this -> pap_phone_no);
+		$mysqli -> query("SET @OTHR_PHONE_NO_ = " . $this -> pap_other_phone_no);
 		$mysqli -> query("SET @EMAIL_ = " . "'" . $this -> pap_email . "'");
-		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id );
+		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 
 		$results = $mysqli -> query($sql);
 		if ($results) {
@@ -173,6 +176,40 @@ class PapBasicInfo {
 		} else {
 			echo '<script>alert("Update Not Successful");</script>';
 		}
+	}
+
+	function UpdatePhoto() {
+		include ('code_connect.php');
+		$sql = "CALL USP_INS_PAP_INFO_PHOTO( @PHOTO_, @PHOTO_NAME_, @HHID_ )";
+
+		$mysqli -> query("SET @PHOTO_ = '" . $this -> pap_photo . "'");
+		$mysqli -> query("SET @PHOTO_NAME_ = '" . $this -> pap_photo_name . "'");
+		$mysqli -> query("SET @HHID_ = " . $this -> pap_hhid);
+
+		$results = $mysqli -> query($sql);
+		if ($results) {
+			$row = $results -> fetch_object();
+			echo '<script>alert("Data Updated Successfully");</script>';
+		} else {
+			echo '<script>alert("Update Not Successful");</script>';
+		}
+	}
+
+	function DeletePhoto() {
+
+	}
+
+	function GetPapPhoto() {
+		include ('code_connect.php');
+		$sql = "CALL USP_GET_PAP_INFO_PHOTO( @HHID_ )";
+
+		$mysqli -> query("SET @HHID_ = " . $this -> pap_hhid);
+
+		$results = $mysqli -> query($sql);
+		if ($results) {
+			$row = $results -> fetch_object();
+			$this -> pap_photo = $row -> PHOTO;
+		} 
 	}
 
 }
