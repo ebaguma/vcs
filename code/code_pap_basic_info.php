@@ -6,7 +6,7 @@ class PapBasicInfo {
 	public $selected_project_code;
 	public $session_user_id;
 
-	// Project Details
+	// PAP Details
 
 	// HHID,PAP_NAME,DOB,SEX,PLOT_REF,REF_NO,IS_RESIDENT,BIRTH_PLACE,IS_MARRIED,ADDR_ID,TRIBE_ID,RELGN_ID,OCCUPN_ID,
 	// PAP_STATUS_ID,DESIGN,PHOTO,PAP_TYPE,PROJ_ID,IS_DELETED,UPDATED_BY,UPDATED_DATE,CREATED_BY,CREATED_DATE
@@ -18,18 +18,21 @@ class PapBasicInfo {
 	public $pap_plot_ref;
 	public $pap_birth_place;
 	public $pap_is_married;
-	# public $pap_address_id;
 	public $pap_tribe_id;
 	public $pap_phone_no;
-	public $pap_photo;
-	public $pap_photo_name;
 	public $pap_other_phone_no;
 	public $pap_email;
 	public $pap_religion_id;
 	public $pap_occupation_id;
 	public $pap_status_id;
 
-	// Project Details
+	// Photo Details
+
+	public $photo_name;
+	public $photo_path;
+	public $photo_doc_type;
+	public $photo_ext;
+	public $photo_user = 1;
 
 	function LoadBasicInfo() {
 
@@ -179,12 +182,16 @@ class PapBasicInfo {
 	}
 
 	function UpdatePhoto() {
+		# PAP_ID_, DOC_TYPE_, FILE_NAME_, FILE_PATH_, CONTENT_TYPE_, USER_ID_
 		include ('code_connect.php');
-		$sql = "CALL USP_INS_PAP_INFO_PHOTO( @PHOTO_, @PHOTO_NAME_, @HHID_ )";
+		$sql = "CALL USP_INS_DOC_UPLOAD( @PAP_ID_, @DOC_TYPE_, @FILE_NAME_, @FILE_PATH_, @CONTENT_TYPE_, @USER_ID_ )";
 
-		$mysqli -> query("SET @PHOTO_ = '" . $this -> pap_photo . "'");
-		$mysqli -> query("SET @PHOTO_NAME_ = '" . $this -> pap_photo_name . "'");
-		$mysqli -> query("SET @HHID_ = " . $this -> pap_hhid);
+		$mysqli -> query("SET @PAP_ID_ = " . $this -> pap_hhid);
+		$mysqli -> query("SET @DOC_TYPE_ = " . 1);
+		$mysqli -> query("SET @FILE_NAME_ = '" . $this -> photo_name . "'");
+		$mysqli -> query("SET @FILE_PATH_ = '" . $this -> photo_path . "'");
+		$mysqli -> query("SET @CONTENT_TYPE_ = '" . $this -> photo_ext . "'");
+		$mysqli -> query("SET @USER_ID_ = " . 1);
 
 		$results = $mysqli -> query($sql);
 		if ($results) {
@@ -209,7 +216,7 @@ class PapBasicInfo {
 		if ($results) {
 			$row = $results -> fetch_object();
 			$this -> pap_photo = $row -> PHOTO;
-		} 
+		}
 	}
 
 }
