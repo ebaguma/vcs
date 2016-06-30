@@ -23,16 +23,16 @@
 						<a href="<?php echo 'ui_home.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>" >HOME</a>
 					</li>
 					<li id="Projects">
-						<a href="<?php echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Details'; ?>">PROJECT</a>
+						<a href="<?php echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; ?>">PROJECT</a>
 					</li>
 					<!-- li id="Masters">
 						<a href="<?php echo 'ui_masters.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BioID'; ?>">MASTERS</a>
 					</li -->
 					<li id="Bio">
-						<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">PAP INFO</a>
+						<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; ?>">PAP INFO</a>
 					</li>
 					<li id="Valuation">
-						<a href="<?php echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Land'; ?>">VALUATION</a>
+						<a href="<?php echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; ?>">VALUATION</a>
 					</li>
 					<li id="Reports">
 						<a href="Reports.html">REPORTS</a>
@@ -90,10 +90,13 @@
                 
                 // important line, prevents scroll to content on load
                 window.scrollTo(0,0);
+                // document.body.scrollTop = 0;
+				// document.body.scrollLeft = 0;
+                // $(window).scrollTop()
                 // document.documentElement.scrollTop = 0;
                 // document.body.scrollLeft = 0; 
             });
-        </script>
+    </script>
 
 	<!-- script>
 	function OpenProjectList(){

@@ -77,7 +77,7 @@
 <html>
 	<head>
 		
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="X-UA-Compatible" content="IE=10" />
 		<meta name="Me" content="Projects">
 		<title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Projects</title>
 		

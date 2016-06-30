@@ -48,8 +48,8 @@ Class ProjectPapList {
 
             $pap_page = 1;
 
-            $ACTION = '../ui/ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#BasicInfo';
-            $DEL_URL = '../ui/ui_pap_info.php?Mode=DeletePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#BasicInfo';
+            $ACTION = '../ui/ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID ;
+            $DEL_URL = '../ui/ui_pap_info.php?Mode=DeletePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID ;
             $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> pap_record_num = $this -> pap_record_num + 1;
