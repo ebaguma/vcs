@@ -1,20 +1,10 @@
-﻿<! doctype html >
+<! doctype html >
 <?php
 ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
 //global $load_client_page;
 
-if (isset($_GET['LogOut'])) {
-	include_once ('../code/code_index.php');
-
-	$logout = new LogInOut();
-	// session_start();
-	if (isset($_SESSION['session_user_id'])) {
-		$logout -> user_id = $_SESSION['session_user_id'];
-	} else {
-		$logout -> user_id = $_COOKIE["last_user"];
-	}
-	$logout -> LogOff();
-}
+if (isset($_GET['LogOut'])) { LogOut();}
+	
 
 if (isset($_POST['Mode']) && $_POST['Mode'] == 'EditDetails') {
 	UpdateProjectDetails();
@@ -115,7 +105,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
             }
 
             if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
-                if (($time - $_SESSION['Last_Activity']) < 1800) {
+                if (($time - $_SESSION['Last_Activity']) < 1000000) {
                     // isset($_SESSION['session_user_id'])
                     include ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();
@@ -1038,6 +1028,7 @@ if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteExpense'){
                                             echo $GLOBALS['client_number'];
                                         }
 											?>" name = "ClientNumber" placeholder="Enter Client Number" style="width: 180px;" /></span></td>
+                                    
                                     <td><span class="formSingleLineBox" style="width: 200px;">
                                         <input type="text" value="<?php
                                         if (isset($GLOBALS['client_email'])) {

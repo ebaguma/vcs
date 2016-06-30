@@ -13,19 +13,19 @@ ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE);
         
 include ('ui_header.php');
 
-if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read')
-	{LoadBioOccupation();}
-elseif (isset($_GET['Mode']) && $_GET['Mode'] == 'Read#BioFamily') 
-	{LoadFamRelations();LoadFamTribe(); LoadFamReligion();}
-elseif (isset($_GET['Mode']) && $_GET['Mode'] == 'Read#ValuationInfo') 
-	{LoadValCrop();LoadValLand();}
-elseif (isset($_GET['Mode']) && $_GET['Mode'] == 'Read#ProjectsInfo') 
-	{LoadProjDispute();}
-elseif (isset($_GET['Mode']) && $_GET['Mode'] == 'Read#ReportsInfo') 
-	{LoadSysDoc();LoadSysReport();}
+if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {
+	LoadBioOccupation();
+    LoadFamRelations();
+    LoadFamTribe();
+    LoadFamReligion();
+    LoadValCrop();
+    LoadValLand();
+    LoadProjDispute();
+    LoadSysDoc();
+    LoadSysReport();
+}
 
-if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewOccupation') 
-{SelectBioOccupation();}
+if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewOccupation') {SelectBioOccupation();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'ViewRelations')
 {SelectFamRelations();} 
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'ViewTribe')      
@@ -41,10 +41,9 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'ViewDispute')
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'ViewDoc') 
 {SelectSysDoc();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'ViewReport') 
-{SelectSysReport();}/**/
+{SelectSysReport();}
 
-if (isset($_GET['Mode']) && $_GET['Mode'] == 'EditOccupation')
-{UpdateBioOccupation();}
+if (isset($_GET['Mode']) && $_GET['Mode'] == 'EditOccupation') {UpdateBioOccupation();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'EditRelations')
 {UpdateFamRelations();} 
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'EditTribe')      
@@ -60,10 +59,9 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'EditDispute')
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'EditDoc') 
 {UpdateSysDoc();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'EditReport') 
-{UpdateSysReport();}/**/
+{UpdateSysReport();}
 
-if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertOccupation') 
-{InsertBioOccupation();}
+if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertOccupation') {InsertBioOccupation();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'InsertRelations')
 {InsertFamRelations();} 
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'InsertTribe')      
@@ -79,10 +77,9 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'InsertDispute')
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'InsertDoc') 
 {InsertSysDoc();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'InsertReport') 
-{InsertSysReport();}/**/
+{InsertSysReport();}
 
-if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteOccupation') 
-{DeleteBioOccupation();}
+if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteOccupation') {DeleteBioOccupation();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteRelations')
 {DeleteFamRelations();} 
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteTribe')      
@@ -98,7 +95,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteDispute')
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteDoc') 
 {DeleteSysDoc();}
 elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport') 
-{DeleteSysReport();}/**/
+{DeleteSysReport();}
 
         
         function CheckReturnUser() {
@@ -171,6 +168,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             $LoadOccupation -> LoadBioOccupation();
         } 
         function SelectBioOccupation() {
+           
             include_once ('../code/code_masters_BioID.php');
             $SelectOccupation = new MastersBio();
             $SelectOccupation  -> masters_occupation_id = $_GET["OccupationID"];
@@ -181,6 +179,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             $GLOBALS['masters_occupation_other'] = $SelectOccupation -> masters_occupation_other; 
         }
         function UpdateBioOccupation() {
+            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
             include_once ('../code/code_masters_BioID.php');
             $UpdateOccupation = new MastersBio();
             //$client_name = $project_client -> client_name;
@@ -200,6 +199,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             exit();
         }
         function InsertBioOccupation() {
+            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
               include_once ('../code/code_masters_BioID.php');
             $InsertOccupation = new MastersBio();
             
@@ -211,6 +211,8 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 $InsertOccupation -> session_user_id = $_SESSION['session_user_id'];
             }
+            
+
             $InsertOccupation -> InsertBioOccupation();
             unset($_POST);
             header('Refresh:0; url=ui_masters.php?Mode=Read#BioID');
@@ -231,7 +233,8 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
         function LoadFamRelations() {
             include_once ('../code/code_masters_BioID.php');
             $LoadRelations = new MastersBio();
-           
+           #$project_clients -> select_project_id = $_GET["ProjectID"];
+
             if (isset($_GET['relationPage'])) {
                 $GLOBALS['relation_load_page'] = $_GET['relationPage'];
             } else {
@@ -240,7 +243,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 
             //set pagination parameters
              $LoadRelations -> ReadPageParamsRel();
-            $GLOBALS['num_pages'] = $LoadRelations -> relation_last_page;
+            $GLOBALS['num_pages'] = $LoadRelations -> occupn_last_page;
 
             //Handling grid pages and navigation
             if ($GLOBALS['relation_load_page'] == 1) {
@@ -256,7 +259,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                  $LoadRelations -> relation_data_offset = 0;
             }
 
-            if (($GLOBALS['relation_load_page'] + 1) <=  $LoadRelations -> relation_last_page) {
+            if (($GLOBALS['relation_load_page'] + 1) <=  $LoadRelations -> occupn_last_page) {
                 $GLOBALS['next_page'] = $GLOBALS['relation_load_page'] + 1;
             } else {
                 $GLOBALS['next_page'] = 1;
@@ -277,11 +280,13 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             $SelectRelations = new MastersBio();
             $SelectRelations  -> masters_relation_id = $_GET["RelationID"];
             $SelectRelations  -> SelectFamRelations();
+            //$client_name = $project_client -> client_name;
             $GLOBALS['masters_relation_id'] = $SelectRelations -> masters_relation_id;
             $GLOBALS['masters_relation_relation'] = $SelectRelations -> masters_relation_relation;
-            $GLOBALS['masters_relation_other'] = $SelectRelations -> masters_relation_other; 
+            $GLOBALS['masters_relation_other'] = $SelectRelations -> masters_relation_ther; 
         }
         function UpdateFamRelations() {
+            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
             include_once ('../code/code_masters_BioID.php');
             $UpdateRelation = new MastersBio();
             //$client_name = $project_client -> client_name;
@@ -294,16 +299,18 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 $UpdateRelation -> session_user_id = $_SESSION['session_user_id'];
             }
+            
             $UpdateRelation -> UpdateFamRelations();
             unset($_POST);
-            header('Refresh:0; url=ui_masters.php?Mode=ViewRelations&RelationID=' . $UpdateRelation -> masters_relation_id  . '#BioFamily');
+            header('Refresh:0; url=ui_masters.php?Mode=ViewRelation&RelationID=' . $UpdateRelation -> masters_relation_id  . '#BioFamily');
             exit();
         }
         function InsertFamRelations() {
-            include_once ('../code/code_masters_BioID.php');
+            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
+              include_once ('../code/code_masters_BioID.php');
             $InsertRelations = new MastersBio();
             
-            $InsertRelations -> masters_relation_relation = $_POST['relation_relation'];
+            $InsertRelations -> masters_relation_relation = $_POST['relation_name'];
             $InsertRelations -> masters_relation_other = $_POST['relation_other'];
              if (session_status() == PHP_SESSION_NONE) {
                 session_start();
@@ -311,6 +318,8 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 $InsertRelations -> session_user_id = $_SESSION['session_user_id'];
             }
+            
+
             $InsertRelations -> InsertFamRelations();
             unset($_POST);
             header('Refresh:0; url=ui_masters.php?Mode=Read#BioFamily');
@@ -330,21 +339,23 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
         function LoadFamTribe() {
             include_once ('../code/code_masters_BioID.php');
             $LoadTribe = new MastersBio();
+           #$project_clients -> select_project_id = $_GET["ProjectID"];
 
             if (isset($_GET['tribePage'])) {
                 $GLOBALS['tribe_load_page'] = $_GET['tribePage'];
             } else {
                 $GLOBALS['tribe_load_page'] = 1;
             }
+
             //set pagination parameters
-             $LoadTribe -> ReadPageParamsTri();
+             $LoadTribe -> ReadPageParamsTribe();
             $GLOBALS['num_pages'] = $LoadTribe  -> tribe_last_page;
 
             //Handling grid pages and navigation
             if ($GLOBALS['tribe_load_page'] == 1) {
                  $LoadTribe -> tribe_record_num = 0;
                  $LoadTribe -> tribe_data_offset = 0;
-            } else if ($GLOBALS['tribe_load_page'] <=  $LoadTribe -> tribe_last_page) {
+            } else if ($GLOBALS['tribe_load_page'] <=  $LoadTribe -> occupn_last_page) {
                  $LoadTribe -> tribe_data_offset = ($GLOBALS['tribe_load_page'] - 1) *  $LoadTribe -> tribe_page_rows;
                  $LoadTribe -> tribe_record_num = ($GLOBALS['tribe_load_page'] - 1) *  $LoadTribe -> tribe_page_rows; ;
             } else {
@@ -367,7 +378,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             }
 
             //Loading Projects
-            $LoadTribe -> LoadFamTribe();
+            $LoadOccupation -> LoadFamTribe();
         } 
         function SelectFamTribe() {
            
@@ -375,16 +386,19 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             $SelectTribe = new MastersBio();
             $SelectTribe  -> masters_tribe_id = $_GET["TribeID"];
             $SelectTribe  -> SelectFamTribe();
+            //$client_name = $project_client -> client_name;
             $GLOBALS['masters_tribe_id'] = $SelectTribe -> masters_tribe_id;
             $GLOBALS['masters_tribe_tribe'] = $SelectTribe -> masters_tribe_tribe;
             $GLOBALS['masters_tribe_other'] = $SelectTribe -> masters_tribe_other;
             $GLOBALS['masters_tribe_location'] = $SelectTribe -> masters_tribe_location;
         }
         function UpdateFamTribe() {
+            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
             include_once ('../code/code_masters_BioID.php');
-            $UpdateTribe = new MastersBio();
+            $UpdateOccupation = new MastersBio();
+            //$client_name = $project_client -> client_name;
             $UpdateTribe -> masters_tribe_id = $_POST['TribeID'];
-            $UpdateTribe -> masters_tribe_tribe = $_POST['tribe_tribe'];
+            $UpdateTribe -> masters_tribe_tribe = $_POST['tribe_name'];
             $UpdateTribe -> masters_tribe_other = $_POST['tribe_other'];
             $UpdateTribe -> masters_tribe_location = $_POST['tribe_location'];
             if (session_status() == PHP_SESSION_NONE) {
@@ -393,24 +407,27 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 $UpdateTribe -> session_user_id = $_SESSION['session_user_id'];
             }
+            
             $UpdateTribe -> UpdateFamTribe();
             unset($_POST);
             header('Refresh:0; url=ui_masters.php?Mode=ViewTribe&TribeID=' . $UpdateTribe -> masters_tribe_id  . '#BioFamily');
             exit();
         }
         function InsertFamTribe() {
+            // echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
               include_once ('../code/code_masters_BioID.php');
             $InsertTribe = new MastersBio();
             
-            $InsertTribe -> masters_tribe_tribe = $_POST['tribe_tribe'];
+            $InsertTribe -> masters_tribe_tribe = $_POST['tribe_name'];
             $InsertTribe -> masters_tribe_other = $_POST['tribe_other'];
-			$InsertTribe -> masters_tribe_location = $_POST['tribe_location'];
              if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             $InsertTribe -> session_user_id = $_SESSION['session_user_id'];
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 $InsertTribe -> session_tribe_id = $_SESSION['session_user_id'];
             }
+            
+
             $InsertTribe -> InsertFamTribe();
             unset($_POST);
             header('Refresh:0; url=ui_masters.php?Mode=Read#BioFamily');
@@ -430,39 +447,40 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
         function LoadFamReligion() {
             include_once ('../code/code_masters_BioID.php');
             $LoadReligion = new MastersBio();
+           #$project_clients -> select_project_id = $_GET["ProjectID"];
 
-            if (isset($_GET['religionPage'])) {
-                $GLOBALS['religion_load_page'] = $_GET['religionPage'];
+            if (isset($_GET['relationPage'])) {
+                $GLOBALS['relation_load_page'] = $_GET['relationPage'];
             } else {
-                $GLOBALS['religion_load_page'] = 1;
+                $GLOBALS['relation_load_page'] = 1;
             }
 
             //set pagination parameters
-             $LoadReligion -> ReadPageParamsReli();
-            $GLOBALS['num_pages'] = $LoadReligion  -> religion_last_page;
+             $LoadReligion -> ReadPageParamsRel();
+            $GLOBALS['num_pages'] = $LoadReligionn  -> relation_last_page;
 
             //Handling grid pages and navigation
-            if ($GLOBALS['religion_load_page'] == 1) {
-                 $LoadReligion -> religion_record_num = 0;
-                 $LoadReligion -> religion_data_offset = 0;
-            } else if ($GLOBALS['religion_load_page'] <=  $LoadReligion -> religion_last_page) {
-                 $LoadReligion -> religion_data_offset = ($GLOBALS['religion_load_page'] - 1) *  $LoadReligion -> religion_page_rows;
-                 $LoadReligion -> religion_record_num = ($GLOBALS['religion_load_page'] - 1) *  $LoadReligion -> religion_page_rows; ;
+            if ($GLOBALS['relation_load_page'] == 1) {
+                 $LoadReligion -> relation_record_num = 0;
+                 $LoadReligion -> relation_data_offset = 0;
+            } else if ($GLOBALS['relation_load_page'] <=  $LoadReligion -> relation_last_page) {
+                 $LoadReligion -> relation_data_offset = ($GLOBALS['relation_load_page'] - 1) *  $LoadReligion -> relation_page_rows;
+                 $LoadReligion -> relation_record_num = ($GLOBALS['relation_load_page'] - 1) *  $LoadReligion -> relation_page_rows; ;
             } else {
                 echo '<script>alert("Page Is Out Of Range");</script>';
-                $GLOBALS['religion_load_page'] = 1;
-                 $LoadReligion -> religion_record_num = 0;
-                 $LoadReligion -> religion_data_offset = 0;
+                $GLOBALS['relation_load_page'] = 1;
+                 $LoadReligion -> relation_record_num = 0;
+                 $LoadReligion -> relation_data_offset = 0;
             }
 
-            if (($GLOBALS['religion_load_page'] + 1) <=  $LoadReligion -> religion_last_page) {
-                $GLOBALS['next_page'] = $GLOBALS['religion_load_page'] + 1;
+            if (($GLOBALS['relation_load_page'] + 1) <=  $LoadReligion -> relation_last_page) {
+                $GLOBALS['next_page'] = $GLOBALS['relation_load_page'] + 1;
             } else {
                 $GLOBALS['next_page'] = 1;
             }
 
-            if (($GLOBALS['religion_load_page'] - 1) >= 1) {
-                $GLOBALS['prev_page'] = $GLOBALS['religion_load_page'] - 1;
+            if (($GLOBALS['relation_load_page'] - 1) >= 1) {
+                $GLOBALS['prev_page'] = $GLOBALS['relation_load_page'] - 1;
             } else {
                 $GLOBALS['prev_page'] = 1;
             }
@@ -543,7 +561,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             if ($GLOBALS['crop_load_page'] == 1) {
                  $LoadCrop -> crop_record_num = 0;
                  $LoadCrop -> crop_data_offset = 0;
-            } else if ($GLOBALS['crop_load_page'] <=  $LoadCrop -> crop_last_page) {
+            } else if ($GLOBALS['crop_load_page'] <=  $LoadRelations -> crop_last_page) {
                  $LoadCrop -> crop_data_offset = ($GLOBALS['crop_load_page'] - 1) *  $LoadCrop -> crop_page_rows;
                  $LoadCrop -> crop_record_num = ($GLOBALS['crop_load_page'] - 1) *  $LoadCrop -> crop_page_rows; ;
             } else {
@@ -566,7 +584,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             }
 
             //Loading Projects
-            $LoadCrop -> LoadValCrop();
+            $LoadCrop -> LoadFalCrop();
         } 
         function SelectValCrop() {
             include_once ('../code/code_masters_BioID.php');
@@ -630,7 +648,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             }
 
             //set pagination parameters
-             $LoadLand -> ReadPageParamsLand();
+             $LoadLand -> ReadPageParamsRel();
             $GLOBALS['num_pages'] = $LoadLand -> land_last_page;
 
             //Handling grid pages and navigation
@@ -647,7 +665,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                  $LoadLand -> land_data_offset = 0;
             }
 
-            if (($GLOBALS['land_load_page'] + 1) <=  $LoadLand -> land_last_page) {
+            if (($GLOBALS['land_load_page'] + 1) <=  $LoadReligion -> relation_last_page) {
                 $GLOBALS['next_page'] = $GLOBALS['land_load_page'] + 1;
             } else {
                 $GLOBALS['next_page'] = 1;
@@ -728,13 +746,13 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 
             //set pagination parameters
              $LoadDispute -> ReadPageParamsDisp();
-            $GLOBALS['num_pages'] = $LoadDispute -> dispute_last_page;
+            $GLOBALS['num_pages'] = $LoadDispute -> land_last_page;
 
             //Handling grid pages and navigation
             if ($GLOBALS['dispute_load_page'] == 1) {
                  $LoadDispute -> dispute_record_num = 0;
                  $LoadDispute -> dispute_data_offset = 0;
-            } else if ($GLOBALS['dispute_load_page'] <=  $LoadDispute -> dispute_last_page) {
+            } else if ($GLOBALS['dispute_load_page'] <=  $LoadLand -> dispute_last_page) {
                  $LoadDispute -> dispute_data_offset = ($GLOBALS['dispute_load_page'] - 1) *  $LoadDispute-> dispute_page_rows;
                  $LoadDispute -> dispute_record_num = ($GLOBALS['dispute_load_page'] - 1) *  $LoadDispute -> dispute_page_rows; ;
             } else {
@@ -744,7 +762,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                  $LoadDispute -> dispute_data_offset = 0;
             }
 
-            if (($GLOBALS['dispute_load_page'] + 1) <=  $LoadDispute -> dispute_last_page) {
+            if (($GLOBALS['dispute_load_page'] + 1) <=  $LoadReligion -> dispute_last_page) {
                 $GLOBALS['next_page'] = $GLOBALS['dispute_load_page'] + 1;
             } else {
                 $GLOBALS['next_page'] = 1;
@@ -919,7 +937,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
             }
 
             //set pagination parameters
-             $LoadReport -> ReadPageParamsRpt();
+             $LoadReport -> ReadPageParamsRep();
             $GLOBALS['num_pages'] = $LoadReport -> report_last_page;
 
             //Handling grid pages and navigation
@@ -1101,6 +1119,8 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<?php $new_Occupn = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #BioID';
                                                 if ($_GET['Mode'] == 'ViewOccupation') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Occupn . '>New Client</a></span>'; } ?>
                                                 </span></td>
+											<!--<td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
+											class="formLinks"><a href="#">Photos</a></span></td>-->
 										</tr> 
 										</table>
                                         
@@ -1120,11 +1140,13 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 										<tr>
 											<td>
                                                 <span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['OccupationID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewOccupation&OccupationID=' . $_GET['OccupationID'] . '&occupnPage=' . $GLOBALS['prev_page'] . '#BioID'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&occupnPage=' . $GLOBALS['prev_page'] . '#BioID'; } ?>" >Previous</a>         
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['occupnPage'])) { echo $occupn_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['OccupationID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewOccupation&OccupationID=' . $_GET['OccupationID'] . '&occupnPage=' . $GLOBALS['next_page'] . '#BioID';}
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&occupnPage=' . $GLOBALS['next_page'] . '#BioID'; } ?>" >Next</a>
+                                        <a href="<?php if (isset($_GET['OccupationID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewOccupation&OccupationID=' . $_GET['OccupationID'] . '&OccupationPage=' . $GLOBALS['prev_page'] . '#BioID'; } 
+                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&OccupationPage=' . $GLOBALS['prev_page'] . '#BioID'; } ?>" >Previous</a>
+                                                    
+                                                    
+                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['OccupationPage'])) { echo $occupn_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                                        <a href="<?php if (isset($_GET['OccupationID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewOccupation&OccupationID=' . $_GET['OccupationID'] . '&OccupationPage=' . $GLOBALS['next_page'] . '#BioID';}
+                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&OccupationPage=' . $GLOBALS['next_page'] . '#BioID'; } ?>" >Next</a>
                                     </span>                                            
                                             </td>
 										</tr>
@@ -1222,7 +1244,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 
 							<!-- First Form Family Relations -->
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
-								<form action="<?php if ($_GET['Mode'] == 'ViewRelations') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditRelations#BioFamily';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertRelations#BioFamily';}?>" method="POST" autocomplete="off"> 
+								<form>
 									<fieldset class="fieldset" style="padding:10px; width:600px;">
 										<legend class="legend" style="width:200px;">
 											<span class="legendText" >Relation Types:</span>
@@ -1232,19 +1254,16 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Relation Name:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox" style="width:250px;">
-                                         <input type="text" value="<?php if(isset($GLOBALS['masters_relation_relation']))
-{ echo $GLOBALS['masters_relation_relation']; } ?>" name = "relation_relation" placeholder=" Enter Relation Name " style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['RelationID']?> " name = "RelationID"/>    
-                                                   </span></td>
+												<td><span class="formSingleLineBox" style="width:250px;">Enter Relation Name <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Details About</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox" style="width:250px; height:125px;"><textarea type="text" style="width:230px; height:110px;"placeholder="Enter Other Remarks about" name="relation_other"><?php if (isset($GLOBALS['masters_relation_other'])) { echo $GLOBALS['masters_relation_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox" style="width:250px; height:125px;">Enter Other Remarks about</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewRelations') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Relations = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #BioFamily';if ($_GET['Mode'] == 'ViewRelations') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Relations . '>New Relation</a></span>'; } ?> </span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:280px; margin:25px 0px; float:left;">
@@ -1256,19 +1275,18 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                                             <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadFamRelations(); } ?>
 											
 										</table>
-                                        
-                                <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['RelationID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewRelations&RelationID=' . $_GET['RelationID'] . '&relationPage=' . $GLOBALS['prev_page'] . '#BioFamily'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&relationPage=' . $GLOBALS['prev_page'] . '#BioFamily'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['relationPage'])) { echo $relation_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['RelationID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewRelation&RelationID=' . $_GET['RelationID'] . '&relationPage=' . $GLOBALS['next_page'] . '#BioFamily';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&relationPage=' . $GLOBALS['next_page'] . '#BioFamily'; } ?>" >Next</a></span> 
-</td></tr></table>       
-                                       
-                                    
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 100</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</fieldset>
 								</form>
 
 								<!-- Second Form Religion Information -->
-								<form action="<?php if ($_GET['Mode'] == 'ViewReligion') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditReligion#BioFamily';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertReligion#BioFamily';}?>" method="POST" autocomplete="off"> 
+								<form>
 									<fieldset class="fieldset" style="padding:10px; margin:20px 0px; width:600px;">
 										<legend class="legend" style="width:200px;">
 											<span class="legendText" >Religion Types:</span>
@@ -1277,21 +1295,17 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 											<tr>
 												<td class="formLabel">Religion Name:</td>
 											</tr>
-
 											<tr>
-												<td><span class="formSingleLineBox" style="width:250px;">
-           <input type="text" value="<?php if(isset($GLOBALS['masters_religion_religion']))
-{ echo $GLOBALS['masters_religion_religion']; } ?>" name = "religion_religion" placeholder="Enter Religion Name " style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['ReligionID']?> " name = "ReligionID"/></span></td>
+												<td><span class="formSingleLineBox" style="width:250px;">Enter Religion Name <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Details About</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox" style="width:250px; height:125px;">
-<textarea type="text" style="width:220px; height:110px;"placeholder="Enter Other Remarks about" name="religion_other"><?php if (isset($GLOBALS['masters_religion_other'])) { echo $GLOBALS['masters_religion_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox" style="width:250px; height:125px;">Enter Other Remarks about</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewReligion') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Religion = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #BioFamily';if ($_GET['Mode'] == 'ViewReligion') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Religion . '>New Religion</a></span>'; } ?> </span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:280px; margin:25px 0px; float:left;">
@@ -1302,18 +1316,21 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 											</tr>
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadFamReligion(); } ?>
 											
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['ReligionID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewReligion&ReligionID=' . $_GET['ReligionID'] . '&religionPage=' . $GLOBALS['prev_page'] . '#BioFamily'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&religionPage=' . $GLOBALS['prev_page'] . '#BioFamily'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['religionPage'])) { echo $religion_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['ReligionID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewReligion&ReligionID=' . $_GET['ReligionID'] . '&religionPage=' . $GLOBALS['next_page'] . '#BioFamily';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&religionPage=' . $GLOBALS['next_page'] . '#BioFamily'; } ?>" >Next</a></span> 
-</td></tr></table>
+										</table>
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 100</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</fieldset>
 								</form>
 							</div>
 
 							<!-- Side Form Tribe Information -->
 							<div  style="width:350px; float:left; margin-top:10px;">
-								<form action="<?php if ($_GET['Mode'] == 'ViewTribe') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditTribe#BioFamily';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertTribe#BioFamily';}?>" method="POST" autocomplete="off"> 
+								<form>
 									<fieldset class="fieldset" style="padding:20px; width:350px;">
 										<legend class="legend" style="width:200px;">
 											<span class="legendText" >Tribe Names:</span>
@@ -1323,26 +1340,22 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Tribe Name:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox"> 
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_tribe_tribe']))
-{ echo $GLOBALS['masters_tribe_tribe']; } ?>" name = "tribe_tribe" placeholder="Enter Tribe Name" style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['TribeID']?> " name = "TribeID"/></span></td>
+												<td><span class="formSingleLineBox">Enter Tribe Name <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">District (Location)</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox"><input type="text" value="<?php if(isset($GLOBALS['masters_tribe_location']))
-{ echo $GLOBALS['masters_tribe_location']; } ?>" name = "tribe_location" placeholder="Enter Tribe Location" style="width: 200px;" /></span></td>
+												<td><span class="formSingleLineBox">Enter Tribe Location</span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Details About:</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox" style="height:125px;">
-<textarea type="text" style="width:210px; height:110px;"placeholder="Enter Other Remarks about" name="tribe_other"><?php if (isset($GLOBALS['masters_tribe_other'])) { echo $GLOBALS['masters_tribe_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox" style="height:125px;">Enter Other Remarks about</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewTribe') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Tribe = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read#BioFamily';if ($_GET['Mode'] == 'ViewTribe') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Tribe . '>New Tribe</a></span>'; } ?> </span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:310px; margin-top:25px;">
@@ -1354,11 +1367,14 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 											</tr>
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") {  LoadFamTribe(); } ?>
 											
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['TribeID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewTribe&TribeID=' . $_GET['TribeID'] . '&tribePage=' . $GLOBALS['prev_page'] . '#BioFamily'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&tribePage=' . $GLOBALS['prev_page'] . '#BioFamily'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['tribePage'])) { echo $tribe_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['TribeID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewTribe&TribeID=' . $_GET['TribeID'] . '&tribePage=' . $GLOBALS['next_page'] . '#BioFamily';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&tribePage=' . $GLOBALS['next_page'] . '#BioFamily'; } ?>" >Next</a></span> 
-</td></tr></table>
+										</table>
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 100</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</fieldset>
 								</form>
 							</div>
@@ -1371,7 +1387,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 							</p>
 
 							<!-- First Form Crop Masters -->
-							<form action="<?php if ($_GET['Mode'] == 'ViewCrop') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditCrop#ValuationInfo';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertCrop#ValuationInfo';}?>" method="POST" autocomplete="off"> 
+							<form>
 								<fieldset class="fieldset" style="float:left; margin-top:10px; margin-right:10px;">
 									<legend class="legend" style="width:200px;">
 										<span class="legendText" >Crop Master:</span>
@@ -1382,19 +1398,16 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Crop Name:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox" style="width:280px;">
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_crop_crop']))
-{ echo $GLOBALS['masters_crop_crop']; } ?>" name = "crop_crop" placeholder="Enter Crop Name" style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['CropID']?> " name = "CropID"/></span></td>
+												<td><span class="formSingleLineBox" style="width:280px;">Enter Crop Name <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Details About:</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox" style="height:125px; width:280px;">
-<textarea type="text" style="width:180px; height:110px;"placeholder="Enter Other Remarks about" name="crop_other"><?php if (isset($GLOBALS['masters_crop_other'])) { echo $GLOBALS['masters_crop_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox" style="height:125px; width:280px;">Enter Other Remarks about</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewCrop') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Crop = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #ValuationInfo';if ($_GET['Mode'] == 'ViewCrop') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Crop . '>New Crop</a></span>'; } ?></span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:280px; margin-top:25px;">
@@ -1406,18 +1419,19 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadValCrop(); } ?>
 											
 										</table>
-										
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['CropID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewCrop&CropID=' . $_GET['CropID'] . '&cropPage=' . $GLOBALS['prev_page'] . '#ValuationInfo'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&cropPage=' . $GLOBALS['prev_page'] . '#ValuationInfo'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['cropPage'])) { echo $crop_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['CropID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewCrop&CropID=' . $_GET['CropID'] . '&cropPage=' . $GLOBALS['next_page'] . '#ValuationInfo';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&cropPage=' . $GLOBALS['next_page'] . '#ValuationInfo'; } ?>" >Next</a></span> 
-</td></tr></table>
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 100</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</div>
 								</fieldset>
 							</form>
 
 							<!-- Second Form Land Master -->
-							<form action="<?php if ($_GET['Mode'] == 'ViewLand') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditLand#ValuationInfo';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertLand#ValuationInfo';}?>" method="POST" autocomplete="off"> 
+							<form>
 								<fieldset class="fieldset" style="float:left; margin-top:10px; margin-right:10px;">
 									<legend class="legend" style="width:200px;">
 										<span class="legendText" >Land Tenure / Type:</span>
@@ -1428,18 +1442,16 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Land Type:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox" style="width:280px;"><input type="text" value="<?php if(isset($GLOBALS['masters_land_land']))
-{ echo $GLOBALS['masters_land_land']; } ?>" name = "land_land" placeholder="Enter Type Name" style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['LandID']?> " name = "LandID"/></span></td>
+												<td><span class="formSingleLineBox" style="width:280px;">Enter Type Name <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Details About:</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox" style="height:125px; width:280px;">
-<textarea type="text" style="width:180px; height:110px;"placeholder="Enter Other Remarks about" name="land_other"><?php if (isset($GLOBALS['masters_land_other'])) { echo $GLOBALS['masters_land_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox" style="height:125px; width:280px;">Enter Other Remarks about</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewLand') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Land = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #ValuationInfo';if ($_GET['Mode'] == 'ViewLand') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Land . '>New Land</a></span>'; } ?></span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:280px; margin-top:25px;">
@@ -1451,13 +1463,13 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadValLand(); } ?>
 											
 										</table>
-                                        
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['LandID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewLand&LandID=' . $_GET['LandID'] . '&landPage=' . $GLOBALS['prev_page'] . '#ValuationInfo'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&landPage=' . $GLOBALS['prev_page'] . '#ValuationInfo'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['landPage'])) { echo $land_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['LandID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewLand&LandID=' . $_GET['LandID'] . '&landPage=' . $GLOBALS['next_page'] . '#ValuationInfo';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&landPage=' . $GLOBALS['next_page'] . '#ValuationInfo'; } ?>" >Next</a></span> 
-</td></tr></table>
-										
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 100</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</div>
 								</fieldset>
 							</form>
@@ -1697,7 +1709,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 							</form>
 
 							<!-- Third Form Dispute Categories -->
-							<form action="<?php if ($_GET['Mode'] == 'ViewDispute') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditDispute#ProjectsInfo';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertDispute#ProjectsInfo';}?>" method="POST" autocomplete="off"> 
+							<form>
 								<fieldset class="fieldset" style=" float:left; margin:20px 10px;">
 									<legend class="legend" style="width:200px;">
 										<span class="legendText" >Dispute Categories:</span>
@@ -1708,20 +1720,16 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Dispute Category:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox">
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_dispute_dispute']))
-{ echo $GLOBALS['masters_dispute_dispute']; } ?>" name = "dispute_dispute" placeholder="Select Dispute Category" style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['DisputeID']?> " name = "DisputeID"/></span></td>
+												<td><span class="formSingleLineBox">Select Dispute Category <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Detail About:</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox" style="height:100px;">
-<textarea type="text" style="width:180px; height:99px;"placeholder="Enter Details or Remarks about" name="dispute_other"><?php if (isset($GLOBALS['masters_dispute_other'])) { echo $GLOBALS['masters_dispute_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox" style="height:100px;">Enter Details or Remarks about</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewDispute') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Dispute = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #ProjectsInfo';
- if ($_GET['Mode'] == 'ViewDispute') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Dispute . '>New Dispute</a></span>'; } ?></span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:380px; margin-top:25px;">
@@ -1733,13 +1741,13 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadProjDispute(); } ?>
 											
 										</table>
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['DisputeID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&DisputeID=' . $_GET['DisputeID'] . '&disputePage=' . $GLOBALS['prev_page'] . '#ProjectsInfo'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&disputePage=' . $GLOBALS['prev_page'] . '#ProjectsInfo'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['disputePage'])) { echo $dispute_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['DisputeID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&DisputeID=' . $_GET['DisputeID'] . '&disputePage=' . $GLOBALS['next_page'] . '#ProjectsInfo';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&disputePage=' . $GLOBALS['next_page'] . '#ProjectsInfo'; } ?>" >Next</a></span> 
-</td></tr></table>
-                                        
-                                        
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 100</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</div>
 								</fieldset>
 							</form>
@@ -1752,7 +1760,7 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 							</p>
 
 							<!-- First Form Document types -->
-							<form action="<?php if ($_GET['Mode'] == 'ViewDoc') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditDoc#ReportsInfo';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertDoc#ReportsInfo';}?>" method="POST" autocomplete="off"> 
+							<form>
 								<fieldset class="fieldset" style=" float:left; margin-top:20px">
 									<legend class="legend" style="width:200px;">
 										<span class="legendText" >Document Types:</span>
@@ -1763,27 +1771,22 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Document Type:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox">
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_doc_doc']))
-{ echo $GLOBALS['masters_doc_doc']; } ?>" name = "doc_doc" placeholder="Enter Document Type" style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['DocID']?> " name = "DocID"/></span></td>
+												<td><span class="formSingleLineBox">Enter Document Type <a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Document Code:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox"> 
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_doc_code']))
-{ echo $GLOBALS['masters_doc_code']; } ?>" name = "doc_code" placeholder="Enter Document Code" style="width: 200px;" /></span></td>
+												<td><span class="formSingleLineBox">Enter Document Code</span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Details:</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox">
-<textarea type="text"style="width:180px; height:120px;"placeholder="Enter Remarks or Other Details" name="doc_other"><?php if (isset($GLOBALS['masters_doc_other'])) { echo $GLOBALS['masters_doc_other'];}?></textarea></span></td>
+												<td><span class="formMultiLineBox">Enter Remarks or Other Details</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewDoc') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Doc = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #ReportsInfo';if ($_GET['Mode'] == 'ViewDoc') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Doc . '>New Doc</a></span>'; } ?></span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:380px; margin-top:25px;">
@@ -1795,19 +1798,19 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 											</tr>
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadSysDoc(); } ?>
                                         </table>
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['DocID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDoc&DocID=' . $_GET['DocID'] . '&docPage=' . $GLOBALS['prev_page'] . '#ReportsInfo'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&docPage=' . $GLOBALS['prev_page'] . '#ReportsInfo'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['docPage'])) { echo $doc_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['DocID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDoc&DocID=' . $_GET['DocID'] . '&docPage=' . $GLOBALS['next_page'] . '#ReportsInfo';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&docPage=' . $GLOBALS['next_page'] . '#ReportsInfo'; } ?>" >Next</a></span> 
-</td></tr></table>
-                                        
-                                        
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 10</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</div>
 								</fieldset>
 							</form>
 
 							<!-- Second Form Report Types -->
-							<form action="<?php if ($_GET['Mode'] == 'ViewReport') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditReport#ReportsInfo';} else if ($_GET['Mode'] == 'Read') {echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertReport#ReportsInfo';}?>" method="POST" autocomplete="off"> 
+							<form>
 								<fieldset class="fieldset" style=" float:left; margin:20px 10px;">
 									<legend class="legend" style="width:200px;">
 										<span class="legendText" >Report Types:</span>
@@ -1818,29 +1821,22 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
 												<td class="formLabel">Report Types:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox">
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_report_report']))
-{ echo $GLOBALS['masters_report_report']; } ?>" name = "report_report" placeholder="Enter Report Type" style="width: 200px;" /> <input type="hidden" value="<?php echo $_GET['ReportID']?> " name = "ReportID"/></span></td>
+												<td><span class="formSingleLineBox">Enter Report Type<a class="LinkInBox" href="#">New</a></span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Report Code:</td>
 											</tr>
 											<tr>
-												<td><span class="formSingleLineBox">
-                                                <input type="text" value="<?php if(isset($GLOBALS['masters_report_code']))
-{ echo $GLOBALS['masters_report_code']; } ?>" name = "report_code" placeholder="Enter Report Code" style="width: 200px;" /></span></td>
+												<td><span class="formSingleLineBox">Enter Report Code</span></td>
 											</tr>
 											<tr>
 												<td class="formLabel">Other Detail:</td>
 											</tr>
 											<tr>
-												<td><span class="formMultiLineBox">
-<textarea type="text"style="width:180px; height:120px;"placeholder="Enter Remakrs or Other Detail" name="report_other"><?php if (isset($GLOBALS['masters_report_other'])) { echo $GLOBALS['masters_report_other'];}?></textarea></span>
-</td>
+												<td><span class="formMultiLineBox">Enter Remakrs or Other Detail</span></td>
 											</tr>
 											<tr>
-												<td><span class="saveButtonArea"><input type="submit" value="<?php if ($_GET['Mode'] == 'ViewReport') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" /><?php $new_Report = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read #ReportsInfo';
- if ($_GET['Mode'] == 'ViewReport') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_Report . '>New Report</a></span>'; } ?></span></td>
+												<td><a class="saveButtonArea" href="#">Save / Finish</a></td>
 											</tr>
 										</table>
 										<table class="detailGrid" style="width:380px; margin-top:25px;">
@@ -1853,14 +1849,13 @@ elseif(isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteReport')
                                              <?php if ($_SERVER["REQUEST_METHOD"] == "GET") { LoadSysReport(); } ?>
 											
 										</table>
-                                        <table class="detailNavigation">
-<tr><td>
-<span style="white-space: nowrap;">
-<a href="<?php if (isset($_GET['ReportID'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewReport&ReportID=' . $_GET['ReportID'] . '&reportPage=' . $GLOBALS['prev_page'] . '#ReportsInfo'; }else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&reportPage=' . $GLOBALS['prev_page'] . '#ReportsInfo'; } ?>" >Previous</a> &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['reportPage'])) { echo $report_load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;<a href="<?php if (isset($_GET['ReportID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewReport&ReportID=' . $_GET['ReportID'] . '&reportPage=' . $GLOBALS['next_page'] . '#ReportsInfo';} else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&reportPage=' . $GLOBALS['next_page'] . '#ReportsInfo'; } ?>" >Next</a></span> 
-</td></tr></table>
-                                        
-                                        
-                                        
+										<table class="detailNavigation">
+											<tr>
+												<td><a href="#">Previous</a></td>
+												<td class="PageJump" style="width:80px;">1 / 10</td>
+												<td><a href="#">Next</a></td>
+											</tr>
+										</table>
 									</div>
 								</fieldset>
 							</form>

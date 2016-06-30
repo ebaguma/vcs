@@ -111,7 +111,6 @@ class MastersBio {
     public $report_load_page;
     public $report_num_rows;
 	
-	
 	#MASTERS parameters
     #:BIO:#
     //MASTERS occupation Details
@@ -379,11 +378,12 @@ class MastersBio {
     }
 
     
-   
+    
     //#:: FAMILY section ::# 
     //=>read relation
 	#ID_  INT(11), RELATION_ VARCHAR(40), OTHER_DTL_ VARCHAR(200), UPDATED_BY_  INT(11)
- 	function LoadFamRelations() {
+    function LoadFamRelations() {
+        //LIMIT_ INT, OFFSET_ INT
         include ('code_connect.php');
         $sql = "CALL USP_GET_MST_RELATION_LIMIT (@LIMIT_ , @OFFSET_)";
         $mysqli->query("set @LIMIT_ = ". $this-> relation_page_rows);
@@ -392,22 +392,24 @@ class MastersBio {
 
         //iterate through the result set
         while ($row = $result -> fetch_object()) {
+           #RELATION_ VARCHAR(40), OTHER_DTL_ VARCHAR(200)
             $ID = $row -> ID;
             $RELATION = $row -> RELATION;
             $OTHER_DTL = $row -> OTHER_DTL;
             
-            $ACTION = '../ui/ui_masters.php?Mode=ViewRelations&RelationID=' . $ID . '#BioFamily';
-            $DEL_URL = '../ui/ui_masters.php?Mode=DeleteRelations&RelationID=' . $ID . '#BioFamily';
+            $ACTION = '../ui/ui_masters.php?Mode=ViewRelation&RelationID=' . $ID . '#BioFamily';
+            $DEL_URL = '../ui/ui_masters.php?Mode=DeleteRelation&RelationID=' . $ID . '#BioFamily';
             $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> relation_record_num = $this -> relation_record_num + 1;
-            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td></tr>", $this -> relation_record_num, $ACTION, $RELATION, $DEL_ACTION);
+            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td></tr>", $this -> relation_record_num, $ACTION, $RELATION, $OTHER_DTL, $DEL_ACTION);
         }
         //recuperate resources
         $result -> free();
     }
 	function SelectFamRelations() {
         include ('code_connect.php');
+        //ID_ INT(11)
         $sql = "CALL USP_GET_MST_RELATION(@ID_)";
         $mysqli->query("set @ID_ = ". $this-> masters_relation_id);
         $results = $mysqli -> query($sql);
@@ -415,6 +417,7 @@ class MastersBio {
         //iterate through the result set
         if ($results) {
             $row = $results -> fetch_object();
+            // $this -> client_id = $row -> ID;
             #$this -> masters_occupation_id = $row -> ID;
             $this -> masters_relation_relation = $row -> RELATION;
             $this -> masters_relation_other = $row -> OTHER_DTL;
@@ -433,7 +436,7 @@ class MastersBio {
             $row = $results -> fetch_object();
             echo '<script>alert("Data Inserted Successfully");</script>';
         } else {
-            echo '<script>alert("Insert Not Successful");</script>';
+            echo '<script>alert("Update Not Successful");</script>';
         }
     }
 	function UpdateFamRelations() {
@@ -469,12 +472,12 @@ class MastersBio {
     }
 	public function ReadPageParamsRel() {
         include 'code_connect.php';
-        $sql = "CALL USP_GET_MST_RELATION_ALL()";
+        $sql = "CALL USP_GET_MST_RELATION_ALL ()";
         $result = $mysqli -> query($sql);
-        $this -> relation_num_rows = $result -> num_rows;
+        $this -> relation_num_rows = $result -> relation_num_rows;
         $this -> relation_last_page = ceil($this -> relation_num_rows / $this -> relation_page_rows);
     }
-  
+    
     //=>read tribe
 	#ID_  INT(11), TRIBE_ VARCHAR(40), OTHER_DTL_ VARCHAR(200), LOCATION_ VARCHAR(40),UPDATED_BY_  INT(11)
 	function LoadFamTribe() {
@@ -487,6 +490,7 @@ class MastersBio {
 
         //iterate through the result set
         while ($row = $result -> fetch_object()) {
+           #TRIBE_ VARCHAR(40), OTHER_DTL_ VARCHAR(200), LOCATION_ VARCHAR(40), CREATED_BY_ INT(11)
             $ID = $row -> ID;
             $TRIBE = $row -> TRIBE;
             $OTHER_DTL = $row -> OTHER_DTL;
@@ -512,14 +516,15 @@ class MastersBio {
         //iterate through the result set
         if ($results) {
             $row = $results -> fetch_object();
-            $this -> masters_tribe_tribe = $row -> TRIBE;
+            $this -> masters_tribe_relation = $row -> TRIBE;
             $this -> masters_tribe_other = $row -> OTHER_DTL;
 			$this -> masters_tribe_location = $row -> LOCATION;
         }
     }
 	function InsertFamTribe() {
+        #TRIBE_ VARCHAR(40), OTHER_DTL_ VARCHAR(200), LOCATION_ VARCHAR(40), CREATED_BY_ INT(11)
         include ('code_connect.php');
-		$sql = "CALL USP_INS_MST_TRIBE(@TRIBE_, @OTHER_DTL_, @LOCATION_, @CREATED_BY_)";
+		$sql = "CALL USP_INS_MST_TRIBE(@TRIBE_, @OTHER_DTL_, @LOCATION_,  @CREATED_BY_)";
 
         $mysqli -> query("SET @TRIBE_ = " . "'" . $this -> masters_tribe_tribe . "'");
         $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> masters_tribe_other . "'");
@@ -530,24 +535,23 @@ class MastersBio {
             $row = $results -> fetch_object();
             echo '<script>alert("Data Inserted Successfully");</script>';
         } else {
-            echo '<script>alert("Insert Not Successful");</script>';
+            echo '<script>alert("Update Not Successful");</script>';
         }
     }
 	function UpdateFamTribe() {
         include ('code_connect.php');
-         $sql = "CALL USP_UPD_MST_TRIBE(@ID_,@TRIBE_,@OTHER_DTL_,@LOCATION_,@UPDATED_BY_)";
+         $sql = "CALL USP_UPD_MST_TRIBE(@ID_,@TRIBE_,@OTHER_DTL_,@UPDATED_BY_)";
 
         $mysqli -> query("SET @ID_ = " . $this -> masters_tribe_id);
         $mysqli -> query("SET @TRIBE_ = " . "'" . $this -> masters_tribe_tribe . "'");
         $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> masters_tribe_other  . "'");
-		$mysqli -> query("SET @LOCATION_ = " . "'" . $this -> masters_tribe_location  . "'");
         $mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
+        //$mysqli -> query("SET @USER_ID_ = " . $_SESSION['session_user_id']);
         $results = $mysqli -> query($sql);
         if ($results) {
             $row = $results -> fetch_object();
             echo '<script>alert("Data Updated Successfully");</script>';
         } else {
-			#die(mysqli_error());
             echo '<script>alert("Update Not Successful");</script>';
         }
     }
@@ -561,14 +565,14 @@ class MastersBio {
             $row = $results -> fetch_object();
             echo '<script>alert("Data Deleted Successfully");</script>';
         } else {
-            echo '<script>alert("Delete Unsuccessful ( Tribe Still In Use )");</script>';
+            echo '<script>alert("Delete Unsuccessful ( occupation Still In Use )");</script>';
         }
     }
 	public function ReadPageParamsTri() {
         include 'code_connect.php';
         $sql = "CALL USP_GET_MST_TRIBE_ALL ()";
         $result = $mysqli -> query($sql);
-        $this -> tribe_num_rows = $result -> num_rows;
+        $this -> tribe_num_rows = $result -> tribe_num_rows;
         $this -> tribe_last_page = ceil($this -> tribe_num_rows / $this -> tribe_page_rows);
     }
     
@@ -584,10 +588,12 @@ class MastersBio {
 
         //iterate through the result set
         while ($row = $result -> fetch_object()) {
+           #RELIGION_ VARCHAR(40), OTHER_DTL_ VARCHAR(200),CREATED_BY_ INT(11)
             $ID = $row -> ID;
             $RELIGION = $row -> RELIGION;
             $OTHER_DTL = $row -> OTHER_DTL;
 			
+            
             $ACTION = '../ui/ui_masters.php?Mode=ViewReligion&ReligionID=' . $ID . '#BioFamily';
             $DEL_URL = '../ui/ui_masters.php?Mode=DeleteReligion&ReligionID=' . $ID . '#BioFamily';
             $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
@@ -649,6 +655,7 @@ class MastersBio {
 	function DeleteFamReligion() {
         include ('code_connect.php');
         $sql = "CALL USP_DEL_MST_RELIGION(@ID_)";
+
         $mysqli -> query("SET @ID_ = " . $this -> masters_religion_id);
         $results = $mysqli -> query($sql);
         if ($results) {
@@ -658,11 +665,11 @@ class MastersBio {
             echo '<script>alert("Delete Unsuccessful (religion Still In Use )");</script>';
         }
     }
-	public function ReadPageParamsReli() {
+	public function ReadPageParamsRel() {
         include 'code_connect.php';
         $sql = "CALL USP_GET_MST_RELIGION_ALL ()";
         $result = $mysqli -> query($sql);
-        $this -> religion_num_rows = $result -> num_rows;
+        $this -> religion_num_rows = $result -> religion_num_rows;
         $this -> religion_last_page = ceil($this -> religion_num_rows / $this -> religion_page_rows);
     }
 	
@@ -679,9 +686,12 @@ class MastersBio {
 
         //iterate through the result set
         while ($row = $result -> fetch_object()) {
+           #RELIGION_ VARCHAR(40), OTHER_DTL_ VARCHAR(200),CREATED_BY_ INT(11)
             $ID = $row -> ID;
             $CROP = $row -> CROP;
             $OTHER_DTL = $row -> OTHER_DTL;
+			
+            
             $ACTION = '../ui/ui_masters.php?Mode=ViewCrop&CropID=' . $ID . '#ValuationInfo';
             $DEL_URL = '../ui/ui_masters.php?Mode=DeleteCrop&CropID=' . $ID . '#ValuationInfo';
             $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
@@ -710,8 +720,10 @@ class MastersBio {
 
     }
 	function InsertValCrop() {
+        #RELIGION_ VARCHAR(40), OTHER_DTL_ VARCHAR(200),CREATED_BY_ INT(11)
         include ('code_connect.php');
 		$sql = "CALL USP_INS_MST_CROP(@CROP_, @OTHER_DTL_, @CREATED_BY_)";
+
         $mysqli -> query("SET @CROP_ = " . "'" . $this -> masters_crop_crop . "'");
         $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> masters_crop_other . "'");
         $mysqli -> query("SET @CREATED_BY_ = " . $this -> session_user_id);
@@ -757,7 +769,7 @@ class MastersBio {
         include 'code_connect.php';
         $sql = "CALL USP_GET_MST_CROP_ALL ()";
         $result = $mysqli -> query($sql);
-        $this -> crop_num_rows = $result -> num_rows;
+        $this -> crop_num_rows = $result -> crop_num_rows;
         $this -> crop_last_page = ceil($this -> crop_num_rows / $this -> crop_page_rows);
     }
     //=>read land
@@ -853,7 +865,7 @@ class MastersBio {
         include 'code_connect.php';
         $sql = "CALL USP_GET_MST_LAND_ALL ()";
         $result = $mysqli -> query($sql);
-        $this -> land_num_rows = $result -> num_rows;
+        $this -> land_num_rows = $result -> land_num_rows;
         $this -> land_last_page = ceil($this -> land_num_rows / $this -> land_page_rows);
     }
 	
@@ -874,6 +886,8 @@ class MastersBio {
             $ID = $row -> ID;
             $DISP_CATG = $row -> DISP_CATG;
             $OTHER_DTL = $row -> OTHER_DTL;
+			
+            
             $ACTION = '../ui/ui_masters.php?Mode=ViewDispute&DisputeID=' . $ID . '#ProjectsInfo';
             $DEL_URL = '../ui/ui_masters.php?Mode=DeleteDispute&DisputeD=' . $ID . '#ProjectsInfo';
             $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
@@ -967,6 +981,7 @@ class MastersBio {
 
         //iterate through the result set
         while ($row = $result -> fetch_object()) {
+           #RELIGION_ VARCHAR(40), OTHER_DTL_ VARCHAR(200),CREATED_BY_ INT(11)
             $ID = $row -> ID;
             $DOC_TYPE = $row -> DOC_TYPE;
             $OTHER_DTL = $row -> OTHER_DTL;
@@ -1020,7 +1035,6 @@ class MastersBio {
         $mysqli -> query("SET @ID_ = " . $this -> masters_doc_id);
         $mysqli -> query("SET @DOC_TYPE_ = " . "'" . $this -> masters_doc_doc . "'");
         $mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> masters_doc_other  . "'");
-
         $mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
         //$mysqli -> query("SET @USER_ID_ = " . $_SESSION['session_user_id']);
         $results = $mysqli -> query($sql);
@@ -1070,7 +1084,7 @@ class MastersBio {
             $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> report_record_num = $this -> report_record_num + 1;
-            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td></tr>", $this -> report_record_num, $ACTION, $REPORT,$RPT_CODE, $DEL_ACTION);
+            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td></tr>", $this -> report_record_num, $ACTION, $LND_TYPE,$RPT_CODE, $DEL_ACTION);
         }
         $result -> free();
     }
@@ -1132,13 +1146,13 @@ class MastersBio {
             echo '<script>alert("Delete Unsuccessful (report Still In Use )");</script>';
         }
     }
-	public function ReadPageParamsRpt() {
+	public function ReadPageParamsRep() {
         include 'code_connect.php';
         $sql = "CALL USP_GET_MST_RPT_ALL ()";
         $result = $mysqli -> query($sql);
         $this -> report_num_rows = $result -> num_rows;
         $this -> report_last_page = ceil($this -> report_num_rows / $this -> report_page_rows);
-    }
+    }    
 }
 
 
