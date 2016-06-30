@@ -9,13 +9,16 @@ if (isset($_GET['Mode']) && $_GET['Mode']=='Upload'){ UploadFile(); }
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <!-- link rel='shortcut icon' type='image/x-icon' href='ui/images/favicon.png' / -->
-        <meta charset="utf-8">
-            <meta name="Me" content="Index" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Login</title>
+        <meta charset="UTF-8" />
+		<link rel="stylesheet" href="/ui/lib/dialog-polyfill/bower_components/mocha/mocha.css" />
+		<script src="/ui/lib/dialog-polyfill/bower_components/mocha/mocha.js"></script>
+		<script src="/ui/lib/dialog-polyfill/bower_components/chai/chai.js"></script>
+		<link rel="stylesheet" type="text/css" href="/ui/lib/dialog-polyfill/dialog-polyfill.css" />
+		<script src="/ui/lib/dialog-polyfill/dialog-polyfill.js"></script>
             <!-- link href="ui/css/index.css" rel="stylesheet" type="text/css" />
             <link rel="stylesheet" type="text/css"
-                  href="ui/lib/opensans_regular/stylesheet.css" / -->
+          	href="ui/lib/opensans_regular/stylesheet.css" / -->
+          	
     </head>
 	
 	<?php
@@ -77,9 +80,13 @@ if (isset($_GET['Mode']) && $_GET['Mode']=='Upload'){ UploadFile(); }
 
 						$upload_image -> UpdatePhoto(); 
 						# echo '<script>alert("Data Uploaded Successfully");</script>';
+						echo '<script>alert("Data Uploaded Successfully");</script>';
+						echo '<script>CloseDialog();</script>';
 						header('Refresh:0; url=/test/image.php');
+						
 					} else {
-						echo '<script>alert("Image File Already Exists");</script>';
+						echo '<script>alert("File Already Exists");</script>';
+						echo '<script>CloseDialog();</script>';
 						header('Refresh:0; url=/test/image.php');
 					}
 
@@ -95,11 +102,35 @@ if (isset($_GET['Mode']) && $_GET['Mode']=='Upload'){ UploadFile(); }
 		$exts = $exts[$n];
 		return $exts;
 	}
+	
 	?>
 	
-    <body >
-    	<form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Upload'; ?>" method="POST" >
-    		<input type="file" name="image" style="border: 1px solid; padding: 5px; width: 300px; " value="" >&nbsp;&nbsp;<input type="submit" value="Upload">
-    	</form>
+	<body >
+		
+    	<p><a href="#" onclick="OpenDialog()" >Open Upload Dialog</a></p>
+    	
+    	
+		<dialog>
+		  	<form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Upload'; ?>" method="post" >
+    			<input type="file" name="image" style="border: 1px solid; padding: 5px; width: 300px; " value="" >&nbsp;&nbsp;<input type="submit" value="Upload">
+    		</form>
+		</dialog>
+		
+		<script>
+		
+		function OpenDialog(){
+			var dialog = document.querySelector('dialog');
+			dialogPolyfill.registerDialog(dialog);
+			dialog.showModal();
+		}
+		
+		function CloseDialog(){
+			var dialog = document.querySelector('dialog');
+			dialogPolyfill.registerDialog(dialog);
+			dialog.close(); 
+		}
+		
+		</script>
+		
     </body>
 </html>
