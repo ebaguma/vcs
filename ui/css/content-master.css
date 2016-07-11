@@ -17,6 +17,7 @@ a {
 	outline: 0;
 	font-weight: bold;
 }
+
 .ContentParent {
 	position: absolute;
 	top: 100px;
@@ -121,6 +122,10 @@ a {
 	margin-right: 10px;
 	color: #797979/*#B7B7B7*/;
 }
+
+/*.formDropDownBox:focus { outline:0 !important; }*/
+
+:focus { outline: 0; }
 
 .formDropDownBox select {
 	border: none;
