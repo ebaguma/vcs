@@ -14,11 +14,11 @@ if (mysqli_connect_errno()) {
 }
 */
 
-#$servername = "192.168.7.3";
-$servername = "localhost";
+$servername = "192.168.7.3";
+#$servername = "localhost";
 $username = "application";
 $password = "application";
-$database = "VCS_DB";
+$database = "VCS_DB_IVAN";
 $status = "Failed";
 
 $mysqli = new mysqli();
