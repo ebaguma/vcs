@@ -1377,7 +1377,7 @@
 		<!-- @formatter:off -->
     <div class="ContentParent">
         <div class="Content">
-            <div class="ContentTitle2"> Details, Related Information </div>
+            <div class="ContentTitle2"> Project Information: </div>
             <br>
             <br>
             <div class="container">

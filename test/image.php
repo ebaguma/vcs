@@ -57,7 +57,7 @@ if (isset($_GET['Mode']) && $_GET['Mode']=='Upload'){ UploadFile(); }
 					$target_pap_dir = $target_project_dir . '/' . $pap_str;
 					$target_hhid_dir = $target_pap_dir . '/' . $pap_hhid;
 					
-					if (!is_dir($target_project_dir)) { mkdir($target_project_dir); 					}
+					if (!is_dir($target_project_dir)) { mkdir($target_project_dir); }
 					if (!is_dir($target_pap_dir)) { mkdir($target_pap_dir); }
 					if (!is_dir($target_hhid_dir)) { mkdir($target_hhid_dir); }
 					
@@ -107,14 +107,14 @@ if (isset($_GET['Mode']) && $_GET['Mode']=='Upload'){ UploadFile(); }
 	
 	<body >
 		
-    	<p><a href="#" onclick="OpenDialog()" >Open Upload Dialog</a></p>
+    	<!-- p><a href="#" onclick="OpenDialog()" >Open Upload Dialog</a></p -->
     	
     	
-		<dialog>
+		<!-- dialog -->
 		  	<form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Upload'; ?>" method="post" >
     			<input type="file" name="image" style="border: 1px solid; padding: 5px; width: 300px; " value="" >&nbsp;&nbsp;<input type="submit" value="Upload">
     		</form>
-		</dialog>
+		<!-- /dialog -->
 		
 		<script>
 		

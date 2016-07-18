@@ -114,7 +114,7 @@
 		<div class="ContentParent">
 			<div class="Content">
 				<div class="ContentTitle2">
-					Land, Crops, Improvements, Consolidated Financials
+					Valuation Information:
 				</div>
 				<br>
 				<div class="container">

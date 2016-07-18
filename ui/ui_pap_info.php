@@ -798,7 +798,7 @@
 		<div class="ContentParent">
 			<div class="Content">
 				<div class="ContentTitle2">
-					Social Economic, Bio Data
+					PAP Personal Information
 				</div>
 				<br>
 				<div class="container">
@@ -952,7 +952,7 @@
 										</div></td>
 									</tr>
 									<tr>
-										<td><span class="formLinks SideBar" ><a href="#">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
+										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=Photo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
 									</tr>
 								</table>
 								
