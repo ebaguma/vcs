@@ -222,8 +222,16 @@
               </span></legend>
               
               <p>
-              	<span class="ActionLinks" style=" width: 150px; border-left: 1px solid; ">
-              		<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ?>">Back to PAP Info</a>
+              	<span class="ActionLinks" style=" width: 200px; border-left: 1px solid; ">
+              		<a href="<?php 
+              		if (strpos($_GET['Mode'], 'ID') !== false) { echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; }
+					else if (strpos($_GET['Mode'], 'Pap') !== false) { echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; }
+					else if (strpos($_GET['Mode'], 'Project') !== false) { echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; }
+					else if (strpos($_GET['Mode'], 'Valuation') !== false) { echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; } ?>">Back to <?php 
+					if (strpos($_GET['Mode'], 'ID') !== false) { echo 'Pap Info'; }
+					else if (strpos($_GET['Mode'], 'Pap') !== false) { echo 'Pap Info'; }
+					else if (strpos($_GET['Mode'], 'Project') !== false) { echo 'Project Info'; }
+					else if (strpos($_GET['Mode'], 'Valuation') !== false) { echo 'Valuation Info'; }  ?></a>
               	</span>
               	<!-- span class="ActionLinks" style=" width: 150px; ">
               		<a href="#">New Document</a>

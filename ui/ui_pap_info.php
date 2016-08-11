@@ -952,7 +952,7 @@
 										</div></td>
 									</tr>
 									<tr>
-										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=Photo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
+										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=IDPhoto&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
 									</tr>
 								</table>
 								

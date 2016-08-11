@@ -191,7 +191,10 @@
 								</tr>
 								<tr>
 									<td colspan="2"><a class="saveButtonArea" href="#">Save / Finish</a></td>
-									<td colspan="2"><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
+									<td colspan="2">
+										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+										<span class="formLinks"><a href="#">Photos</a></span>
+									</td>
 								</tr>
 							</table>
 							<form>
@@ -251,7 +254,7 @@
 										</tr>
 										<tr>
 											<td><a class="saveButtonArea" href="#">Finish</a></td>
-											<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
+											<!-- td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td -->
 										</tr>
 									</table>
 									<table class="detailGrid" style="width:360px; ">

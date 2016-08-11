@@ -1457,8 +1457,8 @@
                                         <td><span class="saveButtonArea"> <input type="submit" value="Update" name="SaveDetails"/> 
                                                 <!-- input type="submit" value="Delete" style="background-color: #FF0616;" / --> 
                                             </span></td>
-                                        <td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-                                                class="formLinks"><a href="#">Photos</a></span></td>
+                                        <td align="right"><span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjectDoc&Tag=Details&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span><span
+                                                class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjectPhoto&Tag=Details&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
                                     </tr>
                                 </table>
                             </form>
