@@ -3,6 +3,9 @@
     <?php
     
     ob_start();
+	
+	//error_reporting(E_ALL);
+	//ini_set("display_errors", 1);
     
     if(isset($_GET['LogOut'])){ LogOut(); }
         
@@ -635,7 +638,10 @@
 
                 function stateck() {
                     if (httpxml.readyState == 4) {
+                    	
+                    	// dataType: 'JSON';
                         var myarray = JSON.parse(httpxml.responseText);
+                        //var myarray = httpxml.responseText;
                         // Remove the options from 2nd dropdown list
                         counties = document.getElementById('SelectCounty');
                         sub_counties = document.getElementById('SelectSubCty');
@@ -677,6 +683,7 @@
                 var url = "../code/code_drop_county.php";
                 var element_id = document.getElementById('SelectDistrict').value;
                 url = url + "?Element=" + element_id;
+                //httpxml.setRequestHeader("Content-Type", "application/json");
                 httpxml.onreadystatechange = stateck;
                 httpxml.open("GET", url, true);
                 httpxml.send(null);

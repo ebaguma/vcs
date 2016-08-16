@@ -4,13 +4,10 @@
 
 	@$cat_id = $_GET['cat_id'];
 	
-	$dbhost_name = "192.168.7.3";
-	$database = "VCS_DB";
-	$username = "application";
-	$password = "application";
+	include ('code_config.php');
 	
 	try {
-		$dbo = new PDO('mysql:host=' . $dbhost_name . ';dbname=' . $database, $username, $password);
+		$dbo = new PDO('mysql:host=' . $database_server . ';dbname=' . $database, $database_user, $database_pwd);
 	} catch (PDOException $e) {
 		print "Error!: " . $e -> getMessage() . "<br/>";
 		die();
