@@ -1383,21 +1383,21 @@
             <div class="container">
                 <ul class="nav nav-tabs">
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
-                    <li class="active"> <a data-toggle="tab" href="#Details">Details</a> </li>
-                    <li> <a data-toggle="tab" href="#Clients">Clients</a> </li>
-                    <li> <a data-toggle="tab" href="#Budget">Budget</a> </li>
-                    <li> <a data-toggle="tab" href="#Expenses">Expenses</a> </li>
-                    <li> <a data-toggle="tab" href="#Personnel">Personnel</a> </li>
-                    <li> <a data-toggle="tab" href="#PAP">PAP Definition</a> </li>
+                    <li class="active"> <a data-toggle="tab" href="#ProjDetails">Details</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjClients">Clients</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjBudget">Budget</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjExpenses">Expenses</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjPersonnel">Personnel</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjPAP">PAP Definition</a> </li>
                     <!-- li> <a data-toggle="tab" href="#Disputes">Disputes</a> </li -->
-                    <li> <a data-toggle="tab" href="#Sections">Sections</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjSections">Sections</a> </li>
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                 </ul>
                 <div class="tab-content"> 
 
                     <!-- @formatter:off this is the project details screen -->
-                    <div id="Details" class="tab-pane fade in active">
+                    <div id="ProjDetails" class="tab-pane fade in active">
                         <div id="FormArea" class="left-form">
                             <p> This is the Project Details Screen </p>
                             <!-- @formatter:off -->
@@ -1474,7 +1474,7 @@
                     </div>
 
                     <!-- Client Area Tab Starts here -->
-                    <div id="Clients" class="tab-pane fade">
+                    <div id="ProjClients" class="tab-pane fade">
                         <p> This is the Project's Clients and Stakeholders Screen </p>
 
                         <!-- Main Client Form -->
@@ -1734,7 +1734,7 @@
 						</div>
 
 					<!-- Projects Budget Tab Starts here -->
-					<div id="Budget" class="tab-pane fade">
+					<div id="ProjBudget" class="tab-pane fade">
 						<p>
 							This is the Project Budgets, and Financials Screen
 						</p>
@@ -1866,7 +1866,7 @@
 					</div>
 
                     <!-- Projects Expenses Tab Starts here -->
-					<div id="Expenses" class="tab-pane fade">
+					<div id="ProjExpenses" class="tab-pane fade">
 						<p>
 							This is the projects expenses screen
 						</p>
@@ -1997,7 +1997,7 @@
 					</div>
 
 					<!-- Projects Personnel Tab Starts here -->
-					<div id="Personnel" class="tab-pane fade">
+					<div id="ProjPersonnel" class="tab-pane fade">
 						<p>
 							This is the Project Personnel Screen
 						</p>
@@ -2089,7 +2089,7 @@
 					</div>
 
 					<!-- Projects PAP Definition Starts here -->
-					<div id="PAP" class="tab-pane fade">
+					<div id="ProjPAP" class="tab-pane fade">
 						<p>
 							This is the PAP Definition Screen
 						</p>
@@ -2199,7 +2199,7 @@
 					</div>
 
 					<!-- Projects Disputes Starts here -->
-					<div id="Disputes" class="tab-pane fade">
+					<div id="ProjDisputes" class="tab-pane fade">
 							<p>
 								This is the Project Disputes Screen
 							</p>
@@ -2326,7 +2326,7 @@
 						</div>
 
 					<!-- Projects Sections Starts here -->
-					<div id="Sections" class="tab-pane fade">
+					<div id="ProjSections" class="tab-pane fade">
 
 							<p>
 								This is the Project Sections Screen

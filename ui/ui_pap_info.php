@@ -814,13 +814,13 @@
 							<a >&nbsp;</a>
 						</li>
 						<li class="active">
-							<a data-toggle="tab" href="#BasicInfo">Basic Info</a>
+							<a data-toggle="tab" href="#PapBasicInfo">Basic Info</a>
 						</li>
 						<li>
 							<a data-toggle="tab" href="#PapAddress">Addresses</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#Family">Family Members</a>
+							<a data-toggle="tab" href="#PapFamily">Family Members</a>
 						</li>
 						<li class="inactive">
 							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -832,7 +832,7 @@
 					<div class="tab-content">
 
 						<!-- This is the Basic Info Screen -->
-						<div id="BasicInfo" class="tab-pane fade in active">
+						<div id="PapBasicInfo" class="tab-pane fade in active">
 							<p>
 								This is the Basic Info Screen
 							</p>
@@ -940,7 +940,8 @@
 									</tr>
 									<tr>
 										<td><span class="saveButtonArea"> <input type="submit" value="Update" name="UpdateBasicInfo"/></span></td>
-										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
+										<td><span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
 									</tr>
 								</table>
 								</form>
@@ -959,7 +960,7 @@
 										</div></td>
 									</tr>
 									<tr>
-										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=IDPhoto&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
+										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=IDPhoto&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
 									</tr>
 								</table>
 								
@@ -1079,7 +1080,7 @@
 						</div>
 
 						<!-- This is the family info screen -->
-						<div id="Family" class="tab-pane">
+						<div id="PapFamily" class="tab-pane">
 							<p>
 								This is the Family Info Screen
 							</p>

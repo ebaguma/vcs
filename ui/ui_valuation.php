@@ -123,16 +123,16 @@
 							<a>&nbsp;</a>
 						</li>
 						<li class="active">
-							<a data-toggle="tab" href="#Land">Land Valuation</a>
+							<a data-toggle="tab" href="#ValLand">Land Valuation</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#Crops">Crops Valuation</a>
+							<a data-toggle="tab" href="#ValCrops">Crops Valuation</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#Improvements">Improvement Valuation</a>
+							<a data-toggle="tab" href="#ValImprovements">Improvement Valuation</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#Financials">Consolidated Financials</a>
+							<a data-toggle="tab" href="#ValFinancials">Consolidated Financials</a>
 						</li>
 						<li class="inactive">
 							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -144,7 +144,7 @@
 					<div class="tab-content">
 
 						<!-- This is the Land Valuation Screen -->
-						<div id="Land" class="tab-pane fade in active">
+						<div id="ValLand" class="tab-pane fade in active">
 							<table>
 								<tr>
 									<td class="formLabel" colspan="2">Right Of Way</td>
@@ -301,7 +301,7 @@
 						</div>
 
 						<!-- This is the Crop Valuation Screen -->
-						<div id="Crops" class="tab-pane fade">
+						<div id="ValCrops" class="tab-pane fade">
 							<table>
 								<tr>
 									<td class="formLabel">Crop Name:</td>
@@ -419,7 +419,7 @@
 						</div>
 
 						<!-- This is the improvements Screen -->
-						<div id="Improvements" class="tab-pane fade">
+						<div id="ValImprovements" class="tab-pane fade">
 							<table>
 								<tr>
 									<td class="formLabel">Structure Make:</td>
@@ -555,7 +555,7 @@
 						</div>
 
 						<!-- Consolidated Financials -->
-						<div id="Financials" class="tab-pane fade">
+						<div id="ValFinancials" class="tab-pane fade">
 
 							<!-- Summary Land Assessment -->
 							<form>
