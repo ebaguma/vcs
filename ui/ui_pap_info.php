@@ -11,11 +11,13 @@
         
     if (isset($_GET['HHID'])) { SelectPap(); }
     
-    if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') { LoadPapBasicInfo(); }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {  LoadPapBasicInfo(); LoadIDPhoto(); }
+	
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteIDPhoto') { LoadIDPhoto(); DeleteIDPhoto(); }
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBasicInfo') { UpdatePapBasicInfo(); }
 	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { LoadPapBasicInfo(); SelectPapAddr(); }
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { LoadPapBasicInfo(); SelectPapAddr(); LoadIDPhoto(); }
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertAddress') { InsertPapAddr(); }
 	
@@ -23,7 +25,7 @@
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteAddress') { DeletePapAddr(); }
 	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); }
+	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); LoadIDPhoto(); }
 	
 	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertMember') { InsertFamilyMember(); }
 	
@@ -225,9 +227,45 @@
 
 			$update_basic_info -> UpdatePapBasicInfo();
 			unset($_POST);
-			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $update_basic_info -> selected_project_id . '&ProjectCode=' . $update_basic_info -> selected_project_code . '&HHID=' . $update_basic_info -> pap_hhid . '#BasicInfo');
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $update_basic_info -> selected_project_id . '&ProjectCode=' . $update_basic_info -> selected_project_code . '&HHID=' . $update_basic_info -> pap_hhid . '#PapBasicInfo');
 			exit();
 		}
+
+		function LoadIDPhoto(){
+			include_once ('../code/code_doc.php');
+			$id_photo = new PapDocPhoto();
+			
+			if(isset($_GET['HHID'])){ $pap_id = $_GET['HHID']; }
+			else{ if (session_status() == PHP_SESSION_NONE) { session_start(); $pap_id = $_SESSION['session_pap_hhid']; }
+			else{ $pap_id = $_SESSION['session_pap_hhid']; } }
+			
+			$id_photo -> pap_id = $pap_id;
+			$id_photo -> GetIDPhoto();
+			$GLOBALS['pap_id_photo'] = $id_photo->file_path . '/' . $id_photo->file_name;
+			
+			# echo '<script>alert("things ' . $GLOBALS['pap_id_photo'] . ' are not working");</script>';
+
+		}
+		
+		function DeleteIDPhoto(){
+			include_once ('../code/code_doc.php');
+			$delete_photo = new PapDocPhoto();
+
+			if(isset($_GET['HHID'])){ $pap_id = $_GET['HHID']; }
+			else{ if (session_status() == PHP_SESSION_NONE) { session_start(); $pap_id = $_SESSION['session_pap_hhid']; }
+			else{ $pap_id = $_SESSION['session_pap_hhid']; } }
+			
+			$delete_photo -> pap_id = $pap_id;
+			$delete_photo -> DeleteDocPhoto();
+			
+			$pap_id_photo = '../uploads/' . $GLOBALS['pap_id_photo'];
+			if (is_file($pap_id_photo)){ unlink($pap_id_photo); }
+			
+			header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo');
+			# header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo');
+			# echo '<script>alert("Data Deleted Successfully");</script>';
+		}
+		
 		?>
 		
 		<?php
@@ -541,7 +579,7 @@
 			$insert_fam_mbr -> InsertFamilyMember();
 
 			unset($_POST);
-			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_fam_mbr -> selected_project_id . '&ProjectCode=' . $insert_fam_mbr -> selected_project_code . '#Family');
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_fam_mbr -> selected_project_id . '&ProjectCode=' . $insert_fam_mbr -> selected_project_code . '#PapFamily');
 			exit();
 		}
 
@@ -571,7 +609,7 @@
 			$update_fam_mbr -> UpdateFamilyMember();
 			
 			unset($_POST);
-			header('Refresh:0; url=ui_pap_info.php?Mode=ViewMember&ProjectID=' . $update_fam_mbr -> selected_project_id . '&ProjectCode=' . $update_fam_mbr -> selected_project_code . '&MemberID=' . $update_fam_mbr -> fam_mbr_id . '#Family');
+			header('Refresh:0; url=ui_pap_info.php?Mode=ViewMember&ProjectID=' . $update_fam_mbr -> selected_project_id . '&ProjectCode=' . $update_fam_mbr -> selected_project_code . '&MemberID=' . $update_fam_mbr -> fam_mbr_id . '#PapFamily');
 			exit();
 		}
 
@@ -586,7 +624,7 @@
 
 			$delete_fam_mbr -> DeleteFamilyMember();
 			unset($_POST);
-			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_fam_mbr -> selected_project_id . '&ProjectCode=' . $delete_fam_mbr -> selected_project_code . '#Family');
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_fam_mbr -> selected_project_id . '&ProjectCode=' . $delete_fam_mbr -> selected_project_code . '#PapFamily');
 			exit();
 		}
 		
@@ -878,14 +916,14 @@
 										<td class="formLabel">Select Marital Status:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 											<select name="PapSex" >
                                                 <option value="">-- Select Sex --</option>
                                                 <option value="Female" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Female') { echo 'selected'; }  ?> >Female</option>
                                                 <option value="Male" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Male') { echo 'selected'; }  ?> >Male</option> 
                                         	</select>
 										</span></td>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 											<select name="MaritalStatus" >
                                                 <option value="">-- Select Status --</option>
                                                 <option value='true' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "true") { echo 'selected'; }  ?> >Married</option>
@@ -898,17 +936,17 @@
 										<td class="formLabel">Select Religion:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 										    <select name="PapTribe" id="SelectTribe" >
                                                <option value="">-- Select Tribe --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#">New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 										    <select name="PapReligion" id="SelectReligion" >
                                                 <option value="">-- Select Religion --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#">New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 									</tr>
 									<tr>
@@ -916,11 +954,11 @@
 										<td class="formLabel">Phone Number:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 										    <select name="PapOccupation" id="SelectOccupation" >
                                                 <option value="">-- Select Occupation --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#">New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 										<td><span class="formSingleLineBox" style="width: 145px; float: left;">
 											<input type="text" value="<?php if (isset($GLOBALS['pap_phone_no'])) { echo $GLOBALS['pap_phone_no']; } ?>" name="PhoneNo" placeholder="Phone No" style="width: 125px;"/>
@@ -956,11 +994,17 @@
 									<tr>
 										<td>
 										<div class="PhotoBox">
-											<img src="../code/code_show_image.php?HHID=<?php echo $_GET['HHID']; ?>" width="250" height="250" />'; ?>
+											<img src="<?php if($GLOBALS['pap_id_photo'] == "/"){ echo 'images/placeholder.jpg'; }else{ echo '../uploads/' . $GLOBALS['pap_id_photo']; } ?>" width="250" height="250" />'; ?>
 										</div></td>
 									</tr>
 									<tr>
-										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=IDPhoto&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span><span class="formLinks" ><a href="#">Delete Photo</a></span></td>
+										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=IDPhoto&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span>
+											<span class="formLinks" ><a <?php if($GLOBALS['pap_id_photo'] == "/"){ echo 'style="display:none"'; } ?> onClick="return Confirm();" href="<?php 
+											if(isset($_GET['HHID'])){ $pap_id = $_GET['HHID']; }
+											else{ if (session_status() == PHP_SESSION_NONE) { session_start(); $pap_id = $_SESSION['session_pap_hhid']; }
+											else{ $pap_id = $_SESSION['session_pap_hhid']; } }
+											echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=DeleteIDPhoto&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $pap_id ; 
+											?>">Delete Photo</a></span></td>
 									</tr>
 								</table>
 								
@@ -996,18 +1040,18 @@
 										<td class="formLabel">Select County:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox" >
+										<td><span class="formSingleLineBox" >
 											<select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
                                                 <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['pap_addr_dist_id']); } ?> >-- Select District --</option>
                                                 <?php if (isset($_GET['ProjectID']) ) { SelectDistrict(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#" >New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
                                             </span>
                                         </td>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 											<select name="Counties" id="SelectCounty" onchange="BindSubCounties()" >
                                                 <option value="" >-- Select County --</option>
                                                 <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectCounty(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#" >New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
                                             </span>
                                         </td>
 									</tr>
@@ -1016,18 +1060,18 @@
 										<td class="formLabel">Select Village:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox" >
+										<td><span class="formSingleLineBox" >
 											<select name="SubCounties" id="SelectSubCty" onchange="BindVillages()" >
                                                 <option value="" >-- Select Sub County --</option>
                                                 <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectSubCounty(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#" >New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
                                             </span>
                                         </td>
-										<td><span class="formDropDownBox" >
+										<td><span class="formSingleLineBox" >
 											<select name="Villages" id="SelectVillage" >
                                                 <option value="" >-- Select Village --</option>
                                                 <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectVillage(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#" >New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
                                             </span>
                                         </td>
 									</tr>
@@ -1106,18 +1150,18 @@
 										<td class="formLabel">Relation Type:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 											<select name="MemberSex" >
                                                 <option value="">-- Select Sex --</option>
                                                 <option value="Female" <?php if (isset($GLOBALS['fam_mbr_sex']) && $GLOBALS['fam_mbr_sex'] == 'Female') { echo 'selected'; }  ?> >Female</option>
                                                 <option value="Male" <?php if (isset($GLOBALS['fam_mbr_sex']) && $GLOBALS['fam_mbr_sex'] == 'Male') { echo 'selected'; }  ?> >Male</option> 
                                         	</select>
 										</span></td>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 										    <select name="MemberRelation" id="SelectRelation" >
                                                 <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_rltn_id']); } ?> >-- Select Relation --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['RelationID'])) { BindMemberRelation(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#">New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 									</tr>
 									<tr>
@@ -1137,24 +1181,24 @@
 										<td class="formLabel">Religion:</td>
 									</tr>
 									<tr>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 										    <select name="MemberTribe" id="SelectMemberTribe" >
                                                <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_tribe_id']); } ?> >-- Select Tribe --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['MemberID'])) { BindMemberTribe(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#">New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
-										<td><span class="formDropDownBox">
+										<td><span class="formSingleLineBox">
 										    <select name="MemberReligion" id="SelectMemberReligion" >
                                                 <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_relgn_id']); } ?> >-- Select Religion --</option>
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['MemberID'])) { BindMemberReligion(); } ?>
-                                            </select><a class="LinkInBoxOther" href="#">New</a>
+                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 									</tr>
 									<tr>
 										<td> 
 											<span class="saveButtonArea">
 												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewMember') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
-												<?php $new_member = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family';
+												<?php $new_member = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapFamily';
                                                 if ($_GET['Mode'] == 'ViewMember') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_member . '>New Member</a></span>'; } ?>
                                             </span>
                                         </td>
@@ -1190,11 +1234,11 @@
 								</table -->
 								
 								<span style="white-space: nowrap;">
-                                    <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#Family'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#Family'; } ?>" >Previous</a>
+                                    <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#PapFamily'; } 
+                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#PapFamily'; } ?>" >Previous</a>
                                     &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $fam_mbr_load_page . ' / ' . $fam_mbr_num_pages ; } else {echo '1 / ' . $fam_mbr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                    <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#Family'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#Family'; } ?>" >Next</a>
+                                    <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#PapFamily'; } 
+                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#PapFamily'; } ?>" >Next</a>
                             	</span>
 
 							</div>
@@ -1228,7 +1272,9 @@
 				yearRange : [1900, 2100]
 			});
 			
-			
+			function Confirm(){
+				return confirm('Are You Sure, Delete?');
+			}
 		</script>
 
 		</body>

@@ -50,8 +50,8 @@ Class ProjectStaff {
             $personnel_page = 1;
 
             $confirm = "Are You Sure?";
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ID=' . $ID . '&UserID=' . $USER_ID . '&RoleID=' . $ROLE_ID . '#Personnel';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ID=' . $ID . '#Personnel';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ID=' . $ID . '&UserID=' . $USER_ID . '&RoleID=' . $ROLE_ID . '#ProjPersonnel';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ID=' . $ID . '#ProjPersonnel';
              $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Personnel?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> personnel_record_num = $this -> personnel_record_num + 1;

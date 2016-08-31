@@ -48,8 +48,8 @@ Class ProjectSection {
 
             // $confirm = "Are You Sure?";
             
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#Sections';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#Sections';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#ProjSections';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $ID . '#ProjSections';
             $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Section?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> proj_sect_record_num = $this -> proj_sect_record_num + 1;

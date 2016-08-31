@@ -46,8 +46,8 @@ class ProjectBudget {
             $OTHER_DTL = $row -> OTHER_DTL;
             $budget_page = 1;
 
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '&Cat=' . $CATG_ID . '&SubCat=' . $SUB_CATG_ID . '#Budget';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '#Budget';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '&Cat=' . $CATG_ID . '&SubCat=' . $SUB_CATG_ID . '#ProjBudget';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '#ProjBudget';
             $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Budget Item?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> budget_record_num = $this -> budget_record_num + 1;
