@@ -78,6 +78,8 @@
 	
 	<script type="text/javascript">
             $(document).ready(function() {
+                
+                
                 // show active tab on reload
                 if (location.hash !== '') 
                 $('a[href="' + location.hash + '"]').tab('show');
@@ -88,6 +90,7 @@
                  else { location.hash = '#' + $(e.target).attr('href').substr(1); }
                  });
                 
+                e.preventDefault();
                 // important line, prevents scroll to content on load
                 window.scrollTo(0,0);
                 // document.body.scrollTop = 0;

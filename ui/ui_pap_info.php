@@ -256,7 +256,7 @@
 			else{ $pap_id = $_SESSION['session_pap_hhid']; } }
 			
 			$delete_photo -> pap_id = $pap_id;
-			$delete_photo -> DeleteDocPhoto();
+			$delete_photo -> DeleteIDPhoto();
 			
 			$pap_id_photo = '../uploads/' . $GLOBALS['pap_id_photo'];
 			if (is_file($pap_id_photo)){ unlink($pap_id_photo); }
@@ -878,7 +878,7 @@
 								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>" method="post" autocomplete="off">
 								<table class="formTable">
 									<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                    <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                        <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
 									<tr>
 										<td class="formLabel">HHID:</td>
 										<td class="formLabel">Reference Number</td>
@@ -1084,9 +1084,8 @@
                                             </span>
                                         </td>
 										<td align="right">
-											<span class="formLinks SideBar"><a href="#">Documents</a></span>
-											<span class="formLinks"><a href="#">Photos</a></span>
-										</td>
+                                                                                    <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
 									</tr>
 								</table>
 								</form>
@@ -1203,9 +1202,8 @@
                                             </span>
                                         </td>
 										<td align="right">
-											<span class="formLinks SideBar"><a href="#">Documents</a></span>
-											<span class="formLinks"><a href="#">Photos</a></span>
-										</td>
+                                                                                    <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
 									</tr>
 								</table>
 								</form>

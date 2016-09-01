@@ -14,5 +14,8 @@ $database_pwd = "application";
 
 
 
+/************************
+ It is a good practise to omit closing PHP delimiter at the end of file. It's just a source of "Headers already sent" errors.
+ ****************/
 
 ?>

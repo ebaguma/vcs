@@ -24,10 +24,10 @@
     <style type="text/css">
     	.ActionLinks {
     		float: left; 
-    		display: block; 
-    		text-align: center; 
-    		margin-top, margin-bottom: 20px;
-    		 padding: 5px 5px;
+    		display: block;
+    		// text-align: center; 
+    		margin-bottom: 10px;
+    		padding: 10px 30px;
     	}
     </style>
     
@@ -37,20 +37,78 @@
     
     <?php
     
-    function IDUpload_() {
-    	# $initial_mode = $_GET['InitialMode'];
-    	# $file_name = strtolower($_FILES['image']['name']);
-    	
-    	if($_FILES['image']['tmp_name'] == ""){
-    		 $file_type = "invalid/type";
-			$file_size = "Exceeds 50M";
-    		}
-		else {
-			$file_type = mime_content_type($_FILES['image']['tmp_name']);
-			$file_size =  $_FILES['image']['size'];
-			 }
-    	echo '<script>alert("' . $file_type . '   ' . $file_size . '");</script>';
-		header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=IDPhoto' . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+    function LoadDocPhoto() {
+                include_once ('../code/code_doc.php');
+                $doc_photo = new PapDocPhoto();
+
+                if (strpos($_GET['Mode'], 'Proj') !== false) {
+                    $doc_photo->proj_id = $_GET['ProjectID'];
+                    $doc_photo->pap_id = 1;
+                } else {
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                        $doc_photo->pap_id = $_SESSION['session_pap_hhid'];
+                    } else if (session_status() == PHP_SESSION_ACTIVE) {
+                        $doc_photo->pap_id = $_SESSION['session_pap_hhid'];
+                    }
+                    $doc_photo->proj_id = 1;
+                }
+
+                if ($_GET['Mode'] == "PapDoc") {
+                    $doc_photo->doc_type = "Pap Doc";
+                } else if ($_GET['Mode'] == "PapPhoto") {
+                    $doc_photo->doc_type = "Pap Photo";
+                } else if ($_GET['Mode'] == "ValDoc") {
+                    $doc_photo->doc_type = "Val Doc";
+                } else if ($_GET['Mode'] == "ValPhoto") {
+                    $doc_photo->doc_type = "Val Photo";
+                } else if ($_GET['Mode'] == "ProjDoc") {
+                    $doc_photo->doc_type = "Proj Doc";
+                } else if ($_GET['Mode'] == "ProjPhoto") {
+                    $doc_photo->doc_type = "Proj Photo";
+                }
+
+                $doc_photo->doc_tag = $_GET['Tag'];
+
+                if (isset($_GET['DocPage'])) {
+                    $GLOBALS['load_page'] = $_GET['DocPage'];
+                } else {
+                    $GLOBALS['load_page'] = 1;
+                }
+
+                //set pagination parameters
+                $doc_photo->DocPhotoPageParams();
+                $GLOBALS['num_pages'] = $doc_photo->pap_doc_last_page;
+
+                //Handling grid pages and navigation
+                if ($GLOBALS['load_page'] == 1) {
+                    $doc_photo->pap_doc_record_num = 0;
+                    $doc_photo->pap_doc_data_offset = 0;
+                } else if ($GLOBALS['load_page'] <= $doc_photo->pap_doc_last_page) {
+                    $doc_photo->pap_doc_data_offset = ($GLOBALS['load_page'] - 1) * $doc_photo->pap_doc_page_rows;
+                    $doc_photo->pap_doc_record_num = ($GLOBALS['load_page'] - 1) * $doc_photo->pap_doc_page_rows;
+                } else {
+                    // echo '<script>alert("Page Is Out Of Range");</script>';
+                    $GLOBALS['load_page'] = 1;
+                    $doc_photo->pap_doc_record_num = 0;
+                    $doc_photo->pap_doc_data_offset = 0;
+                }
+
+                if (($GLOBALS['load_page'] + 1) <= $doc_photo->pap_doc_last_page) {
+                    $GLOBALS['next_page'] = $GLOBALS['load_page'] + 1;
+                } else {
+                    $GLOBALS['next_page'] = 1;
+                }
+
+                if (($GLOBALS['load_page'] - 1) >= 1) {
+                    $GLOBALS['prev_page'] = $GLOBALS['load_page'] - 1;
+                } else {
+                    $GLOBALS['prev_page'] = 1;
+                }
+
+                //Loading Projects
+                $doc_photo->GetDocPhoto();
+                
     }
     
     function IDUpload() {
@@ -89,7 +147,7 @@
 			header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
 		} else if($_FILES['upload']['tmp_name'] == ""){
     		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-    	}else {
+                }else {
 			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
 			$file_size =  $_FILES['upload']['size'];
 			
@@ -171,10 +229,10 @@
 		# $image_name = addslashes($_FILES['image']['name']);
 		if (session_status() == PHP_SESSION_NONE) {
 			session_start();
-			$pap_hhid = $_SESSION['session_pap_hhid'];
+                        if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
 			$user_id = $_SESSION['session_user_id'];
 		} else if (session_status() == PHP_SESSION_ACTIVE) {
-			$pap_hhid = $_SESSION['session_pap_hhid'];
+			if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
 			$user_id = $_SESSION['session_user_id'];
 		}
 		
@@ -189,7 +247,7 @@
 			header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
 		} else if($_FILES['upload']['tmp_name'] == ""){
     		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-    	}else {
+                }else {
 			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
 			$file_size =  $_FILES['upload']['size'];
 			
@@ -276,10 +334,10 @@
 		# $image_name = addslashes($_FILES['image']['name']);
 		if (session_status() == PHP_SESSION_NONE) {
 			session_start();
-			$pap_hhid = $_SESSION['session_pap_hhid'];
+                        if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
 			$user_id = $_SESSION['session_user_id'];
 		} else if (session_status() == PHP_SESSION_ACTIVE) {
-			$pap_hhid = $_SESSION['session_pap_hhid'];
+			if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
 			$user_id = $_SESSION['session_user_id'];
 		}
 		
@@ -438,20 +496,20 @@
     
     <div id="ContentP" class="ContentParent" style="top: 30px;">
       <div class="Content">
-        <div class="ContentTitle2">Document, Image Upload</div>
+        <div class="ContentTitle2"><?php if(strpos($_GET['Mode'],"Doc")){ echo 'Document Upload'; } else { echo 'Image Upload'; } ?></div>
         
         <div class="SearchPap">
           <!-- form -->
             <fieldset class="fieldset" style="height:140px; width:1000px; padding: 20px;">
               <legend class="legend" style="width:200px;"><span class="legendText" >
-              Document Details
+              <?php if(strpos($_GET['Mode'],"Doc")){ echo 'Document Details'; } else { echo 'Image Details'; } ?>
               </span></legend>
               
               <!--  . $_GET['Mode'] . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] -->
-              <form enctype="multipart/form-data" 
-              action="<?php 
-              if($_GET['Mode'] == "IDPhoto"){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=IDUpload&InitialMode=' . $_GET['Mode'] . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; }
-			  else if(($_GET['Mode'] == "PapDoc")||($_GET['Mode'] == "PapPhoto")){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=PapUpload&InitialMode=' . $_GET['Mode'] . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; } ?>" 
+              <form enctype="multipart/form-data" action="<?php 
+                if($_GET['Mode'] == "IDPhoto"){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=IDUpload&InitialMode=' . $_GET['Mode'] . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; }
+                else if(($_GET['Mode'] == "PapDoc")||($_GET['Mode'] == "PapPhoto")){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=PapUpload&InitialMode=' . $_GET['Mode'] . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; }
+                else if(($_GET['Mode'] == "ProjDoc")||($_GET['Mode'] == "ProjPhoto")){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=PapUpload&InitialMode=' . $_GET['Mode'] . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; }?>" 
               method="post" >
               <table>
                 <!-- tr>
@@ -477,21 +535,23 @@
         <div class="PapGrid">
         <form>
         <fieldset class="fieldset" style="height:300px; width:1000px;">
-              <legend class="legend" style="width:180px; margin-bottom: 20px;"><span class="legendText" >
-              Summary PAP List
+              <legend class="legend" style="width:180px;"><span class="legendText" >
+              <?php if(strpos($_GET['Mode'],"Doc")){ echo 'Document List'; } else { echo 'Image List'; } ?>
               </span></legend>
               
               <p>
-              	<span class="ActionLinks" style=" width: 200px; border-left: 1px solid; ">
+              	<span class="ActionLinks" style=" width: 200px; border-left: 1px solid;  margin-top: 20px;">
               		<a href="<?php 
-              		if (strpos($_GET['Mode'], 'ID') !== false) { echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; }
-					else if (strpos($_GET['Mode'], 'Pap') !== false) { echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; }
-					else if (strpos($_GET['Mode'], 'Project') !== false) { echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; }
-					else if (strpos($_GET['Mode'], 'Valuation') !== false) { echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; } ?>">Back to <?php 
-					if (strpos($_GET['Mode'], 'ID') !== false) { echo 'Pap Info'; }
-					else if (strpos($_GET['Mode'], 'Pap') !== false) { echo 'Pap Info'; }
-					else if (strpos($_GET['Mode'], 'Project') !== false) { echo 'Project Info'; }
-					else if (strpos($_GET['Mode'], 'Valuation') !== false) { echo 'Valuation Info'; }  ?></a>
+              		if (strpos($_GET['Mode'], 'ID') !== false) { echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; }
+                        else if (strpos($_GET['Mode'], 'Pap') !== false) { if($_GET['Tag'] == "PapBasicInfo") {  echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; }else{ echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; } }
+                        else if (strpos($_GET['Mode'], 'Proj') !== false) { if($_GET['Tag'] == "ProjDetails") {  echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; }else{ echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#' . $_GET['Tag']; } }
+                        else if (strpos($_GET['Mode'], 'Val') !== false) { echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']. '#' . $_GET['Tag']; }  ?>">Back to <?php 
+                        if (strpos($_GET['Mode'], 'ID') !== false) { echo 'Pap Info'; }
+                        else if (strpos($_GET['Mode'], 'Pap') !== false) { echo 'Pap Info'; }
+                        else if (strpos($_GET['Mode'], 'Proj') !== false) { echo 'Project Info'; }
+                        else if (strpos($_GET['Mode'], 'Val') !== false) { echo 'Valuation Info'; }  ?></a>
+                    
+                    
               	</span>
               	<!-- span class="ActionLinks" style=" width: 150px; ">
               		<a href="#">New Document</a>
@@ -501,32 +561,34 @@
               	</span -->
               </p>
               
-                <table class="detailGrid" style="float: left; width:950px; ">
-                	<tr>
+                <table id="DocumentList" class="detailGrid" style="float: left; width:950px; ">
+                    <tr>
                         <td class="detailGridHead">#</td>
                         <td class="detailGridHead">File Name</td>
                         <td class="detailGridHead">File Type</td>
-                        <td class="detailGridHead">Date Added</td>
-                        <td class="detailGridHead">Added By</td>
+                        <td class="detailGridHead">File Path</td>
                         <td class="detailGridHead">Delete</td>
                     </tr>
-                    <?php # if ($_GET['Mode'] == 'Read') { LoadProjectPaps(); } else if ($_GET['Mode'] == 'SearchPap'){ SearchProjectPaps();  } else { LoadProjectPaps(); } ?>
+                    <?php if (strpos($_GET['Mode'],'Upload') == false) { LoadDocPhoto(); } 
+                    ?>
+                    
                 </table>
+            <table style="float: left; width:950px; ">
+                <tr>
+                        <td>
+                            <span style="white-space: nowrap;">
+                                 <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#ProjClients'; } 
+                                 else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#ProjClients'; } ?>" >Previous</a>
+                                 &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ClientPage'])) { echo $load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                                 <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['next_page'] . '#ProjClients'; } 
+                                 else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['next_page'] . '#ProjClients'; } ?>" >Next</a>
+                             </span> 
+                        </td>
+                    </tr>
+            </table>
                 
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ; ?>" method="GET" autocomplete="off" >
-                    <input type="hidden" name="Mode" value="<?php if ($_GET['Mode'] == 'SearchPap') { echo 'SearchPap'; } else { echo 'Read'; } ?>" />
-                    <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                    <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                    <input type="hidden" name="KeyWord" value="<?php if (isset($_GET['KeyWord'])) {echo $_GET['KeyWord']; } else {echo ''; } ?>" />
-                    <span style="white-space: nowrap; float:left;">
-                        <a href="<?php if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_prev_page'] ; } 
-                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_prev_page'] ; } ?>" >Previous</a>
-                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $_GET['GridPage'] . ' / ' . $GLOBALS['pap_num_pages'] ; } else {echo '1 / ' . $GLOBALS['pap_num_pages'] ; } ?>" style="width: 75px; height: 35px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                        <a href="<?php if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_next_page'] ; } 
-                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_next_page'] ; } ?>" >Next</a>
-                    </span>
-                    <input type="submit" style="position: absolute; left: -99999px;" />
-                </form>
+            
+                
                 
                 </fieldset>
                 </form>
