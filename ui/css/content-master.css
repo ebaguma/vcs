@@ -95,7 +95,9 @@ a {
 }
 .formSingleLineBox {
 	height: 37px;
-	border: 1px solid #C7D8E4;
+	/* border: 1px solid #C7D8E4; */
+        /*border: 1px solid #337ab7;*/
+        border: 1px solid #bcddfe;
 	display: block;
 	width: 300px;
 	line-height: 25px;
@@ -181,12 +183,14 @@ a {
 }
 /*input[placeholder] { color:#E0E0E0; }*/
 
-.formSingleLineBox:hover, .formDropDownBox:hover {
+/*.formSingleLineBox:hover, .formDropDownBox:hover {
 	border: 1px solid #337ab7;
-}
-.formSingleLineBox:focus, .formDropDownBox:focus {
+        border: 1px solid #ff6600;
+}*/
+
+/*.formSingleLineBox:focus, .formDropDownBox:focus {
 	border: 1px solid #337ab7;
-}
+}*/
 
 .formLabel {
 	height: 30px;
@@ -197,7 +201,9 @@ a {
 }
 .formMultiLineBox {
 	height: 150px;
-	border: 1px solid #C7D8E4;
+	/*border: 1px solid #C7D8E4;*/
+        /*border: 1px solid #337ab7;*/
+        border: 1px solid #bcddfe;
 	padding: 5px 10px;
 	display: block;
 	margin-right: 10px;
@@ -215,12 +221,16 @@ textarea {
 	resize: none;
 	text-align: left;
 }
-.formMultiLineBox:hover {
+/*.formMultiLineBox:hover {
 	border: 1px solid #337ab7;
-}
-.formMultiLineBox input:focus {
+        border: 1px solid #ff6600;
+}*/
+
+/*.formMultiLineBox input:focus {
 	border: 1px solid #337ab7;
-}
+        border: 1px solid #ff6600;
+}*/
+
 .PhotoBox {
 	height: 250px;
 	width: 250px;

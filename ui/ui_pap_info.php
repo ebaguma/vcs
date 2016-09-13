@@ -13,25 +13,25 @@
     
     if (isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {  LoadPapBasicInfo(); LoadIDPhoto(); }
 	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteIDPhoto') { LoadIDPhoto(); DeleteIDPhoto(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBasicInfo') { UpdatePapBasicInfo(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { LoadPapBasicInfo(); SelectPapAddr(); LoadIDPhoto(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertAddress') { InsertPapAddr(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateAddress') { UpdatePapAddr(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteAddress') { DeletePapAddr(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); LoadIDPhoto(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertMember') { InsertFamilyMember(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateMember') { UpdateFamilyMember(); }
-	
-	if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteMember') { DeleteFamilyMember(); }
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteIDPhoto') { LoadIDPhoto(); DeleteIDPhoto(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateBasicInfo') { UpdatePapBasicInfo(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { LoadPapBasicInfo(); SelectPapAddr(); LoadIDPhoto(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertAddress') { InsertPapAddr(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateAddress') { UpdatePapAddr(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteAddress') { DeletePapAddr(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewMember') { LoadPapBasicInfo(); SelectFamilyMember(); LoadIDPhoto(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'InsertMember') { InsertFamilyMember(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'UpdateMember') { UpdateFamilyMember(); }
+
+    if (isset($_GET['Mode']) && $_GET['Mode'] == 'DeleteMember') { DeleteFamilyMember(); }
     
     ?>
 

@@ -90,14 +90,13 @@
                  else { location.hash = '#' + $(e.target).attr('href').substr(1); }
                  });
                 
-                e.preventDefault();
+                //e.preventDefault();
                 // important line, prevents scroll to content on load
                 window.scrollTo(0,0);
-                // document.body.scrollTop = 0;
-				// document.body.scrollLeft = 0;
-                // $(window).scrollTop()
-                // document.documentElement.scrollTop = 0;
-                // document.body.scrollLeft = 0; 
+                
+                
+                
+               
             });
     </script>
 

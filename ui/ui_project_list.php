@@ -150,41 +150,36 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 				Change Project Selection
 			</div>
 			<div class="SearchPap">
-				<form  autocomplete="false" >
-					<fieldset class="fieldset" style="height:130px; width:1000px;">
-						<legend class="legend" style="width:250px;">
-							<span class="legendText" > Search By Project Details </span>
-						</legend>
-						<table>
-							<tr>
-								<td class="formLabel">Project Name</td>
-								<td class="formLabel">Project Code</td>
-								<td class="formLabel" style="display:none;">Other Details</td>
-							</tr>
-							<tr>
-								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" autocomplete="false" >
-									<td><span class="formSingleLineBox">
-										<input type="hidden" name="Mode" value="Search" />
-										<input type="hidden" name="PageNumber" value="1" />
-										<input type="text" id="Project" name="ProjectName" class="formSingleLineInput"  placeholder="Search By Project Name" style="width:200px;" value="<?php
-                                        if (isset($_GET['ProjectName'])) {echo $_GET['ProjectName'];
-                                        }
-										?>" />
-										<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&PageNumber=1'; ?>" class="LinkInBox" >Reset</a></span></td>
-									<td><span class="formSingleLineBox">
-										<input type="text" name="ProjectCode" class="formSingleLineInput" placeholder="Search By Project Code" style="width:200px;" value="<?php
-                                        if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode'];
-                                        }
-										?>" />
-										<a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&PageNumber=1'; ?>" class="LinkInBox" >Reset</a></span></td>
-									<td><span class="formSingleLineBox" style="display:none;">Search By Other Details</span></td>
-									<input type="submit" style="position: absolute; left: -99999px;" />
-								</form>
-							</tr>
-						</table>
-					</fieldset>
-				</form>
-			</div>
+                                <form autocomplete="false">
+                                        <fieldset class="fieldset" style="height:130px;width:1000px">
+                                                <legend class="legend" style="width:250px"> <span class="legendText"> Search By Project Details </span> </legend>
+                                                <table>
+                                                        <tr>
+                                                                <td class="formLabel">Project Name</td>
+                                                                <td class="formLabel">Project Code</td>
+                                                                <td class="formLabel" style="display:none">Other Details</td>
+                                                        </tr>
+                                                        <tr>
+                                                                <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>" method="GET" autocomplete="false">
+                                                                        <td><span class="formSingleLineBox">
+                                                                            <input type="hidden" name="Mode" value="Search" />
+                                                                            <input type="hidden" name="PageNumber" value="1" />
+                                                                            <input type="text" id="Project" name="ProjectName" class="formSingleLineInput" placeholder="Search By Project Name" style="width:200px" value="<?php if(isset($_GET['ProjectName'])){echo $_GET['ProjectName'];}?>" />
+                                                                            <a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&PageNumber=1';?>" class="LinkInBox">Reset</a></span>
+                                                                        </td>
+                                                                        <td><span class="formSingleLineBox">
+                                                                            <input type="text" name="ProjectCode" class="formSingleLineInput" placeholder="Search By Project Code" style="width:200px" value="<?php if(isset($_GET['ProjectCode'])){echo $_GET['ProjectCode'];}?>" />
+                                                                            <a href="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&PageNumber=1';?>" class="LinkInBox">Reset</a></span>
+                                                                        </td>
+                                                                        <td><span class="formSingleLineBox" style="display:none">Search By Other Details</span>
+                                                                        </td>
+                                                                        <input type="submit" style="position:absolute;left:-99999px" /> </form>
+                                                        </tr>
+                                                </table>
+                                        </fieldset>
+                                </form>
+                        </div>
+                    
 			<div class="GridArea">
 				<form>
 					<fieldset class="fieldset" style="height:425px; width:1000px;">
@@ -205,132 +200,132 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 							
 							<!-- @formatter:on -->
 							<?php
-                            if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {
-                                //ReadProjects();
+                                                        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {
+                                                            //ReadProjects();
 
-                                include_once ('../code/code_project_list.php');
+                                                            include_once ('../code/code_project_list.php');
 
-                                echo '<script>ShowNavigation();</script>';
+                                                            echo '<script>ShowNavigation();</script>';
 
-                                $projects = new ProjectList();
+                                                            $projects = new ProjectList();
 
-                                //Check if Page Number is set
-                                if (isset($_GET['PageNumber'])) {
-                                    $projects -> load_page = $_GET['PageNumber'];
-                                } else {
-                                    $_GET['PageNumber'] = 1;
-                                }
+                                                            //Check if Page Number is set
+                                                            if (isset($_GET['PageNumber'])) {
+                                                                $projects -> load_page = $_GET['PageNumber'];
+                                                            } else {
+                                                                $_GET['PageNumber'] = 1;
+                                                            }
 
-                                //set pagination parameters
-                                $projects -> ReadPageParams();
-                                //global $num_pages;
-                                $num_pages = $projects -> read_last_page;
+                                                            //set pagination parameters
+                                                            $projects -> ReadPageParams();
+                                                            //global $num_pages;
+                                                            $num_pages = $projects -> read_last_page;
 
-                                //Handling grid pages and navigation
-                                if ($_GET['PageNumber'] == 1) {
-                                    $projects -> record_num = 0;
-                                    $projects -> data_offset = 0;
-                                } else if ($_GET['PageNumber'] <= $projects -> read_last_page) {
-                                    $projects -> data_offset = ($_GET['PageNumber'] - 1) * $projects -> page_rows;
-                                    $projects -> record_num = ($_GET['PageNumber'] - 1) * $projects -> page_rows; ;
-                                } else {
-                                    echo '<script>alert("Page Is Out Of Range");</script>';
-                                    $_GET['PageNumber'] = 1;
-                                    $projects -> record_num = 0;
-                                    $projects -> data_offset = 0;
-                                }
+                                                            //Handling grid pages and navigation
+                                                            if ($_GET['PageNumber'] == 1) {
+                                                                $projects -> record_num = 0;
+                                                                $projects -> data_offset = 0;
+                                                            } else if ($_GET['PageNumber'] <= $projects -> read_last_page) {
+                                                                $projects -> data_offset = ($_GET['PageNumber'] - 1) * $projects -> page_rows;
+                                                                $projects -> record_num = ($_GET['PageNumber'] - 1) * $projects -> page_rows; ;
+                                                            } else {
+                                                                echo '<script>alert("Page Is Out Of Range");</script>';
+                                                                $_GET['PageNumber'] = 1;
+                                                                $projects -> record_num = 0;
+                                                                $projects -> data_offset = 0;
+                                                            }
 
-                                if (($_GET['PageNumber'] + 1) <= $projects -> read_last_page) {
-                                    //global $next_page;
-                                    $next_page = $_GET['PageNumber'] + 1;
-                                } else {
-                                    $next_page = 1;
-                                }
+                                                            if (($_GET['PageNumber'] + 1) <= $projects -> read_last_page) {
+                                                                //global $next_page;
+                                                                $next_page = $_GET['PageNumber'] + 1;
+                                                            } else {
+                                                                $next_page = 1;
+                                                            }
 
-                                if (($_GET['PageNumber'] - 1) >= 1) {
-                                    //global $prev_page;
-                                    $prev_page = $_GET['PageNumber'] - 1;
-                                } else {
-                                    $prev_page = 1;
-                                }
+                                                            if (($_GET['PageNumber'] - 1) >= 1) {
+                                                                //global $prev_page;
+                                                                $prev_page = $_GET['PageNumber'] - 1;
+                                                            } else {
+                                                                $prev_page = 1;
+                                                            }
 
-                                //Loading Projects
-                                $projects -> LoadProjects();
+                                                            //Loading Projects
+                                                            $projects -> LoadProjects();
 
-                            } else if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Mode']) && $_GET['Mode'] == 'Search') {
-                                //SearchProjects();
-                                if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "" && isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") {
-                                    echo '<script>alert("You can only search by one item!");</script>';
-                                    unset($_GET['ProjectName']);
-                                    $_GET['ProjectName'] = "";
-                                    unset($_GET['ProjectCode']);
-                                    $_GET['ProjectCode'] = "";
-                                    $_GET['Mode'] = 'Read';
-                                    $_GET['PageNumber'] = 1;
-                                    ReadProjects();
-                                } else {
-                                    include_once ('../code/code_project_list.php');
+                                                        } else if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Mode']) && $_GET['Mode'] == 'Search') {
+                                                            //SearchProjects();
+                                                            if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "" && isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") {
+                                                                echo '<script>alert("You can only search by one item!");</script>';
+                                                                unset($_GET['ProjectName']);
+                                                                $_GET['ProjectName'] = "";
+                                                                unset($_GET['ProjectCode']);
+                                                                $_GET['ProjectCode'] = "";
+                                                                $_GET['Mode'] = 'Read';
+                                                                $_GET['PageNumber'] = 1;
+                                                                ReadProjects();
+                                                            } else {
+                                                                include_once ('../code/code_project_list.php');
 
-                                    $projects = new ProjectList();
+                                                                $projects = new ProjectList();
 
-                                    if (isset($_GET['PageNumber'])) {
-                                        $projects -> search_load_page = $_GET['PageNumber'];
-                                    } else {
-                                        $_GET['PageNumber'] = 1;
-                                    }
+                                                                if (isset($_GET['PageNumber'])) {
+                                                                    $projects -> search_load_page = $_GET['PageNumber'];
+                                                                } else {
+                                                                    $_GET['PageNumber'] = 1;
+                                                                }
 
-                                    // set pagination parameters
-                                    if (isset($_GET['ProjectName'])) {
-                                        $projects -> search_proj_name = $_GET['ProjectName'];
-                                    } else {
-                                        $projects -> search_proj_name = "";
-                                    }
-                                    if (isset($_GET['ProjectCode'])) {
-                                        $projects -> search_proj_code = $_GET['ProjectCode'];
-                                    } else {
-                                        $projects -> search_proj_code = "";
-                                    }
-                                    $projects -> SearchPageParams();
-                                    global $num_pages;
-                                    $num_pages = $projects -> search_last_page;
+                                                                // set pagination parameters
+                                                                if (isset($_GET['ProjectName'])) {
+                                                                    $projects -> search_proj_name = $_GET['ProjectName'];
+                                                                } else {
+                                                                    $projects -> search_proj_name = "";
+                                                                }
+                                                                if (isset($_GET['ProjectCode'])) {
+                                                                    $projects -> search_proj_code = $_GET['ProjectCode'];
+                                                                } else {
+                                                                    $projects -> search_proj_code = "";
+                                                                }
+                                                                $projects -> SearchPageParams();
+                                                                global $num_pages;
+                                                                $num_pages = $projects -> search_last_page;
 
-                                    // Handling grid pages and navigation
-                                    if ($projects -> search_load_page == 1) {
-                                        $projects -> search_record_num = 0;
-                                        $projects -> search_data_offset = 0;
-                                    } else if ($projects -> search_load_page <= $projects -> search_last_page) {
-                                        $projects -> search_data_offset = ($projects -> search_load_page - 1) * $projects -> page_rows;
-                                        $projects -> search_record_num = ($projects -> search_load_page - 1) * $projects -> page_rows;
-                                        ;
-                                    } else {
-                                        echo '<script>alert("Empty Resultset !");</script>';
-                                        $projects -> search_load_page = 1;
-                                        $projects -> search_record_num = 0;
-                                        $projects -> search_data_offset = 0;
-                                    }
+                                                                // Handling grid pages and navigation
+                                                                if ($projects -> search_load_page == 1) {
+                                                                    $projects -> search_record_num = 0;
+                                                                    $projects -> search_data_offset = 0;
+                                                                } else if ($projects -> search_load_page <= $projects -> search_last_page) {
+                                                                    $projects -> search_data_offset = ($projects -> search_load_page - 1) * $projects -> page_rows;
+                                                                    $projects -> search_record_num = ($projects -> search_load_page - 1) * $projects -> page_rows;
+                                                                    ;
+                                                                } else {
+                                                                    echo '<script>alert("Empty Resultset !");</script>';
+                                                                    $projects -> search_load_page = 1;
+                                                                    $projects -> search_record_num = 0;
+                                                                    $projects -> search_data_offset = 0;
+                                                                }
 
-                                    if (($projects -> search_load_page + 1) <= $projects -> search_last_page) {
-                                        global $next_page;
-                                        $next_page = $projects -> search_load_page + 1;
-                                    } else {
-                                        $next_page = 1;
-                                    }
+                                                                if (($projects -> search_load_page + 1) <= $projects -> search_last_page) {
+                                                                    global $next_page;
+                                                                    $next_page = $projects -> search_load_page + 1;
+                                                                } else {
+                                                                    $next_page = 1;
+                                                                }
 
-                                    if (($projects -> search_load_page - 1) >= 1) {
-                                        global $prev_page;
-                                        $prev_page = $projects -> search_load_page - 1;
-                                    } else {
-                                        $prev_page = 1;
-                                    }
+                                                                if (($projects -> search_load_page - 1) >= 1) {
+                                                                    global $prev_page;
+                                                                    $prev_page = $projects -> search_load_page - 1;
+                                                                } else {
+                                                                    $prev_page = 1;
+                                                                }
 
-                                    //Loading Projects
-                                    $projects -> SearchProjects();
-                                }
-                            } else {
-                                //header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&PageNumber=1');
-                                $_GET['Mode'] = "Read";
-                                $_GET['PageNumber'] = 1;
-                            }
+                                                                //Loading Projects
+                                                                $projects -> SearchProjects();
+                                                            }
+                                                        } else {
+                                                            //header('Location: ' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&PageNumber=1');
+                                                            $_GET['Mode'] = "Read";
+                                                            $_GET['PageNumber'] = 1;
+                                                        }
 							?>
 						</table>
 						<table id="GridNav" class="detailNavigation" style="margin: 20px 10px;">

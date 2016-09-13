@@ -1372,6 +1372,14 @@
                 httpxml.open("GET", url, true);
                 httpxml.send(null);
             }
+            
+            function Focus(b){
+                document.getElementById(b).style.color = "#ff6600";
+            }
+            
+            function Blur(b){
+                document.getElementById(b).style.color = "#797979";
+            }
 		</script>
 
 		<!-- @formatter:off -->
@@ -1408,11 +1416,11 @@
                                         <td class="formLabel">Project Code </td>
                                     </tr>
                                     <tr>
-                                            <td> <span class="formSingleLineBox">
-                                                    <input type="text" value="<?php if(isset($project_name)){echo $project_name;}?>" name="ProjectName"/>
+                                        <td> <span class="formSingleLineBox" >
+                                                <input id="dtlProjName" onfocus="Focus(this.id)" onblur="Blur(this.id)"  type="text" value="<?php if(isset($project_name)){echo $project_name;}?>" name="ProjectName"/>
                                                 </span> </td>
                                             <td> <span class="formSingleLineBox">
-                                                <input type="text" value="<?php if(isset($project_name)){echo $project_code;}?>" name="ProjectCode"/>
+                                                <input id="dtlProjCode" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php if(isset($project_name)){echo $project_code;}?>" name="ProjectCode"/>
                                                 <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']?>" />
                                                 <input type='hidden' name='post_id' value='".createPassword(64)."'>
                                                 <input type="hidden" value="EditDetails" name="Mode"/>
@@ -1424,10 +1432,10 @@
                                     </tr>
                                     <tr>
                                             <td> <span class="formSingleLineBox">
-                                    <input title="DD/MM/YYYY" type="text" id="start_date" value="<?php if(isset($project_name)){echo $start_date;}?>" placeholder="DD/MM/YYYY" name="StartDate" readonly />
+                                    <input onfocus="Focus(this.id)" onblur="Blur(this.id)" title="DD/MM/YYYY" type="text" id="start_date" value="<?php if(isset($project_name)){echo $start_date;}?>" placeholder="DD/MM/YYYY" name="StartDate" readonly />
                                     </span> </td>
                                             <td> <span class="formSingleLineBox">
-                                    <input type="text" id="end_date" value="<?php if(isset($project_name)){echo $end_date;}?>" placeholder="DD/MM/YYYY" name="EndDate" readonly />
+                                    <input onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" id="end_date" value="<?php if(isset($project_name)){echo $end_date;}?>" placeholder="DD/MM/YYYY" name="EndDate" readonly />
                                     </span> </td>
                                     </tr>
                                     <tr>
@@ -1436,7 +1444,7 @@
                                     <tr>
                                         <td colspan="2"> 
                                             <span class="formMultiLineBox">
-                                               <textarea type="text" id="end_date" placeholder="Enter Project Objective" name="ProjectObj"><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
+                                               <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Enter Project Objective" name="ProjectObj"><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
                                             </span> </td>
                                     </tr>
                                     <tr>
@@ -1445,7 +1453,7 @@
                                     <tr>
                                         <td colspan="2"> 
                                             <span class="formMultiLineBox">
-                                                <textarea type="text" id="end_date" placeholder="Project Description, Summary" name="ProjectDesc"><?php if(isset($project_name)){echo $project_desc;}?></textarea>
+                                                <textarea id="dtlProjSumm" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Project Description, Summary" name="ProjectDesc"><?php if(isset($project_name)){echo $project_desc;}?></textarea>
                                             </span> 
                                         </td>
                                     </tr>
@@ -1495,7 +1503,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <span class="formSingleLineBox" style="width: 625px;">
-                                                <input type="text" value="<?php
+                                                <input id="ClientName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
                                                 if (isset($GLOBALS['client_name'])) {
                                                     echo $GLOBALS['client_name'];
                                                 }
@@ -1515,19 +1523,19 @@
                                     </tr>
                                     <tr>
                                         <td><span class="formSingleLineBox" style="width: 200px;">
-                                                <input type="text" value="<?php
+                                                <input id="ClientNumber" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
                                                 if (isset($GLOBALS['client_number'])) {
                                                     echo $GLOBALS['client_number'];
                                                 }
                                                 ?>" name = "ClientNumber" placeholder="Enter Client Number" style="width: 180px;" /></span></td>
                                         <td><span class="formSingleLineBox" style="width: 200px;">
-                                                <input type="text" value="<?php
+                                                <input id="ClientEmail" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
                                                 if (isset($GLOBALS['client_email'])) {
                                                     echo $GLOBALS['client_email'];
                                                 }
                                                 ?>" name = "ClientEmail" placeholder="Enter Client Email" style="width: 180px;" /></span></td>
                                         <td><span class="formSingleLineBox" style="width: 200px;">
-                                                <input type="text" value="<?php
+                                                <input id="ClientWebsite" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
                                                 if (isset($GLOBALS['client_website'])) {
                                                     echo $GLOBALS['client_website'];
                                                 }
@@ -1539,7 +1547,7 @@
                                     <tr>
                                         <td colspan="3">
                                             <span class="formSingleLineBox" style="width: 625px;">
-                                                <input type="text" value="<?php
+                                                <input id="PrincipalContact" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
                                                 if (isset($GLOBALS['client_contact_person'])) {
                                                     echo $GLOBALS['client_contact_person'];
                                                 }
@@ -1553,7 +1561,7 @@
                                         <td colspan="3" nowrap="nowrap">
                                             <span class="formMultiLineBox" style="width: 625px;">
                                                 <!-- formatter:off -->
-                                                <textarea type="text" name = "ClientAddr" placeholder="Enter Address"><?php
+                                                <textarea id="ClientAddr" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name = "ClientAddr" placeholder="Enter Address"><?php
                                                     if (isset($GLOBALS['client_addr'])) {
                                                         echo $GLOBALS['client_addr'];
                                                     }
@@ -1632,7 +1640,7 @@
                                         </tr>
                                         <tr>
                                             <td><span class="formSingleLineBox">
-                                                    <input type="text" name="StaffName" value="<?php if(isset($GLOBALS['staff_name'])){echo $GLOBALS['staff_name'];}?>" placeholder="Enter Staff Name" />
+                                                    <input id="StaffName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffName" value="<?php if(isset($GLOBALS['staff_name'])){echo $GLOBALS['staff_name'];}?>" placeholder="Enter Staff Name" />
                                                     <input type="hidden" name="ClientID" value="<?php echo $_GET['ClientID']; ?>" />
                                                     <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
                                                     <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
@@ -1644,7 +1652,7 @@
                                         </tr>
                                         <tr>
                                             <td><span class="formSingleLineBox">
-                                                    <input type="text" name="StaffNumber" value="<?php
+                                                    <input id="StaffNumber" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffNumber" value="<?php
                                                     if (isset($GLOBALS['staff_number'])) {
                                                         echo $GLOBALS['staff_number'];
                                                     }
@@ -1656,7 +1664,7 @@
                                         </tr>
                                         <tr>
                                             <td><span class="formSingleLineBox">
-                                                    <input type="text" name="StaffEmail" value="<?php
+                                                    <input id="StaffEmail" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffEmail" value="<?php
                                                     if (isset($GLOBALS['staff_email'])) {
                                                         echo $GLOBALS['staff_email'];
                                                     }
@@ -1668,7 +1676,7 @@
                                         </tr>
                                         <tr>
                                             <td><span class="formSingleLineBox">
-                                                    <input type="text" name="StaffRole" value="<?php
+                                                    <input id="StaffRole" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffRole" value="<?php
                                                     if (isset($GLOBALS['staff_role'])) {
                                                         echo $GLOBALS['staff_role'];
                                                     }
@@ -1732,7 +1740,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"><span class="formSingleLineBox" style="width: 610px;">
-                                                <input type="text" name="TotalBudget" 
+                                                <input id="TotalBudget" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="TotalBudget" 
                                                        value="<?php if (isset($GLOBALS['budget_grand_total'])) {
                                 echo $GLOBALS['budget_grand_total'];
                             } ?>"  
@@ -1770,14 +1778,14 @@
                                     </tr>
                                     <tr>
                                         <td><span class="formSingleLineBox">
-                                                <input type="text" name="BudgetValue" 
+                                                <input id="BudgetValue" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="BudgetValue" 
                                                        value="<?php if (isset($GLOBALS['budget_item_amount'])) {
                                                         echo $GLOBALS['budget_item_amount'];
                                                         } ?>"  
                                                        placeholder="Budget Value" />
                                             </span></td>
                                         <td><span class="formSingleLineBox">
-                                                <input type="text" name="BudgetPercent" 
+                                                <input id="BudgetPercent" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="BudgetPercent" 
                                                        value="<?php if (isset($GLOBALS['budget_item_pct'])) {
                                                         echo $GLOBALS['budget_item_pct'] . ' %';
                                                         } ?>"  
@@ -1790,7 +1798,7 @@
                                     <tr>
                                         <td colspan="2">
                                             <span class="formMultiLineBox" style="width: 610px;">
-                                                <textarea type="text" name = "BudgetDetails" placeholder="Any Other Details"><?php if (isset($GLOBALS['budget_other_dtl'])) {
+                                                <textarea id="BudgetDetails" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name = "BudgetDetails" placeholder="Any Other Details"><?php if (isset($GLOBALS['budget_other_dtl'])) {
                                                 echo $GLOBALS['budget_other_dtl'];
                                                 } ?></textarea>
                                             </span></td> 
@@ -1878,7 +1886,7 @@
                                     <tr>
                                         <td colspan="2">
                                             <span class="formSingleLineBox" style="width: 610px;">
-                                                <input type="text" name="ExpenseName" 
+                                                <input id="ExpenseName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="ExpenseName" 
                                                        value="<?php if (isset($GLOBALS['expense_item_name'])) {
                                                                     echo $GLOBALS['expense_item_name'];
                                                                 } ?>" placeholder="Enter Expense Name" style="width: 580px;" />
@@ -1915,13 +1923,13 @@
                                     </tr>
                                     <tr>
                                         <td><span class="formSingleLineBox">
-                                                <input type="text" name="ExpenseAmount" 
+                                                <input id="ExpenseAmount" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="ExpenseAmount" 
                                                        value="<?php if (isset($GLOBALS['expense_item_amount'])) {
                                                         echo $GLOBALS['expense_item_amount'];
                                                     } ?>" placeholder="Enter Expense Amount" />
                                             </span></td>
                                         <td><span class="formSingleLineBox">
-                                                <input title="DD/MM/YYYY" type="text" id="expense_date" 
+                                                <input onfocus="Focus(this.id)" onblur="Blur(this.id)" title="DD/MM/YYYY" type="text" id="expense_date" 
                                                        value="<?php if (isset($GLOBALS['expense_date'])) {
     echo $GLOBALS['expense_date'];
 } ?>" 
@@ -1933,7 +1941,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"><span class="formMultiLineBox" style="width: 610px;">
-                                                <textarea type="text" name="ExpenseDetails" placeholder="Any Other Details"><?php if(isset($GLOBALS['expense_other_dtl'])){echo $GLOBALS['expense_other_dtl'];}?></textarea>
+                                                <textarea id="ExpenseDetails" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="ExpenseDetails" placeholder="Any Other Details"><?php if(isset($GLOBALS['expense_other_dtl'])){echo $GLOBALS['expense_other_dtl'];}?></textarea>
                                             </span></td>
                                     </tr>
                                     <tr>
@@ -2034,7 +2042,7 @@
                                     <tr>
                                         <td colspan="2">
                                             <span class="formMultiLineBox" style="width:610px">
-                                                <textarea type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($_GET['UserID'])){echo $GLOBALS['personnel_other_dtl'];}?></textarea>
+                                                <textarea id="OtherDetail" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($_GET['UserID'])){echo $GLOBALS['personnel_other_dtl'];}?></textarea>
                                             </span>
                                         </td>
                                     </tr>
@@ -2099,7 +2107,7 @@
                                                 </tr>
                                                 <tr>
                                                         <td colspan="2"><span class="formSingleLineBox" style="width:610px">
-                                        <input type="text" name="PapName" value="<?php if(isset($GLOBALS['pap_name'])){echo $GLOBALS['pap_name'];}?>" placeholder="Enter PAP Name" style="width:580px" />
+                                        <input id="PapName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="PapName" value="<?php if(isset($GLOBALS['pap_name'])){echo $GLOBALS['pap_name'];}?>" placeholder="Enter PAP Name" style="width:580px" />
                                         </span> </td>
                                                 </tr>
                                                 <tr>
@@ -2108,10 +2116,10 @@
                                                 </tr>
                                                 <tr>
                                                         <td><span class="formSingleLineBox">
-                                        <input type="text" name="HHID" value="<?php if(isset($_GET['HHID'])){echo $_GET['HHID'];}?>" placeholder="PAP HHID" readonly="true" />
+                                        <input id="HHID" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="HHID" value="<?php if(isset($_GET['HHID'])){echo $_GET['HHID'];}?>" placeholder="PAP HHID" readonly="true" />
                                         </span> </td>
                                                         <td><span class="formSingleLineBox">
-                                        <input type="text" name="PlotRef" value="<?php if(isset($GLOBALS['pap_plot_ref'])){echo $GLOBALS['pap_plot_ref'];}?>" placeholder="Enter PAP Plot Ref" />
+                                        <input id="PlotRef" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="PlotRef" value="<?php if(isset($GLOBALS['pap_plot_ref'])){echo $GLOBALS['pap_plot_ref'];}?>" placeholder="Enter PAP Plot Ref" />
                                         </span> </td>
                                                 </tr>
                                                 <tr>
@@ -2120,7 +2128,7 @@
                                                 </tr>
                                                 <tr>
                                                         <td><span class="formSingleLineBox">
-                                        <input type="text" name="PapDesign" value="<?php if(isset($GLOBALS['pap_design'])){echo $GLOBALS['pap_design'];}?>" placeholder="Enter PAP Designation" />
+                                        <input id="PapDesign" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="PapDesign" value="<?php if(isset($GLOBALS['pap_design'])){echo $GLOBALS['pap_design'];}?>" placeholder="Enter PAP Designation" />
                                         </span> </td>
                                                         <td><span class="formSingleLineBox">
                                         <select name="PapType" onchange="">
@@ -2155,7 +2163,7 @@
                                     <?php if($_GET[ 'Mode']=='Read' ){LoadProjectPaps();}else if($_GET[ 'Mode']=='SearchPap' ){SearchProjectPaps();}else{LoadProjectPaps();}?> 
                             </table>
 
-                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#PAP'; ?>" method="GET" autocomplete="off" >
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#ProjPAP'; ?>" method="GET" autocomplete="off" >
                                 <input type="hidden" name="Mode" value="<?php if($_GET['Mode']=='SearchPap'){echo 'SearchPap';}else{echo 'Read';}?>" />
                                 <input type="hidden" name="ProjectID" value="<?php if(isset($_GET['ProjectID'])){echo $_GET['ProjectID'];}else{echo '';}?>" />
                                 <input type="hidden" name="ProjectCode" value="<?php if(isset($_GET['ProjectCode'])){echo $_GET['ProjectCode'];}else{echo '';}?>" />
@@ -2299,7 +2307,7 @@
                                                 </tr>
                                                 <tr>
                                                         <td colspan="2"><span class="formSingleLineBox" style="width:610px">
-                                      <input type="text" name="SectName" value="<?php if(isset($GLOBALS['proj_sect_name'])){echo $GLOBALS['proj_sect_name'];}?>" placeholder="Enter Section Name" style="width:580px" />
+                                      <input id="SectName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectName" value="<?php if(isset($GLOBALS['proj_sect_name'])){echo $GLOBALS['proj_sect_name'];}?>" placeholder="Enter Section Name" style="width:580px" />
                                       </span>
                                                         </td>
                                                 </tr>
@@ -2308,7 +2316,7 @@
                                                 </tr>
                                                 <tr>
                                                         <td><span class="formSingleLineBox">
-                                      <input type="text" name="SectLength" value="<?php if(isset($GLOBALS['proj_sect_length'])){echo $GLOBALS['proj_sect_length'];}?>" placeholder="Enter Section Length" />
+                                      <input id="SectLength" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectLength" value="<?php if(isset($GLOBALS['proj_sect_length'])){echo $GLOBALS['proj_sect_length'];}?>" placeholder="Enter Section Length" />
                                       </span>
                                                         </td>
                                                 </tr>
@@ -2317,7 +2325,7 @@
                                                 </tr>
                                                 <tr>
                                                         <td colspan="2" style="width:610px"><span class="formMultiLineBox">
-                                      <textarea type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_sect_other_dtl'])){echo $GLOBALS['proj_sect_other_dtl'];}?></textarea>
+                                      <textarea id="OtherDtl" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_sect_other_dtl'])){echo $GLOBALS['proj_sect_other_dtl'];}?></textarea>
                                       </span>
                                                         </td>
                                                 </tr>
@@ -2339,6 +2347,7 @@
                                                         </tr>
                                                         <?php if($_SERVER[ "REQUEST_METHOD"]=="GET" &&isset($_GET[ 'ProjectID'])){LoadProjectSections();}?> 
                                 </table> 
+                                            
                               <span style="white-space:nowrap">
                                   <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}?>">Previous</a>
                                   &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['GridPage'])){echo $GLOBALS['proj_sect_load_page'].' / '.$GLOBALS['proj_sect_num_pages'];}else{echo '1 / '.$GLOBALS['proj_sect_num_pages'];}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;

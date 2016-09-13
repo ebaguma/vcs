@@ -36,398 +36,461 @@
     ?>
     
     <?php
-    
+
     function LoadDocPhoto() {
-                include_once ('../code/code_doc.php');
-                $doc_photo = new PapDocPhoto();
+        include_once ('../code/code_doc.php');
+        $doc_photo = new PapDocPhoto();
 
-                if (strpos($_GET['Mode'], 'Proj') !== false) {
-                    $doc_photo->proj_id = $_GET['ProjectID'];
-                    $doc_photo->pap_id = 1;
-                } else {
-                    if (session_status() == PHP_SESSION_NONE) {
-                        session_start();
-                        $doc_photo->pap_id = $_SESSION['session_pap_hhid'];
-                    } else if (session_status() == PHP_SESSION_ACTIVE) {
-                        $doc_photo->pap_id = $_SESSION['session_pap_hhid'];
-                    }
-                    $doc_photo->proj_id = 1;
-                }
+        if (strpos($_GET['Mode'], 'Proj') !== false) {
+            $doc_photo->proj_id = $_GET['ProjectID'];
+            $doc_photo->pap_id = 1;
+        } else {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+                $doc_photo->pap_id = $_SESSION['session_pap_hhid'];
+            } else if (session_status() == PHP_SESSION_ACTIVE) {
+                $doc_photo->pap_id = $_SESSION['session_pap_hhid'];
+            }
+            $doc_photo->proj_id = 1;
+        }
 
-                if ($_GET['Mode'] == "PapDoc") {
-                    $doc_photo->doc_type = "Pap Doc";
-                } else if ($_GET['Mode'] == "PapPhoto") {
-                    $doc_photo->doc_type = "Pap Photo";
-                } else if ($_GET['Mode'] == "ValDoc") {
-                    $doc_photo->doc_type = "Val Doc";
-                } else if ($_GET['Mode'] == "ValPhoto") {
-                    $doc_photo->doc_type = "Val Photo";
-                } else if ($_GET['Mode'] == "ProjDoc") {
-                    $doc_photo->doc_type = "Proj Doc";
-                } else if ($_GET['Mode'] == "ProjPhoto") {
-                    $doc_photo->doc_type = "Proj Photo";
-                }
+        if ($_GET['Mode'] == "PapDoc") {
+            $doc_photo->doc_type = "Pap Doc";
+        } else if ($_GET['Mode'] == "PapPhoto") {
+            $doc_photo->doc_type = "Pap Photo";
+        } else if ($_GET['Mode'] == "ValDoc") {
+            $doc_photo->doc_type = "Val Doc";
+        } else if ($_GET['Mode'] == "ValPhoto") {
+            $doc_photo->doc_type = "Val Photo";
+        } else if ($_GET['Mode'] == "ProjDoc") {
+            $doc_photo->doc_type = "Proj Doc";
+        } else if ($_GET['Mode'] == "ProjPhoto") {
+            $doc_photo->doc_type = "Proj Photo";
+        }
 
-                $doc_photo->doc_tag = $_GET['Tag'];
+        $doc_photo->doc_tag = $_GET['Tag'];
 
-                if (isset($_GET['DocPage'])) {
-                    $GLOBALS['load_page'] = $_GET['DocPage'];
-                } else {
-                    $GLOBALS['load_page'] = 1;
-                }
+        if (isset($_GET['DocPage'])) {
+            $GLOBALS['load_page'] = $_GET['DocPage'];
+        } else {
+            $GLOBALS['load_page'] = 1;
+        }
 
-                //set pagination parameters
-                $doc_photo->DocPhotoPageParams();
-                $GLOBALS['num_pages'] = $doc_photo->pap_doc_last_page;
+        //set pagination parameters
+        $doc_photo->DocPhotoPageParams();
+        $GLOBALS['num_pages'] = $doc_photo->pap_doc_last_page;
 
-                //Handling grid pages and navigation
-                if ($GLOBALS['load_page'] == 1) {
-                    $doc_photo->pap_doc_record_num = 0;
-                    $doc_photo->pap_doc_data_offset = 0;
-                } else if ($GLOBALS['load_page'] <= $doc_photo->pap_doc_last_page) {
-                    $doc_photo->pap_doc_data_offset = ($GLOBALS['load_page'] - 1) * $doc_photo->pap_doc_page_rows;
-                    $doc_photo->pap_doc_record_num = ($GLOBALS['load_page'] - 1) * $doc_photo->pap_doc_page_rows;
-                } else {
-                    // echo '<script>alert("Page Is Out Of Range");</script>';
-                    $GLOBALS['load_page'] = 1;
-                    $doc_photo->pap_doc_record_num = 0;
-                    $doc_photo->pap_doc_data_offset = 0;
-                }
+        //Handling grid pages and navigation
+        if ($GLOBALS['load_page'] == 1) {
+            $doc_photo->pap_doc_record_num = 0;
+            $doc_photo->pap_doc_data_offset = 0;
+        } else if ($GLOBALS['load_page'] <= $doc_photo->pap_doc_last_page) {
+            $doc_photo->pap_doc_data_offset = ($GLOBALS['load_page'] - 1) * $doc_photo->pap_doc_page_rows;
+            $doc_photo->pap_doc_record_num = ($GLOBALS['load_page'] - 1) * $doc_photo->pap_doc_page_rows;
+        } else {
+            // echo '<script>alert("Page Is Out Of Range");</script>';
+            $GLOBALS['load_page'] = 1;
+            $doc_photo->pap_doc_record_num = 0;
+            $doc_photo->pap_doc_data_offset = 0;
+        }
 
-                if (($GLOBALS['load_page'] + 1) <= $doc_photo->pap_doc_last_page) {
-                    $GLOBALS['next_page'] = $GLOBALS['load_page'] + 1;
-                } else {
-                    $GLOBALS['next_page'] = 1;
-                }
+        if (($GLOBALS['load_page'] + 1) <= $doc_photo->pap_doc_last_page) {
+            $GLOBALS['next_page'] = $GLOBALS['load_page'] + 1;
+        } else {
+            $GLOBALS['next_page'] = 1;
+        }
 
-                if (($GLOBALS['load_page'] - 1) >= 1) {
-                    $GLOBALS['prev_page'] = $GLOBALS['load_page'] - 1;
-                } else {
-                    $GLOBALS['prev_page'] = 1;
-                }
+        if (($GLOBALS['load_page'] - 1) >= 1) {
+            $GLOBALS['prev_page'] = $GLOBALS['load_page'] - 1;
+        } else {
+            $GLOBALS['prev_page'] = 1;
+        }
 
-                //Loading Projects
-                $doc_photo->GetDocPhoto();
-                
+        //Loading Projects
+        $doc_photo->GetDocPhoto();
     }
-    
+
     function IDUpload() {
-		include_once ('../code/code_config.php');
-		$file_name = strtolower($_FILES['upload']['name']);
-		$target_dir = $main_doc_dir;
-		$file_size = 5000000;
-		$initial_mode = $_GET['InitialMode'];
-		
-		if($_FILES['upload']['tmp_name'] == ""){
-    		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-    		}
-		else {
-			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
-			$file_size =  $_FILES['upload']['size'];
-			 }
-		
-		$accept_image = array('image/jpeg', 'image/jpg', 'image/png','image/x-png');
+        include_once ('../code/code_config.php');
+        $file_name = strtolower($_FILES['upload']['name']);
+        $target_dir = $main_doc_dir;
+        $file_size = 5000000;
+        $initial_mode = $_GET['InitialMode'];
 
-		# $image_name = addslashes($_FILES['image']['name']);
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-			$pap_hhid = $_SESSION['session_pap_hhid'];
-			$user_id = $_SESSION['session_user_id'];
-		} else if (session_status() == PHP_SESSION_ACTIVE) {
-			$pap_hhid = $_SESSION['session_pap_hhid'];
-			$user_id = $_SESSION['session_user_id'];
-		}
-		
-		$pap_project = $_GET['ProjectCode'];
-		$sub_str = "PAP";
-		$final_file_name = $pap_hhid . '.' . findexts($file_name);
+        if ($_FILES['upload']['tmp_name'] == "") {
+            echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
+        } else {
+            $file_type = mime_content_type($_FILES['upload']['tmp_name']);
+            $file_size = $_FILES['upload']['size'];
+        }
 
-		if ($_FILES['upload']['name'] == "") {
-			echo '<script>alert("You haven\'t selected a file");</script>';
-			header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-		} else if($_FILES['upload']['tmp_name'] == ""){
-    		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-                }else {
-			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
-			$file_size =  $_FILES['upload']['size'];
-			
-			if (!in_array(strtolower($file_type), $accept_image)) {
-				echo '<script>alert("Invalid Format, Only Images Allowed");</script>';
-				header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-			} else {
-					
-				if ($_FILES['upload']['size'] > $file_size) {
-					echo '<script>alert("Large File, Only 5MB Allowed");</script>';
-					header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-				} else { 
+        $accept_image = array('image/jpeg', 'image/jpg', 'image/png', 'image/x-png');
 
-					$target_project_dir = $target_dir . $pap_project;
-					$target_sub_dir = $target_project_dir . '/' . $sub_str;
-					$target_hhid_dir = $target_sub_dir . '/' . $pap_hhid;
-					
-					if (!is_dir($target_project_dir)) { mkdir($target_project_dir); }
-					if (!is_dir($target_sub_dir)) { mkdir($target_sub_dir); }
-					if (!is_dir($target_hhid_dir)) { mkdir($target_hhid_dir); }
-					
-					$final_target = $target_hhid_dir . '/';
-					
-					$file_count = 0;
-					
-					$extensions[] = "png";
-					$extensions[] = "jpg";
-					$extensions[] = "jpeg";
-					
-					foreach($extensions as $ext) {
-			           $file_check = $pap_hhid . "." . $ext;
-			           if(file_exists($target_hhid_dir . '/' . $file_check)){ $file_count = $file_count + 1; }
-					}
-					
-					if ($file_count == 0){	
-						
-						
-						copy($_FILES['upload']['tmp_name'], $final_target . $final_file_name);
-						include_once ('../code/code_doc.php');
-						$upload_doc = new PapDocPhoto();
-						$upload_doc -> pap_id = intval($pap_hhid);
-						$upload_doc->proj_id = intval($_GET['ProjectID']);
-						$upload_doc -> doc_type = "ID Photo";
-						$upload_doc -> doc_tag = $_GET['Tag'];
-						$upload_doc -> file_name = $final_file_name;
-						$upload_doc -> file_path = $pap_project . '/' . $sub_str . '/' . $pap_hhid;
-						$upload_doc -> created_by = intval($user_id);
+        # $image_name = addslashes($_FILES['image']['name']);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            $pap_hhid = $_SESSION['session_pap_hhid'];
+            $user_id = $_SESSION['session_user_id'];
+        } else if (session_status() == PHP_SESSION_ACTIVE) {
+            $pap_hhid = $_SESSION['session_pap_hhid'];
+            $user_id = $_SESSION['session_user_id'];
+        }
 
-						$upload_doc -> InsertDocPhoto(); 
-						header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-					} else {
-						
-						echo '<script>alert("File Already Exists");</script>';
-						header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-					}
+        $pap_project = $_GET['ProjectCode'];
+        $sub_str = "PAP";
+        $final_file_name = $pap_hhid . '.' . findexts($file_name);
 
-				}
-			}
-		}
-	}
+        if ($_FILES['upload']['name'] == "") {
+            echo '<script>alert("You haven\'t selected a file");</script>';
+            header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+        } else if ($_FILES['upload']['tmp_name'] == "") {
+            echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
+        } else {
+            $file_type = mime_content_type($_FILES['upload']['tmp_name']);
+            $file_size = $_FILES['upload']['size'];
 
-	function PhotoUpload(){
-		include_once ('../code/code_config.php');
-		$file_name = strtolower($_FILES['upload']['name']);
-		$target_dir = $main_doc_dir;
-		$file_size = 5000000;
-		$initial_mode = $_GET['InitialMode'];
-		
-		if($_FILES['upload']['tmp_name'] == ""){
-    		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-    		}
-		else {
-			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
-			$file_size =  $_FILES['upload']['size'];
-			 }
-		
-		$accept_image = array('image/jpeg', 'image/jpg', 'image/png','image/x-png');
+            if (!in_array(strtolower($file_type), $accept_image)) {
+                echo '<script>alert("Invalid Format, Only Images Allowed");</script>';
+                header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+            } else {
 
-		# $image_name = addslashes($_FILES['image']['name']);
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-                        if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
-			$user_id = $_SESSION['session_user_id'];
-		} else if (session_status() == PHP_SESSION_ACTIVE) {
-			if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
-			$user_id = $_SESSION['session_user_id'];
-		}
-		
-		$pap_project = $_GET['ProjectCode'];
-		if($_GET['InitialMode'] == "ValPhoto"){ $sub_str = "VALN"; }
-		else if($_GET['InitialMode'] == "PapPhoto"){ $sub_str = "PAP"; }
-		else { $sub_str = "PROJ"; }
-		# $pap_str = "PAP";
+                if ($_FILES['upload']['size'] > $file_size) {
+                    echo '<script>alert("Large File, Only 5MB Allowed");</script>';
+                    header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                } else {
 
-		if ($_FILES['upload']['name'] == "") {
-			echo '<script>alert("You haven\'t selected a file");</script>';
-			header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-		} else if($_FILES['upload']['tmp_name'] == ""){
-    		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-                }else {
-			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
-			$file_size =  $_FILES['upload']['size'];
-			
-			if (!in_array(strtolower($file_type), $accept_image)) {
-				echo '<script>alert("Invalid Format, Only Images Accepted");</script>';
-				header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-			}else {
-					
-				if ($_FILES['upload']['size'] > $file_size) {
-					echo '<script>alert("Large File, Only 5MB Allowed");</script>';
-					header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-				} else { 
+                    $target_project_dir = $target_dir . $pap_project;
+                    $target_sub_dir = $target_project_dir . '/' . $sub_str;
+                    $target_hhid_dir = $target_sub_dir . '/' . $pap_hhid;
 
-					$target_project_dir = $target_dir . $pap_project;
-					$target_sub_dir = $target_project_dir . '/' . $sub_str;
-					$target_hhid_dir = $target_sub_dir . '/' . $pap_hhid;
-					
-					if ($_GET['InitialMode'] == "ProjPhoto"){ $target_tag_dir = $target_sub_dir . '/' . $_GET['Tag']; }
-					else { $target_tag_dir = $target_hhid_dir . '/' . $_GET['Tag']; }
-					
-					
-					if (!is_dir($target_project_dir)) { mkdir($target_project_dir); }
-					if (!is_dir($target_sub_dir)) { mkdir($target_sub_dir); }
-					if (!is_dir($target_hhid_dir)) { mkdir($target_hhid_dir); }
-					if (!is_dir($target_tag_dir)) { mkdir($target_tag_dir); }
-					
-					$final_target = $target_tag_dir . '/';
-					
-					if(!file_exists($target_tag_dir . '/' . $file_name)){	
-							
-						copy($_FILES['upload']['tmp_name'], $target_tag_dir . '/' . $file_name);
-						include_once ('../code/code_doc.php');
-						$upload_doc = new PapDocPhoto();
-						
-						if($_GET['InitialMode'] == "ProjPhoto"){ $upload_doc -> pap_id = null; }
-						else { $upload_doc -> pap_id = $pap_hhid; }
-						
-						$upload_doc->proj_id = intval($_GET['ProjectID']);
-						
-						if($_GET['InitialMode'] == "ValPhoto"){ $upload_doc -> doc_type = "Val Photo"; }
-						else if($_GET['InitialMode'] == "ProjPhoto"){ $upload_doc -> doc_type = "Proj Photo"; }
-						else { $upload_doc -> doc_type = "Pap Photo"; }
-						
-						$upload_doc -> doc_tag = $_GET['Tag'];
-						$upload_doc -> file_name = $file_name;
-						
-						if($_GET['InitialMode'] == "ProjPhoto"){ $upload_doc -> file_path = $pap_project . '/' . $sub_str . '/' . $_GET['Tag']; }
-						else { $upload_doc -> file_path = $pap_project . '/' . $sub_str . '/' . $pap_hhid . '/' . $_GET['Tag']; }
-						
-						$upload_doc -> created_by = intval($user_id);
+                    if (!is_dir($target_project_dir)) {
+                        mkdir($target_project_dir);
+                    }
+                    if (!is_dir($target_sub_dir)) {
+                        mkdir($target_sub_dir);
+                    }
+                    if (!is_dir($target_hhid_dir)) {
+                        mkdir($target_hhid_dir);
+                    }
 
-						$upload_doc -> InsertDocPhoto(); 
-						header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-						
-					} else {
-							
-						echo '<script>alert("File Already Exists");</script>';
-						header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-						
-					}
+                    $final_target = $target_hhid_dir . '/';
 
-				}
-			}
-		}
-	}
+                    $file_count = 0;
 
-	function DocUpload(){
-		include_once ('../code/code_config.php');
-		$file_name = strtolower($_FILES['upload']['name']);
-		$target_dir = $main_doc_dir;
-		$file_size = 5000000;
-		$initial_mode = $_GET['InitialMode'];
-		
-		if($_FILES['upload']['tmp_name'] == ""){
-    		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-    		}
-		else {
-			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
-			$file_size =  intval($_FILES['upload']['size']);
-			 }
-		
-		$accept_doc = array('application/pdf');
+                    $extensions[] = "png";
+                    $extensions[] = "jpg";
+                    $extensions[] = "jpeg";
 
-		# $image_name = addslashes($_FILES['image']['name']);
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-                        if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
-			$user_id = $_SESSION['session_user_id'];
-		} else if (session_status() == PHP_SESSION_ACTIVE) {
-			if (isset($_SESSION['session_pap_hhid'])){ $pap_hhid = $_SESSION['session_pap_hhid']; } else { $pap_hhid = null; }
-			$user_id = $_SESSION['session_user_id'];
-		}
-		
-		$pap_project = $_GET['ProjectCode'];
-		if($_GET['InitialMode'] == "ValDoc"){ $sub_str = "VALN"; }
-		else if($_GET['InitialMode'] == "PapDoc"){ $sub_str = "PAP"; }
-		else { $sub_str = "PROJ"; }
-		# $proj_str = "PROJ";
+                    foreach ($extensions as $ext) {
+                        $file_check = $pap_hhid . "." . $ext;
+                        if (file_exists($target_hhid_dir . '/' . $file_check)) {
+                            $file_count = $file_count + 1;
+                        }
+                    }
 
-		if ($_FILES['upload']['name'] == "") {
-			echo '<script>alert("You haven\'t selected a file");</script>';
-			header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-		} else if($_FILES['upload']['tmp_name'] == ""){
-    		 echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
-    	}else {
-			$file_type = mime_content_type($_FILES['upload']['tmp_name']);
-			$file_size =  $_FILES['upload']['size'];
-			
-			if (!in_array(strtolower($file_type), $accept_doc)) {
-				echo '<script>alert("Invalid Format, Only PDF Accepted");</script>';
-				header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-			} else {
-					
-				if ($_FILES['upload']['size'] > $file_size) {
-					echo '<script>alert("Large File, Only 5MB Allowed");</script>';
-					header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-				} else { 
+                    if ($file_count == 0) {
 
-					$target_project_dir = $target_dir . $pap_project;
-					$target_sub_dir = $target_project_dir . '/' . $sub_str;
-					$target_hhid_dir = $target_sub_dir . '/' . $pap_hhid;
-					
-					if ($_GET['InitialMode'] == "ProjDoc"){ $target_tag_dir = $target_sub_dir . '/' . $_GET['Tag']; }
-					else { $target_tag_dir = $target_hhid_dir . '/' . $_GET['Tag']; }
-					
-					
-					if (!is_dir($target_project_dir)) { mkdir($target_project_dir); }
-					if (!is_dir($target_sub_dir)) { mkdir($target_sub_dir); }
-					if (!is_dir($target_hhid_dir)) { mkdir($target_hhid_dir); }
-					if (!is_dir($target_tag_dir)) { mkdir($target_tag_dir); }
-					
-					
-					
-					$final_target = $target_tag_dir . '/';
-					
-					if(!file_exists($target_tag_dir . '/' . $file_name)){	
-						
-						copy($_FILES['upload']['tmp_name'], $target_tag_dir . '/' . $file_name);
-						include_once ('../code/code_doc.php');
-						$upload_doc = new PapDocPhoto();
-						
-						if($_GET['InitialMode'] == "ProjDoc"){ $upload_doc -> pap_id = null; }
-						else { $upload_doc -> pap_id = $pap_hhid; }
-						
-						$upload_doc->proj_id = intval($_GET['ProjectID']);
-						
-						if($_GET['InitialMode'] == "ValDoc"){ $upload_doc -> doc_type = "Val Doc"; }
-						else if($_GET['InitialMode'] == "ProjDoc"){ $upload_doc -> doc_type = "Proj Doc"; }
-						else { $upload_doc -> doc_type = "Pap Doc"; }
-						
-						$upload_doc -> doc_tag = $_GET['Tag'];
-						$upload_doc -> file_name = $file_name;
-						
-						if($_GET['InitialMode'] == "ProjDoc"){ $upload_doc -> file_path = $pap_project . '/' . $sub_str . '/' . $_GET['Tag']; }
-						else { $upload_doc -> file_path = $pap_project . '/' . $sub_str . '/' . $pap_hhid . '/' . $_GET['Tag']; }
-						
-						$upload_doc -> created_by = intval($user_id);
 
-						$upload_doc -> InsertDocPhoto(); 
-						header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-						
-					} else {
-							
-						echo '<script>alert("File Already Exists");</script>';
-						header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
-					}
+                        move_uploaded_file($_FILES['upload']['tmp_name'], $final_target . $final_file_name);
+                        include_once ('../code/code_doc.php');
+                        $upload_doc = new PapDocPhoto();
+                        $upload_doc->pap_id = intval($pap_hhid);
+                        $upload_doc->proj_id = intval($_GET['ProjectID']);
+                        $upload_doc->doc_type = "ID Photo";
+                        $upload_doc->doc_tag = $_GET['Tag'];
+                        $upload_doc->file_name = $final_file_name;
+                        $upload_doc->file_path = $pap_project . '/' . $sub_str . '/' . $pap_hhid;
+                        $upload_doc->created_by = intval($user_id);
 
-				}
-			}
-		}
-	}
-	
-	function findexts($filename) {
-		$filename = strtolower($filename);
-		$exts = split("[/\\.]", $filename);
-		$n = count($exts) - 1;
-		$exts = $exts[$n];
-		return $exts;
-	}
-    
+                        $upload_doc->InsertDocPhoto();
+                        header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                    } else {
+
+                        echo '<script>alert("File Already Exists");</script>';
+                        header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                    }
+                }
+            }
+        }
+    }
+
+    function PhotoUpload() {
+        include_once ('../code/code_config.php');
+        $file_name = strtolower($_FILES['upload']['name']);
+        $target_dir = $main_doc_dir;
+        $file_size = 5000000;
+        $initial_mode = $_GET['InitialMode'];
+
+        if ($_FILES['upload']['tmp_name'] == "") {
+            echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
+        } else {
+            $file_type = mime_content_type($_FILES['upload']['tmp_name']);
+            $file_size = $_FILES['upload']['size'];
+        }
+
+        $accept_image = array('image/jpeg', 'image/jpg', 'image/png', 'image/x-png');
+
+        # $image_name = addslashes($_FILES['image']['name']);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            if (isset($_SESSION['session_pap_hhid'])) {
+                $pap_hhid = $_SESSION['session_pap_hhid'];
+            } else {
+                $pap_hhid = null;
+            }
+            $user_id = $_SESSION['session_user_id'];
+        } else if (session_status() == PHP_SESSION_ACTIVE) {
+            if (isset($_SESSION['session_pap_hhid'])) {
+                $pap_hhid = $_SESSION['session_pap_hhid'];
+            } else {
+                $pap_hhid = null;
+            }
+            $user_id = $_SESSION['session_user_id'];
+        }
+
+        $pap_project = $_GET['ProjectCode'];
+        if ($_GET['InitialMode'] == "ValPhoto") {
+            $sub_str = "VALN";
+        } else if ($_GET['InitialMode'] == "PapPhoto") {
+            $sub_str = "PAP";
+        } else {
+            $sub_str = "PROJ";
+        }
+        # $pap_str = "PAP";
+
+        if ($_FILES['upload']['name'] == "") {
+            echo '<script>alert("You haven\'t selected a file");</script>';
+            header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+        } else if ($_FILES['upload']['tmp_name'] == "") {
+            echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
+        } else {
+            $file_type = mime_content_type($_FILES['upload']['tmp_name']);
+            $file_size = $_FILES['upload']['size'];
+
+            if (!in_array(strtolower($file_type), $accept_image)) {
+                echo '<script>alert("Invalid Format, Only Images Accepted");</script>';
+                header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+            } else {
+
+                if ($_FILES['upload']['size'] > $file_size) {
+                    echo '<script>alert("Large File, Only 5MB Allowed");</script>';
+                    header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                } else {
+
+                    $target_project_dir = $target_dir . $pap_project;
+                    $target_sub_dir = $target_project_dir . '/' . $sub_str;
+                    $target_hhid_dir = $target_sub_dir . '/' . $pap_hhid;
+
+                    if ($_GET['InitialMode'] == "ProjPhoto") {
+                        $target_tag_dir = $target_sub_dir . '/' . $_GET['Tag'];
+                    } else {
+                        $target_tag_dir = $target_hhid_dir . '/' . $_GET['Tag'];
+                    }
+
+
+                    if (!is_dir($target_project_dir)) {
+                        mkdir($target_project_dir);
+                    }
+                    if (!is_dir($target_sub_dir)) {
+                        mkdir($target_sub_dir);
+                    }
+                    if (!is_dir($target_hhid_dir)) {
+                        mkdir($target_hhid_dir);
+                    }
+                    if (!is_dir($target_tag_dir)) {
+                        mkdir($target_tag_dir);
+                    }
+
+                    $final_target = $target_tag_dir . '/';
+
+                    if (!file_exists($target_tag_dir . '/' . $file_name)) {
+
+                        move_uploaded_file($_FILES['upload']['tmp_name'], $target_tag_dir . '/' . $file_name);
+                        include_once ('../code/code_doc.php');
+                        $upload_doc = new PapDocPhoto();
+
+                        if ($_GET['InitialMode'] == "ProjPhoto") {
+                            $upload_doc->pap_id = null;
+                        } else {
+                            $upload_doc->pap_id = $pap_hhid;
+                        }
+
+                        $upload_doc->proj_id = intval($_GET['ProjectID']);
+
+                        if ($_GET['InitialMode'] == "ValPhoto") {
+                            $upload_doc->doc_type = "Val Photo";
+                        } else if ($_GET['InitialMode'] == "ProjPhoto") {
+                            $upload_doc->doc_type = "Proj Photo";
+                        } else {
+                            $upload_doc->doc_type = "Pap Photo";
+                        }
+
+                        $upload_doc->doc_tag = $_GET['Tag'];
+                        $upload_doc->file_name = $file_name;
+
+                        if ($_GET['InitialMode'] == "ProjPhoto") {
+                            $upload_doc->file_path = $pap_project . '/' . $sub_str . '/' . $_GET['Tag'];
+                        } else {
+                            $upload_doc->file_path = $pap_project . '/' . $sub_str . '/' . $pap_hhid . '/' . $_GET['Tag'];
+                        }
+
+                        $upload_doc->created_by = intval($user_id);
+
+                        $upload_doc->InsertDocPhoto();
+                        header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                    } else {
+
+                        echo '<script>alert("File Already Exists");</script>';
+                        header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                    }
+                }
+            }
+        }
+    }
+
+    function DocUpload() {
+        include_once ('../code/code_config.php');
+        $file_name = strtolower($_FILES['upload']['name']);
+        $target_dir = $main_doc_dir;
+        $file_size = 5000000;
+        $initial_mode = $_GET['InitialMode'];
+
+        if ($_FILES['upload']['tmp_name'] == "") {
+            echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
+        } else {
+            $file_type = mime_content_type($_FILES['upload']['tmp_name']);
+            $file_size = intval($_FILES['upload']['size']);
+        }
+
+        $accept_doc = array('application/pdf');
+
+        # $image_name = addslashes($_FILES['image']['name']);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+            if (isset($_SESSION['session_pap_hhid'])) {
+                $pap_hhid = $_SESSION['session_pap_hhid'];
+            } else {
+                $pap_hhid = null;
+            }
+            $user_id = $_SESSION['session_user_id'];
+        } else if (session_status() == PHP_SESSION_ACTIVE) {
+            if (isset($_SESSION['session_pap_hhid'])) {
+                $pap_hhid = $_SESSION['session_pap_hhid'];
+            } else {
+                $pap_hhid = null;
+            }
+            $user_id = $_SESSION['session_user_id'];
+        }
+
+        $pap_project = $_GET['ProjectCode'];
+        if ($_GET['InitialMode'] == "ValDoc") {
+            $sub_str = "VALN";
+        } else if ($_GET['InitialMode'] == "PapDoc") {
+            $sub_str = "PAP";
+        } else {
+            $sub_str = "PROJ";
+        }
+        # $proj_str = "PROJ";
+
+        if ($_FILES['upload']['name'] == "") {
+            echo '<script>alert("You haven\'t selected a file");</script>';
+            header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+        } else if ($_FILES['upload']['tmp_name'] == "") {
+            echo '<script>alert("File ' . $file_name . ' is invalid, or exceeds 20MB");</script>';
+        } else {
+            $file_type = mime_content_type($_FILES['upload']['tmp_name']);
+            $file_size = $_FILES['upload']['size'];
+
+            if (!in_array(strtolower($file_type), $accept_doc)) {
+                echo '<script>alert("Invalid Format, Only PDF Accepted");</script>';
+                header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+            } else {
+
+                if ($_FILES['upload']['size'] > $file_size) {
+                    echo '<script>alert("Large File, Only 5MB Allowed");</script>';
+                    header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                } else {
+
+                    $target_project_dir = $target_dir . $pap_project;
+                    $target_sub_dir = $target_project_dir . '/' . $sub_str;
+                    $target_hhid_dir = $target_sub_dir . '/' . $pap_hhid;
+
+                    if ($_GET['InitialMode'] == "ProjDoc") {
+                        $target_tag_dir = $target_sub_dir . '/' . $_GET['Tag'];
+                    } else {
+                        $target_tag_dir = $target_hhid_dir . '/' . $_GET['Tag'];
+                    }
+
+
+                    if (!is_dir($target_project_dir)) {
+                        mkdir($target_project_dir);
+                    }
+                    if (!is_dir($target_sub_dir)) {
+                        mkdir($target_sub_dir);
+                    }
+                    if (!is_dir($target_hhid_dir)) {
+                        mkdir($target_hhid_dir);
+                    }
+                    if (!is_dir($target_tag_dir)) {
+                        mkdir($target_tag_dir);
+                    }
+
+
+
+                    $final_target = $target_tag_dir . '/';
+
+                    if (!file_exists($target_tag_dir . '/' . $file_name)) {
+
+                        move_uploaded_file($_FILES['upload']['tmp_name'], $target_tag_dir . '/' . $file_name);
+                        include_once ('../code/code_doc.php');
+                        $upload_doc = new PapDocPhoto();
+
+                        if ($_GET['InitialMode'] == "ProjDoc") {
+                            $upload_doc->pap_id = null;
+                        } else {
+                            $upload_doc->pap_id = $pap_hhid;
+                        }
+
+                        $upload_doc->proj_id = intval($_GET['ProjectID']);
+
+                        if ($_GET['InitialMode'] == "ValDoc") {
+                            $upload_doc->doc_type = "Val Doc";
+                        } else if ($_GET['InitialMode'] == "ProjDoc") {
+                            $upload_doc->doc_type = "Proj Doc";
+                        } else {
+                            $upload_doc->doc_type = "Pap Doc";
+                        }
+
+                        $upload_doc->doc_tag = $_GET['Tag'];
+                        $upload_doc->file_name = $file_name;
+
+                        if ($_GET['InitialMode'] == "ProjDoc") {
+                            $upload_doc->file_path = $pap_project . '/' . $sub_str . '/' . $_GET['Tag'];
+                        } else {
+                            $upload_doc->file_path = $pap_project . '/' . $sub_str . '/' . $pap_hhid . '/' . $_GET['Tag'];
+                        }
+
+                        $upload_doc->created_by = intval($user_id);
+
+                        $upload_doc->InsertDocPhoto();
+                        header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                    } else {
+
+                        echo '<script>alert("File Already Exists");</script>';
+                        header('Refresh:0; url=' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $initial_mode . '&Tag=' . $_GET['Tag'] . '&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']);
+                    }
+                }
+            }
+        }
+    }
+
+    function findexts($filename) {
+        $filename = strtolower($filename);
+        $exts = split("[/\\.]", $filename);
+        $n = count($exts) - 1;
+        $exts = $exts[$n];
+        return $exts;
+    }
     ?>
     
     <?php
