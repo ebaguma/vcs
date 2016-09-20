@@ -25,7 +25,7 @@
     	.ActionLinks {
     		float: left; 
     		display: block;
-    		// text-align: center; 
+    		/* text-align: center; */
     		margin-bottom: 10px;
     		padding: 10px 30px;
     	}
