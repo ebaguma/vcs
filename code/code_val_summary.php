@@ -7,12 +7,16 @@
  */
 
 /**
- * Description of code_valuation_land
+ * Description of code_valn_summary
  *
  * @author bagued
  */
-class PapValuationLand {
-    //put your code here
+
+Class PapValSummary {
+  
+    
+
+
 }
 
 ?>

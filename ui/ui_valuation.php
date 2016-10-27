@@ -28,7 +28,7 @@
                         session_start();
                     }
 
-                    if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
+                    if (session_status() == PHP_SESSION_ACTIVE && $time < $_COOKIE["session_expire"]) {
                         if (($time - $_SESSION['Last_Activity']) < 1800) {
                             // isset($_SESSION['session_user_id'])
                             include_once ('../code/code_index.php');
@@ -54,11 +54,16 @@
                             session_destroy();
                             header('Location: ../index.php?Message=Inactive_Session_Expired');
                         }
-                    } else {
+                    } else if ($time > $_COOKIE["session_expire"]) {
                         include_once ('../code/code_index.php');
                         $InactiveReturnUser = new LogInOut();
-                        $InactiveReturnUser->user_id = $_SESSION['session_user_id'];
+                        # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                        $InactiveReturnUser->user_id = $_COOKIE["last_user"];
                         $InactiveReturnUser->LogOff();
+                        session_unset();
+                        session_destroy();
+                        header('Location: ../index.php?Message=Session_Expired');
+                    } else {
                         session_unset();
                         session_destroy();
                         header('Location: ../index.php?Message=Session_Expired');
@@ -118,27 +123,29 @@
 				<br>
 				<div class="container">
 					<ul class="nav nav-tabs">
-						<li class="inactive">
-							<a>&nbsp;</a>
-						</li>
+						<li class="inactive"><a>&nbsp;&nbsp;</a></li>
 						<li class="active">
-							<a data-toggle="tab" href="#ValLand">Land Valuation</a>
+                                                    <a data-toggle="tab" href="#ValLand">Land Valuation</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#ValCrops">Crops Valuation</a>
+                                                    <a data-toggle="tab" href="#ValCrops">Crop Valuation</a>
+						</li>
+                                                <li>
+                                                    <a data-toggle="tab" href="#ValFixtures">Fixture Valuation</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#ValImprovements">Improvement Valuation</a>
+                                                    <a data-toggle="tab" href="#ValStructures">Structure Valuation</a>
 						</li>
+                                                <!-- li>
+                                                    <a data-toggle="tab" href="#ValSummary">Valuation Summary</a>
+						</li -->
 						<li>
-							<a data-toggle="tab" href="#ValFinancials">Consolidated Financials</a>
+                                                    <a data-toggle="tab" href="#ValFinancials">Consolidated Financials</a>
 						</li>
-						<li class="inactive">
-							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-						</li>
-						<li class="inactive">
-							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-						</li>
+						<li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 					</ul>
 					<div class="tab-content">
 
@@ -168,13 +175,13 @@
 									<td colspan="2"><span class="formSingleLineBox">Select Designation</span></td>
 								</tr>
 								<tr>
-									<td class="formLabel">Ownership (%)age:</td>
-									<td class="formLabel">Usage (%)age:</td>
-									<td class="formLabel" colspan="2">Land Tenure (Ownership)</td>
+									<td class="formLabel">Ownership:</td>
+									<td class="formLabel">Usage:</td>
+									<td class="formLabel" colspan="2">Land Tenure:</td>
 								</tr>
 								<tr>
-									<td><span class="formSingleLineBox" style="width:145px;">Ownership (%)age</span></td>
-									<td><span class="formSingleLineBox" style="width:145px;">Usage (%)age</span></td>
+									<td><span class="formSingleLineBox" style="width:145px;">Percent</span></td>
+									<td><span class="formSingleLineBox" style="width:145px;">Percent</span></td>
 									<td colspan="2"><span class="formSingleLineBox">Select Land Tenure</span></td>
 								</tr>
 								<tr>
@@ -223,7 +230,47 @@
 									</table>
 								</fieldset>
 							</form>
-							<form>
+                                                    
+                                                        <div class="container" style="width:1000px; height:100px; margin-left: 0px; margin-top: 40px; padding:0px;">
+                                                            <ul class="nav nav-tabs">
+                                                                    <li class="inactive">
+                                                                            <a>&nbsp;</a>
+                                                                    </li>
+                                                                    <li class="active">
+                                                                            <a data-toggle="tab" href="#LandGIS">GIS Info</a>
+                                                                    </li>
+                                                                    <li>
+                                                                            <a data-toggle="tab" href="#LandMap">Map</a>
+                                                                    </li>
+                                                                    <li>
+                                                                            <a data-toggle="tab" href="#LandNeighbour">Neighbours</a>
+                                                                    </li>
+                                                                    <li>
+                                                                            <a data-toggle="tab" href="#LandDisputes">Disputes</a>
+                                                                    </li>
+                                                                    <li >
+                                                                            <a data-toggle="tab" href="#LandStakeholder">Stakeholders</a>
+                                                                    </li>
+                                                                    <li class="inactive">
+                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                                                    </li>
+                                                                    <li class="inactive">
+                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                                                    </li>
+                                                                    <li class="inactive">
+                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                                                    </li>
+                                                                    <li class="inactive">
+                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                                                    </li>
+                                                                   
+                                                                    
+                                                            </ul>
+                                                            <div class="tab-content" style="margin:20px;">
+                                                            </div>
+                                                        </div>
+                                                    
+							<!-- form>
 								<fieldset class="fieldset" style="padding:0px 15px; width:900px;">
 									<legend class="legend" style="width:150px;">
 										<span class="legendText" >Neighbours</span>
@@ -253,7 +300,7 @@
 										</tr>
 										<tr>
 											<td><a class="saveButtonArea" href="#">Finish</a></td>
-											<!-- td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td -->
+											<!--td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span></td>
 										</tr>
 									</table>
 									<table class="detailGrid" style="width:360px; ">
@@ -296,7 +343,7 @@
 										</tr>
 									</table>
 								</fieldset>
-							</form>
+							</form -->
 						</div>
 
 						<!-- This is the Crop Valuation Screen -->
@@ -417,8 +464,13 @@
 							</form>
 						</div>
 
+                                                <!-- This is the fixtures Screen -->
+                                                <div id="ValFixtures" class="tab-pane fade">
+                                                    
+                                                </div>
+                                                
 						<!-- This is the improvements Screen -->
-						<div id="ValImprovements" class="tab-pane fade">
+						<div id="ValStructures" class="tab-pane fade">
 							<table>
 								<tr>
 									<td class="formLabel">Structure Make:</td>
@@ -553,6 +605,11 @@
 							</form>
 						</div>
 
+                                                <!-- This is the valuation summary -->
+                                                <div id="ValSummary" class="tab-pane fade">
+                                                    
+                                                </div>
+                                                
 						<!-- Consolidated Financials -->
 						<div id="ValFinancials" class="tab-pane fade">
 

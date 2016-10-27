@@ -7,10 +7,15 @@
  */
 
 /**
- * Description of code_valn_summary
+ * Description of code_valn_impr
  *
  * @author bagued
  */
-class PapValuationSum {
-    //put your code here
+Class PapStructureVal {
+    
+    
+    
+    
 }
+
+?>

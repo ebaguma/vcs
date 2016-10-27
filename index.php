@@ -81,7 +81,6 @@ ini_set("display_errors", 1);
                         <tr>
                             <td class="wrongCredentials">
 
-                                <!-- @formatter:on -->
                                 <?php
                                 if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["requester"] == "Web") {
                                     if (!empty($userid) && !empty($password)) {
@@ -106,7 +105,6 @@ ini_set("display_errors", 1);
                                 }
                                 ?>
 
-                                <!-- @formatter:off -->
                             </td>
                         </tr>
                     </form>

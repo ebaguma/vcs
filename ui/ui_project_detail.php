@@ -75,19 +75,17 @@
     ?>
 
 <html>
-	<head>
+    <head>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
+        <meta name="Me" content="Projects">
+        <title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Projects</title>
 		
-		<meta http-equiv="X-UA-Compatible" content="IE=10" />
-		<meta name="Me" content="Projects">
-		<title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Projects</title>
-		
-		<?php
+	<?php
         include ('ui_header.php');
 
         // <!-- meta charset="utf-8" -->
-
         // <!--#include virtual="ui_header.php"-->
-
         // Project Details
         function CheckReturnUser() {
             # include ('../code/code_index.php');
@@ -97,15 +95,15 @@
                 session_start();
             }
 
-            if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
+            if (session_status() == PHP_SESSION_ACTIVE && $time < $_COOKIE["session_expire"]) {
                 if (($time - $_SESSION['Last_Activity']) < 1800) {
                     // isset($_SESSION['session_user_id'])
-                   	include_once ('../code/code_index.php');
+                    include_once ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();
-                    $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $CheckReturnUser -> CheckLoginStatus();
+                    $CheckReturnUser->user_id = $_SESSION['session_user_id'];
+                    $CheckReturnUser->CheckLoginStatus();
                     # CheckPapSelection();
-                    if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
+                    if ($CheckReturnUser->return_session_id == session_id() && $CheckReturnUser->login_status == "TRUE") {
                         // header('Location: ui/ui_project_list.php?PageNumber=1');
                         echo 'SetActivePage()';
                         $_SESSION['Last_Activity'] = $time;
@@ -115,19 +113,24 @@
                         header('Location: ../index.php?Message=DB_Session_Expired');
                     }
                 } else {
-					include_once ('../code/code_index.php');
-					$InactiveReturnUser = new LogInOut();
-					$InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-					$InactiveReturnUser-> LogOff();
+                    include_once ('../code/code_index.php');
+                    $InactiveReturnUser = new LogInOut();
+                    $InactiveReturnUser->user_id = $_SESSION['session_user_id'];
+                    $InactiveReturnUser->LogOff();
                     session_unset();
                     session_destroy();
                     header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
+            } else if ($time > $_COOKIE["session_expire"]) {
+                include_once ('../code/code_index.php');
+                $InactiveReturnUser = new LogInOut();
+                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $InactiveReturnUser->user_id = $_COOKIE["last_user"];
+                $InactiveReturnUser->LogOff();
+                session_unset();
+                session_destroy();
+                header('Location: ../index.php?Message=Session_Expired');
             } else {
-            	include_once ('../code/code_index.php');
-				$InactiveReturnUser = new LogInOut();
-				$InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-				$InactiveReturnUser-> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Session_Expired');
@@ -140,11 +143,11 @@
             $logout = new LogInOut();
             // session_start();
             if (isset($_SESSION['session_user_id'])) {
-                $logout -> user_id = $_SESSION['session_user_id'];
+                $logout->user_id = $_SESSION['session_user_id'];
             } else {
-                $logout -> user_id = $_COOKIE["last_user"];
+                $logout->user_id = $_COOKIE["last_user"];
             }
-            $logout -> LogOff();
+            $logout->LogOff();
         }
 
         function LoadProjDetails() {
@@ -153,71 +156,70 @@
             $project_id = $_GET['ProjectID'];
 
             $project_details = new ProjectDetail();
-            $project_details -> project_id = $project_id;
-            $project_details -> LoadProjectDetails();
+            $project_details->project_id = $project_id;
+            $project_details->LoadProjectDetails();
 
             global $project_name;
-            $project_name = $project_details -> project_name;
+            $project_name = $project_details->project_name;
             global $project_code;
-            $project_code = $project_details -> project_code;
+            $project_code = $project_details->project_code;
 
             $selected_project_code = $project_code;
 
             // SelectProject();
 
             global $start_date;
-            $start_date = $project_details -> start_date;
+            $start_date = $project_details->start_date;
             global $end_date;
-            $end_date = $project_details -> end_date;
+            $end_date = $project_details->end_date;
             global $project_obj;
-            $project_obj = $project_details -> project_obj;
+            $project_obj = $project_details->project_obj;
             global $project_desc;
-            $project_desc = $project_details -> project_desc;
+            $project_desc = $project_details->project_desc;
         }
 
         function UpdateProjectDetails() {
             include_once ('../code/code_project_detail.php');
             // set update parameters
             $update_details = new ProjectDetail();
-            $update_details -> project_id = $_POST['ProjectID'];
+            $update_details->project_id = $_POST['ProjectID'];
             $_SESSION['ProjectID'] = $_POST['ProjectID'];
-            $update_details -> project_name = $_POST['ProjectName'];
-            $update_details -> project_code = $_POST['ProjectCode'];
+            $update_details->project_name = $_POST['ProjectName'];
+            $update_details->project_code = $_POST['ProjectCode'];
             $_SESSION['ProjectCode'] = $_POST['ProjectCode'];
-            $update_details -> start_date = $_POST['StartDate'];
-            $update_details -> end_date = $_POST['EndDate'];
-            $update_details -> project_obj = $_POST['ProjectObj'];
-            $update_details -> project_desc = $_POST['ProjectDesc'];
-            $update_details -> UpdateProjectDetails();
+            $update_details->start_date = $_POST['StartDate'];
+            $update_details->end_date = $_POST['EndDate'];
+            $update_details->project_obj = $_POST['ProjectObj'];
+            $update_details->project_desc = $_POST['ProjectDesc'];
+            $update_details->UpdateProjectDetails();
             unset($_POST);
             header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $_SESSION['ProjectID'] . '&ProjectCode=' . $_SESSION['ProjectCode'] . '#ProjDetails');
             exit();
         }
 
-        function SelectProject(){
+        function SelectProject() {
             include_once ('../code/code_project_detail.php');
 
             $project_id = $_GET['ProjectID'];
 
             $project_details = new ProjectDetail();
-            $project_details -> project_id = $project_id;
-            $project_details -> LoadProjectDetails();
-            
+            $project_details->project_id = $project_id;
+            $project_details->LoadProjectDetails();
+
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
                 unset($_SESSION['session_pap_hhid']);
                 unset($_SESSION['session_pap_name']);
-                $_SESSION['session_project_name'] = $project_details -> project_name;
-                $_SESSION['session_project_code'] = $project_details -> project_code;
+                $_SESSION['session_project_name'] = $project_details->project_name;
+                $_SESSION['session_project_code'] = $project_details->project_code;
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 unset($_SESSION['session_pap_hhid']);
                 unset($_SESSION['session_pap_name']);
-                $_SESSION['session_project_name'] = $project_details -> project_name;
-                $_SESSION['session_project_code'] = $project_details -> project_code;
+                $_SESSION['session_project_name'] = $project_details->project_name;
+                $_SESSION['session_project_code'] = $project_details->project_code;
             }
         }
-
-		?>
+        ?>
 
         <?php
         
@@ -1385,11 +1387,12 @@
 		<!-- @formatter:off -->
     <div class="ContentParent">
         <div class="Content">
-            <div class="ContentTitle2"> Project Information: </div>
-            <br>
-            <br>
-            <div class="container">
-                <ul class="nav nav-tabs">
+            <div class="ContentTitle2" > Project Information: </div>
+            <!--br>
+            <br -->
+            <div class="container" >
+                <div style="display: block;">
+                <ul class="nav nav-tabs" >
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                     <li class="active"> <a data-toggle="tab" href="#ProjDetails">Details</a> </li>
                     <li> <a data-toggle="tab" href="#ProjClients">Clients</a> </li>
@@ -1402,6 +1405,7 @@
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                 </ul>
+                </div>
                 <div class="tab-content"> 
 
                     <!-- @formatter:off this is the project details screen -->

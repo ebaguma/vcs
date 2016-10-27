@@ -11,6 +11,13 @@
  *
  * @author bagued
  */
-class PapValuationCrop {
-    //put your code here
+
+class PapCropVal {
+    
+    
+    
+    
 }
+
+
+?>

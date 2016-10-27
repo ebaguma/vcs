@@ -43,97 +43,101 @@
 		<title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Bio Information</title>
 
 		<?php
+                include ('ui_header.php');
 
-		include ('ui_header.php');
+                function CheckReturnUser() {
+                    # include ('../code/code_index.php');
+                    $time = $_SERVER['REQUEST_TIME'];
 
-		function CheckReturnUser() {
-			# include ('../code/code_index.php');
-			$time = $_SERVER['REQUEST_TIME'];
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                    }
 
-			if (session_status() == PHP_SESSION_NONE) {
-				session_start();
-			}
+                    if (session_status() == PHP_SESSION_ACTIVE && $time < $_COOKIE["session_expire"]) {
+                        if (($time - $_SESSION['Last_Activity']) < 1800) {
+                            include_once ('../code/code_index.php');
+                            $CheckReturnUser = new LogInOut();
+                            $CheckReturnUser->user_id = $_SESSION['session_user_id'];
+                            $CheckReturnUser->CheckLoginStatus();
+                            CheckPapSelection();
+                            if ($CheckReturnUser->return_session_id == session_id() && $CheckReturnUser->login_status == "TRUE") {
+                                // header('Location: ui/ui_project_list.php?PageNumber=1');
+                                echo 'SetActivePage()';
+                                $_SESSION['Last_Activity'] = $time;
+                            } else {
+                                session_unset();
+                                session_destroy();
+                                header('Location: ../index.php?Message=DB_Session_Expired');
+                            }
+                        } else {
+                            include_once ('../code/code_index.php');
+                            $InactiveReturnUser = new LogInOut();
+                            $InactiveReturnUser->user_id = $_SESSION['session_user_id'];
+                            $InactiveReturnUser->LogOff();
+                            session_unset();
+                            session_destroy();
+                            header('Location: ../index.php?Message=Inactive_Session_Expired');
+                        }
+                    } else if ($time > $_COOKIE["session_expire"]) {
+                        include_once ('../code/code_index.php');
+                        $InactiveReturnUser = new LogInOut();
+                        # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                        $InactiveReturnUser->user_id = $_COOKIE["last_user"];
+                        $InactiveReturnUser->LogOff();
+                        session_unset();
+                        session_destroy();
+                        header('Location: ../index.php?Message=Session_Expired');
+                    } else {
+                        session_unset();
+                        session_destroy();
+                        header('Location: ../index.php?Message=Session_Expired');
+                    }
+                }
 
-			if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
-				if (($time - $_SESSION['Last_Activity']) < 1800) {
-					include_once ('../code/code_index.php');
-					$CheckReturnUser = new LogInOut();
-					$CheckReturnUser -> user_id = $_SESSION['session_user_id'];
-					$CheckReturnUser -> CheckLoginStatus();
-					CheckPapSelection();
-					if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
-						// header('Location: ui/ui_project_list.php?PageNumber=1');
-						echo 'SetActivePage()';
-						$_SESSION['Last_Activity'] = $time;
-					} else {
-						session_unset();
-						session_destroy();
-						header('Location: ../index.php?Message=DB_Session_Expired');
-					}
-				} else {
-					include_once ('../code/code_index.php');
-					$InactiveReturnUser = new LogInOut();
-					$InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-					$InactiveReturnUser -> LogOff();
-					session_unset();
-					session_destroy();
-					header('Location: ../index.php?Message=Inactive_Session_Expired');
-				}
-			} else {
-				include_once ('../code/code_index.php');
-				$InactiveReturnUser = new LogInOut();
-				$InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-				$InactiveReturnUser -> LogOff();
-				session_unset();
-				session_destroy();
-				header('Location: ../index.php?Message=Session_Expired');
-			}
-		}
+                function CheckPapSelection() {
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                        if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])) {
+                            header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1');
+                        }
+                    } else if (session_status() == PHP_SESSION_ACTIVE) {
+                        if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])) {
+                            header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1');
+                        }
+                    }
+                }
 
-		function CheckPapSelection() {
-			if (session_status() == PHP_SESSION_NONE) {
-				session_start();
-				if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])) { header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1');
-				}
-			} else if (session_status() == PHP_SESSION_ACTIVE) {
-				if (!isset($_SESSION['session_pap_hhid']) && isset($_GET['ProjectID']) && isset($_GET['ProjectCode'])) { header('Location: ui_pap_list.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=1');
-				}
-			}
+                function SelectPap() {
 
-		}
+                    include_once ('../code/code_pap_list.php');
+                    $select_project_pap = new ProjectPapList();
+                    $select_project_pap->pap_hhid = $_GET["HHID"];
+                    $select_project_pap->SelectPap();
+                    $GLOBALS['pap_name'] = $select_project_pap->pap_name;
 
-		function SelectPap() {
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                        $_SESSION['session_pap_hhid'] = $_GET['HHID'];
+                        $_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
+                    } else if (session_status() == PHP_SESSION_ACTIVE) {
+                        $_SESSION['session_pap_hhid'] = $_GET['HHID'];
+                        $_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
+                    }
+                }
 
-			include_once ('../code/code_pap_list.php');
-			$select_project_pap = new ProjectPapList();
-			$select_project_pap -> pap_hhid = $_GET["HHID"];
-			$select_project_pap -> SelectPap();
-			$GLOBALS['pap_name'] = $select_project_pap -> pap_name;
+                function LogOut() {
+                    include_once ('../code/code_index.php');
 
-			if (session_status() == PHP_SESSION_NONE) {
-				session_start();
-				$_SESSION['session_pap_hhid'] = $_GET['HHID'];
-				$_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
-			} else if (session_status() == PHP_SESSION_ACTIVE) {
-				$_SESSION['session_pap_hhid'] = $_GET['HHID'];
-				$_SESSION['session_pap_name'] = $GLOBALS['pap_name'];
-			}
-		}
-
-		function LogOut() {
-			include_once ('../code/code_index.php');
-
-			$logout = new LogInOut();
-			//session_start();
-			if (isset($_SESSION['session_user_id'])) {
-				$logout -> user_id = $_SESSION['session_user_id'];
-			} else {
-				$logout -> user_id = $_COOKIE["last_user"];
-			}
-			$logout -> LogOff();
-
-		}
-		?>
+                    $logout = new LogInOut();
+                    //session_start();
+                    if (isset($_SESSION['session_user_id'])) {
+                        $logout->user_id = $_SESSION['session_user_id'];
+                    } else {
+                        $logout->user_id = $_COOKIE["last_user"];
+                    }
+                    $logout->LogOff();
+                }
+                ?>
 		
 		<?php
 
@@ -855,11 +859,24 @@
 							<a data-toggle="tab" href="#PapBasicInfo">Basic Info</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#PapAddress">Addresses</a>
+							<a data-toggle="tab" href="#PapAddress">Address</a>
 						</li>
 						<li>
-							<a data-toggle="tab" href="#PapFamily">Family Members</a>
+							<a data-toggle="tab" href="#PapFamily">Family</a>
 						</li>
+                                                <li>
+							<a data-toggle="tab" href="#PapWelfare">Welfare</a>
+						</li>
+                                                <li>
+							<a data-toggle="tab" href="#PapLivelihood">Livelihood</a>
+						</li>
+                                                <li>
+							<a data-toggle="tab" href="#PapHealth">Health</a>
+						</li>
+                                                <li>
+							<a data-toggle="tab" href="#PapAssets">Other Assets</a>
+						</li>
+                                                
 						<li class="inactive">
 							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 						</li>
@@ -870,7 +887,7 @@
 					<div class="tab-content">
 
 						<!-- This is the Basic Info Screen -->
-						<div id="PapBasicInfo" class="tab-pane fade in active">
+						<div id="PapBasicInfo" class="tab-pane fade in active" style="height:1000px;">
 							<p>
 								This is the Basic Info Screen
 							</p>
@@ -879,7 +896,63 @@
 								<table class="formTable">
 									<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
                                                                         <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                        <tr>
+                                                                            <td><table><tr><td class="formLabel" style="width:125px;  ">HHID:</td>
+                                                                                        <td class="formLabel">Reference Number</td></tr></table></td>
+                                                                            <td class="formLabel">Select Pap Type:</td>
+                                                                            
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><table><tr>
+                                                                                <td><span class="formSingleLineBox" style=" width:145px; ">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" readonly style="width:125px; font-size: 15px;" />
+										</span></td>
+										<td><span class="formSingleLineBox" style=" width:145px; ">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" name="PlotRef" style="width:125px; font-size: 15px;" />
+                                                                                    </span></td></tr></table>
+                                                                                    </td>
+                                                                            <td><span class="formSingleLineBox">
+											<select name="PapType" >
+                                                                                        <option value="">-- Select Pap Type --</option>    
+                                                                                        <option value="IND">Individual</option>
+                                                                                        <option value='ENT' >Entity</option>
+                                                                                        <option value='GRP' >Group</option> 
+                                                                                        </select>
+										</span></td>
+                                                                                
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="formLabel">Pap Status:</td>
+                                                                            <td class="formLabel">Residence Status:</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><span class="formSingleLineBox" style="float: left; ">
+											<select name="PapStatus" >
+                                                                                        <option value="">-- Pap Status --</option>    
+                                                                                        <option value="LO">Land Owner</option>
+                                                                                        <option value='LIC' >Licensee</option>
+                                                                                        <option value='TEN' >Tenant</option> 
+                                                                                        </select>
+                                                                                </span></td>
+                                                                                <td ><span class="formSingleLineBox" style="float:left; ">
+											<select name="PapResidence" >
+                                                                                        <option value="">-- Residence Status --</option>    
+                                                                                        <option value="RES">Resident</option>
+                                                                                        <option value='NON' >Non Resident</option>
+                                                                                        <option value='TEN' >Tenant</option> 
+                                                                                        </select>
+										</span>
+										</td>
+                                                                        </tr>
+                                                                        <tr>
+										<td class="formLabel">PAP Name:</td>
+									</tr>
 									<tr>
+										<td colspan="2" ><span class="formSingleLineBox" style="width:610px;">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="PapName" style="width: 580px;" /> 
+										</span></td>
+									</tr>
+                                                                        <!-- tr>
 										<td class="formLabel">HHID:</td>
 										<td class="formLabel">Reference Number</td>
 									</tr>
@@ -890,15 +963,8 @@
 										<td><span class="formSingleLineBox">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" name="PlotRef" />
 										</span></td>
-									</tr>
-									<tr>
-										<td class="formLabel">PAP Name:</td>
-									</tr>
-									<tr>
-										<td colspan="2" ><span class="formSingleLineBox" style="width:610px;">
-										    <input type="text" value="<?php if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="PapName" style="width: 580px;" /> 
-										</span></td>
-									</tr>
+									</tr -->
+									
 									<tr>
 										<td class="formLabel">Date Of Birth:</td>
 										<td class="formLabel">Place Of Birth:</td>
@@ -918,17 +984,17 @@
 									<tr>
 										<td><span class="formSingleLineBox">
 											<select name="PapSex" >
-                                                <option value="">-- Select Sex --</option>
-                                                <option value="Female" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Female') { echo 'selected'; }  ?> >Female</option>
-                                                <option value="Male" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Male') { echo 'selected'; }  ?> >Male</option> 
-                                        	</select>
+                                                                                        <option value="">-- Select Sex --</option>
+                                                                                        <option value="Female" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Female') { echo 'selected'; }  ?> >Female</option>
+                                                                                        <option value="Male" <?php if (isset($GLOBALS['pap_sex']) && $GLOBALS['pap_sex'] == 'Male') { echo 'selected'; }  ?> >Male</option> 
+                                                                                        </select>
 										</span></td>
 										<td><span class="formSingleLineBox">
 											<select name="MaritalStatus" >
-                                                <option value="">-- Select Status --</option>
-                                                <option value='true' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "true") { echo 'selected'; }  ?> >Married</option>
-                                                <option value='false' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "false") { echo 'selected'; }  ?> >Single</option> 
-                                        	</select>
+                                                                                        <option value="">-- Select Status --</option>
+                                                                                        <option value='true' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "true") { echo 'selected'; }  ?> >Married</option>
+                                                                                        <option value='false' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "false") { echo 'selected'; }  ?> >Single</option> 
+                                                                                        </select>
 										</span></td>
 									</tr>
 									<tr>
@@ -938,29 +1004,44 @@
 									<tr>
 										<td><span class="formSingleLineBox">
 										    <select name="PapTribe" id="SelectTribe" >
-                                               <option value="">-- Select Tribe --</option>
-                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
+                                                                                        <option value="">-- Select Tribe --</option>
+                                                                                         <?php if (isset($_GET['ProjectID']) || isset($_GET['TribeID'])) { BindTribe(); } ?>
+                                                                                     <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 										<td><span class="formSingleLineBox">
 										    <select name="PapReligion" id="SelectReligion" >
-                                                <option value="">-- Select Religion --</option>
-                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
+                                                                                        <option value="">-- Select Religion --</option>
+                                                                                        <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
+                                                                                    <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 									</tr>
 									<tr>
 										<td class="formLabel">Select Occupation:</td>
-										<td class="formLabel">Phone Number:</td>
+                                                                                <td class="formLabel">Literacy Level</td>
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox">
 										    <select name="PapOccupation" id="SelectOccupation" >
-                                                <option value="">-- Select Occupation --</option>
-                                                <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#">New</a -->
+                                                                                    <option value="">-- Select Occupation --</option>
+                                                                                    <?php if (isset($_GET['ProjectID']) || isset($_GET['OccupnID'])) { BindOccupation(); } ?>
+                                                                                <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
-										<td><span class="formSingleLineBox" style="width: 145px; float: left;">
+                                                                                <td><span class="formSingleLineBox">
+											<select name="LiteracyLevel" >
+                                                                                        <option value="">-- Select Literacy --</option>
+                                                                                        </select>
+										</span></td>
+										
+									</tr>
+									<tr>
+										<td class="formLabel">Email Address:</td>
+                                                                                <td class="formLabel">Phone Number:</td>
+									</tr>
+									<tr>
+										<td ><span class="formSingleLineBox" >
+											<input type="text" value="<?php if (isset($GLOBALS['email'])) { echo $GLOBALS['email']; } ?>" name="PapEmail"  placeholder="Enter Contact Email" />
+										</span></td>
+                                                                                <td><span class="formSingleLineBox" style="width: 145px; float: left;">
 											<input type="text" value="<?php if (isset($GLOBALS['pap_phone_no'])) { echo $GLOBALS['pap_phone_no']; } ?>" name="PhoneNo" placeholder="Phone No" style="width: 125px;"/>
 										</span>
 										<span class="formSingleLineBox" style="width: 145px; float:left;">
@@ -968,14 +1049,18 @@
 										</span>
 										</td>
 									</tr>
-									<tr>
-										<td class="formLabel">Email Address:</td>
-									</tr>
-									<tr>
-										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
-											<input type="text" value="<?php if (isset($GLOBALS['email'])) { echo $GLOBALS['email']; } ?>" name="PapEmail" style="width: 580px;" placeholder="Enter Contact Email" />
+                                                                        <tr>
+                                                                            <td class="formLabel">Interviewer:</td>
+                                                                            <td class="formLabel">Interview Date:</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><span class="formSingleLineBox">
+										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) {  } ?>" placeholder="Interviewer" name="Interviewer" readonly />
 										</span></td>
-									</tr>
+                                                                                <td><span class="formSingleLineBox">
+											<input title="DD/MM/YYYY" type="text" id="interview_date" value="<?php if (isset($GLOBALS['pap_dob'])) {  } ?>" placeholder="DD/MM/YYYY" name="InterviewDate" readonly />
+										</span></td>
+                                                                        </tr>
 									<tr>
 										<td><span class="saveButtonArea"> <input type="submit" value="Update" name="UpdateBasicInfo"/></span></td>
 										<td><span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
@@ -1241,19 +1326,52 @@
 
 							</div>
 						</div>
+                                                
+                                                <!-- This is the Welfare info screen -->
+                                                <div id="PapWelfare" class="tab-pane">
+                                                    
+                                                </div>
+                                                
+                                                <!-- This is the Livelihood info screen -->
+                                                <div id="PapLivelihood" class="tab-pane">
+                                                    
+                                                </div>
+                                                
+                                                <!-- This is the health info screen -->
+                                                <div id="PapHealth" class="tab-pane">
+                                                    
+                                                </div>
+                                                
+                                                <!-- This is the Other Assets info screen -->
+                                                <div id="PapAssets" class="tab-pane">
+                                                    
+                                                </div>
 
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<?php include ('ui_footer.php'); ?>
+		<?php // include ('ui_footer.php'); ?>
+        
+                <div id="FooterP" class="FooterParent" style="top:1300px;">
+                    <div class="FooterContent">&copy;&nbsp;&nbsp;Copyright&nbsp;&nbsp;2015:&nbsp;&nbsp;Dataplus Systems Uganda</div>
+                  </div>
 		
 		<script src="js/date_picker/pikaday.js"></script>
 		<script>
 		
 			var picker = new Pikaday({
 				field : document.getElementById('birth_date'),
+				format : 'DD/MM/YYYY',
+				firstDay : 1,
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
+			});
+                        
+                        var picker = new Pikaday({
+				field : document.getElementById('interview_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
 				minDate : new Date(1900, 0, 1),
