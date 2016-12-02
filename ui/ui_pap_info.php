@@ -852,37 +852,17 @@
 				<br>
 				<div class="container">
 					<ul class="nav nav-tabs">
-						<li class="inactive">
-							<a >&nbsp;</a>
-						</li>
-						<li class="active">
-							<a data-toggle="tab" href="#PapBasicInfo">Basic Info</a>
-						</li>
-						<li>
-							<a data-toggle="tab" href="#PapAddress">Address</a>
-						</li>
-						<li>
-							<a data-toggle="tab" href="#PapFamily">Family</a>
-						</li>
-                                                <li>
-							<a data-toggle="tab" href="#PapWelfare">Welfare</a>
-						</li>
-                                                <li>
-							<a data-toggle="tab" href="#PapLivelihood">Livelihood</a>
-						</li>
-                                                <li>
-							<a data-toggle="tab" href="#PapHealth">Health</a>
-						</li>
-                                                <li>
-							<a data-toggle="tab" href="#PapAssets">Other Assets</a>
-						</li>
-                                                
-						<li class="inactive">
-							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-						</li>
-						<li class="inactive">
-							<a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-						</li>
+						<li class="inactive"><a >&nbsp;</a></li>
+						<li class="active"><a data-toggle="tab" href="#PapBasicInfo">Basic Info</a></li>
+						<li><a data-toggle="tab" href="#PapAddress">Address</a></li>
+						<li><a data-toggle="tab" href="#PapFamily">Family</a></li>
+                                                <li><a data-toggle="tab" href="#PapWelfare">Welfare</a></li>
+                                                <li><a data-toggle="tab" href="#PapLivelihood">Livelihood</a></li>
+                                                <li><a data-toggle="tab" href="#PapHealth">Health</a>						</li>
+                                                <li><a data-toggle="tab" href="#PapAssets">Other Assets</a></li>
+                                                <!-- li><a data-toggle="tab" href="#PapBusiness">Other Businesses</a></li -->
+						<li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+						<li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 					</ul>
 					<div class="tab-content">
 
@@ -1113,7 +1093,9 @@
 										<td class="formLabel">Plot No, Road:</td>
 										<td class="formLabel">
 										<input type="checkbox">
-										&nbsp;&nbsp;Is Main Residence?</td>
+                                                                                &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
+                                                                                <input type="checkbox">
+										&nbsp;Affected Plot?</td>
 									</tr>
 									<tr>
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
@@ -1278,6 +1260,62 @@
                                             <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
 									</tr>
+                                                                        <tr>
+										<td class="formLabel">Education Level:</td>
+										<td class="formLabel">Current School Status:</td>
+									</tr>
+									<tr>
+										<td><span class="formSingleLineBox" style="float: left; ">
+											<select name="EducLevel" >
+                                                                                        <option value="">-- Literacy Level --</option>    
+                                                                                        <option value="LO">Illiterate</option>
+                                                                                        <option value='LIC' >Primary</option>
+                                                                                        <option value='TEN' >Secondary</option>
+                                                                                        <option value='TEN' >Vocational</option>
+                                                                                        <option value='TEN' >Tertiary</option>
+                                                                                        </select>
+                                                                                </span></td>
+										<td><span class="formSingleLineBox" style="float: left; ">
+											<select name="CurrentSchool" >
+                                                                                        <option value="">-- School Status --</option>    
+                                                                                        <option value="LO">Continuing</option>
+                                                                                        <option value='LIC' >Completed</option>
+                                                                                        <option value='TEN' >Dropped Out</option>
+                                                                                        <option value='TEN' >Never Attended</option>
+                                                                                        </select>
+                                                                                </span></td>
+									</tr>
+                                                                        <tr>
+										<td class="formLabel">Reason for Non Attendance:</td>
+										<td class="formLabel">Reason for Drop Out:</td>
+									</tr>
+									<tr>
+										<td><span class="formSingleLineBox" style="float: left; ">
+											<select name="EducLevel" >
+                                                                                        <option value="">-- Non Attendance --</option>    
+                                                                                        <option value="LO">Expensive</option>
+                                                                                        <option value='LIC' >Not Applicable</option>
+                                                                                        <option value='TEN' >Long Distance</option>
+                                                                                        <option value='TEN' >Disabled</option>
+                                                                                        <option value='TEN' >Orphaned</option>
+                                                                                        <option value='TEN' >Needed to Work</option>
+                                                                                        <option value='TEN' >Health</option>
+                                                                                        </select>
+                                                                                </span></td>
+										<td><span class="formSingleLineBox" style="float: left; ">
+											<select name="CurrentSchool" >
+                                                                                        <option value="">-- Drop Out Reason --</option>    
+                                                                                        <option value="LO">Attained Desired Level</option>
+                                                                                        <option value="LO">Expensive</option>
+                                                                                        <option value='LIC' >Not Applicable</option>
+                                                                                        <option value='TEN' >Long Distance</option>
+                                                                                        <option value='TEN' >Disabled</option>
+                                                                                        <option value='TEN' >Orphaned</option>
+                                                                                        <option value='TEN' >Needed to Work</option>
+                                                                                        <option value='TEN' >Health</option>
+                                                                                        </select>
+                                                                                </span></td>
+									</tr>
 									<tr>
 										<td> 
 											<span class="saveButtonArea">
@@ -1334,18 +1372,379 @@
                                                 
                                                 <!-- This is the Livelihood info screen -->
                                                 <div id="PapLivelihood" class="tab-pane">
-                                                    
+                                                    <p>
+								This is the Pap Livelihood Info Screen
+							</p>
+							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+								<form name="Address" action="" method="POST" autocomplete="off">
+                                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
+								<table class="formTable">
+									<tr>
+										<td class="formLabel">Activity:</td>
+                                                                                <td class="formLabel">Income Per Cycle:</td>
+									</tr>
+									<tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td ><span class="formSingleLineBox" style="">
+										    Enter Activity Name
+										</span></td>
+                                                                                <td ><span class="formSingleLineBox" style="">
+										    Enter Income per Season
+										</span></td>
+									</tr>
+                                                                        <tr>
+										<td class="formLabel">Other Detail:</td>
+									</tr>
+                                                                        <tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td colspan="2"><span class="formMultiLineBox">
+										    Other details about this activity
+										</span></td>
+                                                                        </tr>
+                                                                        <tr>
+									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
+									<td >
+										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+										<span class="formLinks"><a href="#">Photos</a></span>
+									</td>
+								</tr>
+							</table>
+                                                        </div>
+                                                        
+                                                        <div class="GridArea" style="width: 750px;">	
+								<table class="detailGrid" style="width:700px; margin-top:25px;">
+										<tr>
+											<td class = "detailGridHead">#</td>
+											<td class = "detailGridHead">Crop Name:</td>
+											<td  class = "detailGridHead">Crop Type:</td>
+											<td  class = "detailGridHead">Crop Description:</td>
+											<td  class = "detailGridHead">Units:</td>
+											<td  class = "detailGridHead">Crop Rate:</td>
+											<td  class = "detailGridHead">Crop Total:</td>
+											<td  class = "detailGridHead" colspan="2">Modify:</td>
+										</tr>
+										<tr>
+											<td>1</td>
+											<td>Banana Plants</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Orange Trees</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Eucalyptus Trees</td>
+											<td>Perenial</td>
+											<td>Mature, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>Banana Plants</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>Nsambya Tree</td>
+											<td>Perenial</td>
+											<td>Mature, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+									</table>
+									<table class="detailNavigation">
+										<tr>
+											<td><a href="#">Previous</a></td>
+											<td class="PageJump">1 / 2</td>
+											<td><a href="#">Next</a></td>
+										</tr>
+									</table>
+                                                        </div>
+                                                        
                                                 </div>
                                                 
                                                 <!-- This is the health info screen -->
                                                 <div id="PapHealth" class="tab-pane">
-                                                    
+                                                    <p>
+								This is the Pap Health Info Screen
+							</p>
+							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+								<form name="Address" action="" method="POST" autocomplete="off">
+                                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
+								<table class="formTable">
+									<tr>
+										<td class="formLabel">Common Disease:</td>
+                                                                                <td class="formLabel">Number Affected:</td>
+									</tr>
+									<tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td ><span class="formSingleLineBox" style="">
+										    Enter Common disease
+										</span></td>
+                                                                                <td ><span class="formSingleLineBox" style="">
+										    Enter no Of members affected
+										</span></td>
+									</tr>
+                                                                        <tr>
+										<td class="formLabel">First Aid Step:</td>
+                                                                                <td class="formLabel">Nearest Health Center:</td>
+									</tr>
+									<tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td ><span class="formSingleLineBox" style="">
+										    Enter First Aid Step
+										</span></td>
+                                                                                <td ><span class="formSingleLineBox" style="">
+										    Enter Nearest Health Center
+										</span></td>
+									</tr>
+                                                                        <tr>
+										<td class="formLabel">Other Detail:</td>
+									</tr>
+                                                                        <tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td colspan="2"><span class="formMultiLineBox">
+										    Other details about this disease
+										</span></td>
+                                                                        </tr>
+                                                                        <tr>
+									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
+									<td >
+										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+										<span class="formLinks"><a href="#">Photos</a></span>
+									</td>
+								</tr>
+							</table>
+                                                                </form>
+                                                        </div>
+                                                        
+                                                        <div class="GridArea" style="width: 750px;">	
+								<table class="detailGrid" style="width:700px; margin-top:25px;">
+										<tr>
+											<td class = "detailGridHead">#</td>
+											<td class = "detailGridHead">Crop Name:</td>
+											<td  class = "detailGridHead">Crop Type:</td>
+											<td  class = "detailGridHead">Crop Description:</td>
+											<td  class = "detailGridHead">Units:</td>
+											<td  class = "detailGridHead">Crop Rate:</td>
+											<td  class = "detailGridHead">Crop Total:</td>
+											<td  class = "detailGridHead" colspan="2">Modify:</td>
+										</tr>
+										<tr>
+											<td>1</td>
+											<td>Banana Plants</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Orange Trees</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Eucalyptus Trees</td>
+											<td>Perenial</td>
+											<td>Mature, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>Banana Plants</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>Nsambya Tree</td>
+											<td>Perenial</td>
+											<td>Mature, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+									</table>
+									<table class="detailNavigation">
+										<tr>
+											<td><a href="#">Previous</a></td>
+											<td class="PageJump">1 / 2</td>
+											<td><a href="#">Next</a></td>
+										</tr>
+									</table>
+                                                        </div>
                                                 </div>
                                                 
                                                 <!-- This is the Other Assets info screen -->
                                                 <div id="PapAssets" class="tab-pane">
-                                                    
+                                                    <p>
+								This is the Pap Assets Info Screen
+							</p>
+							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+								<form name="Address" action="" method="POST" autocomplete="off">
+                                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
+								<table class="formTable">
+									<tr>
+										<td class="formLabel">Asset/Business Name:</td>
+                                                                                <td class="formLabel">Number of Assets:</td>
+									</tr>
+									<tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td ><span class="formSingleLineBox" style="">
+										    Enter Asset Name
+										</span></td>
+                                                                                <td ><span class="formSingleLineBox" style="">
+										    Enter Number of Assets
+										</span></td>
+									</tr>
+                                                                        <tr>
+										<td class="formLabel">Purpose:</td>
+									</tr>
+									<tr>
+                                                                                <td ><span class="formSingleLineBox" style="">
+										    Enter purpose of Asset
+										</span></td>
+									</tr>
+                                                                        <tr>
+										<td class="formLabel">Other Detail:</td>
+									</tr>
+                                                                        <tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<td colspan="2"><span class="formMultiLineBox">
+										    Other details about this Asset
+										</span></td>
+                                                                        </tr>
+                                                                        <tr>
+									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
+									<td >
+										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+										<span class="formLinks"><a href="#">Photos</a></span>
+									</td>
+								</tr>
+							</table>
+                                                        </div>
+                                                        
+                                                        <div class="GridArea" style="width: 750px;">	
+								<table class="detailGrid" style="width:700px; margin-top:25px;">
+										<tr>
+											<td class = "detailGridHead">#</td>
+											<td class = "detailGridHead">Crop Name:</td>
+											<td  class = "detailGridHead">Crop Type:</td>
+											<td  class = "detailGridHead">Crop Description:</td>
+											<td  class = "detailGridHead">Units:</td>
+											<td  class = "detailGridHead">Crop Rate:</td>
+											<td  class = "detailGridHead">Crop Total:</td>
+											<td  class = "detailGridHead" colspan="2">Modify:</td>
+										</tr>
+										<tr>
+											<td>1</td>
+											<td>Banana Plants</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Orange Trees</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Eucalyptus Trees</td>
+											<td>Perenial</td>
+											<td>Mature, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>Banana Plants</td>
+											<td>Seasonal</td>
+											<td>Young, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>Nsambya Tree</td>
+											<td>Perenial</td>
+											<td>Mature, Good Condition</td>
+											<td>100</td>
+											<td>25,000</td>
+											<td>2,500,000</td>
+											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+										</tr>
+									</table>
+									<table class="detailNavigation">
+										<tr>
+											<td><a href="#">Previous</a></td>
+											<td class="PageJump">1 / 2</td>
+											<td><a href="#">Next</a></td>
+										</tr>
+									</table>
+                                                        </div>
                                                 </div>
+                                                
+                                                <!-- This is the Other Business info screen -->
+                                                <!-- div id="PapBusiness" class="tab-pane">
+                                                    
+                                                </div -->
 
 					</div>
 				</div>

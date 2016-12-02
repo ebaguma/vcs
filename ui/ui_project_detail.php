@@ -1401,7 +1401,9 @@
                     <li> <a data-toggle="tab" href="#ProjPersonnel">Personnel</a> </li>
                     <li> <a data-toggle="tab" href="#ProjPAP">PAP Definition</a> </li>
                     <!-- li> <a data-toggle="tab" href="#Disputes">Disputes</a> </li -->
-                    <li> <a data-toggle="tab" href="#ProjSections">Sections</a> </li>
+                    <!-- li> <a data-toggle="tab" href="#ProjSections">Sections</a> </li -->
+                    <li> <a data-toggle="tab" href="#ProjSections">Segments</a> </li>
+                    <!-- li> <a data-toggle="tab" href="#Sections">OtherSections</a> </li -->
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                 </ul>
@@ -2195,6 +2197,66 @@
                         </div>
                     </div>
 
+                    <div id="ProjSections" class="tab-pane">
+                        <p> This is the Project Sections Screen </p>
+                        <div class="left-form">
+                                <form name="SavePersonnel" action="<?php if($_GET['Mode']=='Read'){echo htmlspecialchars($_SERVER[" PHP_SELF "]).'?Mode=InsertSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';}else if($_GET['Mode']=='ViewSection'){echo htmlspecialchars($_SERVER["PHP_SELF "]).'?Mode=UpdateSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';}?>" method="POST" autocomplete="off">
+                                        <table class="formTable">
+                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID'];?>" />
+                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode'];?>" />
+                                                <input type="hidden" name="SectID" value="<?php echo $_GET['SectID'];?>" />
+                                                <tr>
+                                                        <td class="formLabel">Section Name:</td>
+                                                        <td class="formLabel">Section Length (Km):</td>
+                                                </tr>
+                                                <tr>
+                                                        <td ><span class="formSingleLineBox" >
+                                                          <input id="SectName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectName" value="<?php if(isset($GLOBALS['proj_sect_name'])){echo $GLOBALS['proj_sect_name'];}?>" placeholder="Enter Section Name" />
+                                                          </span>
+                                                        </td>
+                                                        <td><span class="formSingleLineBox">
+                                                          <input id="SectLength" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectLength" value="<?php if(isset($GLOBALS['proj_sect_length'])){echo $GLOBALS['proj_sect_length'];}?>" placeholder="Enter Section Length" />
+                                                          </span>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="formLabel">Other Details:</td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="2" style="width:610px"><span class="formMultiLineBox">
+                                                            <textarea id="OtherDtl" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_sect_other_dtl'])){echo $GLOBALS['proj_sect_other_dtl'];}?></textarea>
+                                                            </span>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><span class="saveButtonArea" href="#">
+                                                            <input type="submit" value="<?php if($_GET['Mode']=='ViewSection'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
+                                                            <?php $new_section=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';if($_GET['Mode']=='ViewSection'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_section.'>New Section</a></span>';}?> </span>
+                                                        </td>
+                                                        <td align="right"> <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjSections&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Documents</a></span> <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjSections&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Photos</a></span> </td>
+                                                </tr>
+                                        </table>
+                                        <div class="GridArea">
+                                                <table class="detailGrid" style="width:900px">
+                                                        <tr>
+                                                                <td class="detailGridHead">#</td>
+                                                                <td class="detailGridHead">Section Name</td>
+                                                                <td class="detailGridHead">Section Details</td>
+                                                                <td class="detailGridHead">Modify:</td>
+                                                        </tr>
+                                                        <?php if($_SERVER[ "REQUEST_METHOD"]=="GET" &&isset($_GET[ 'ProjectID'])){LoadProjectSections();}?> 
+                                </table> 
+                                            
+                                            <span style="white-space:nowrap">
+                                                <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}?>">Previous</a>
+                                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['GridPage'])){echo $GLOBALS['proj_sect_load_page'].' / '.$GLOBALS['proj_sect_num_pages'];}else{echo '1 / '.$GLOBALS['proj_sect_num_pages'];}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                                <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_next_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_next_page'].'#ProjSections';}?>">Next</a>
+                                            </span> 
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Projects Disputes Starts here -->        
                     <div id="ProjDisputes" class="tab-pane fade">
                         <p> This is the Project Disputes Screen </p>
                         <div class="left-form">
@@ -2297,69 +2359,7 @@
                         </div>
                     </div>
 
-                    <!-- Projects Sections Starts here -->
-                    <div id="ProjSections" class="tab-pane fade">
-                        <p> This is the Project Sections Screen </p>
-                        <div class="left-form">
-                                <form name="SavePersonnel" action="<?php if($_GET['Mode']=='Read'){echo htmlspecialchars($_SERVER[" PHP_SELF "]).'?Mode=InsertSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';}else if($_GET['Mode']=='ViewSection'){echo htmlspecialchars($_SERVER["PHP_SELF "]).'?Mode=UpdateSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';}?>" method="POST" autocomplete="off">
-                                        <table class="formTable">
-                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID'];?>" />
-                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode'];?>" />
-                                                <input type="hidden" name="SectID" value="<?php echo $_GET['SectID'];?>" />
-                                                <tr>
-                                                        <td class="formLabel">Section Name:</td>
-                                                </tr>
-                                                <tr>
-                                                        <td colspan="2"><span class="formSingleLineBox" style="width:610px">
-                                      <input id="SectName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectName" value="<?php if(isset($GLOBALS['proj_sect_name'])){echo $GLOBALS['proj_sect_name'];}?>" placeholder="Enter Section Name" style="width:580px" />
-                                      </span>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="formLabel">Section Length (Km):</td>
-                                                </tr>
-                                                <tr>
-                                                        <td><span class="formSingleLineBox">
-                                      <input id="SectLength" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectLength" value="<?php if(isset($GLOBALS['proj_sect_length'])){echo $GLOBALS['proj_sect_length'];}?>" placeholder="Enter Section Length" />
-                                      </span>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="formLabel">Other Details:</td>
-                                                </tr>
-                                                <tr>
-                                                        <td colspan="2" style="width:610px"><span class="formMultiLineBox">
-                                      <textarea id="OtherDtl" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_sect_other_dtl'])){echo $GLOBALS['proj_sect_other_dtl'];}?></textarea>
-                                      </span>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><span class="saveButtonArea" href="#">
-                                      <input type="submit" value="<?php if($_GET['Mode']=='ViewSection'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
-                                      <?php $new_section=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';if($_GET['Mode']=='ViewSection'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_section.'>New Section</a></span>';}?> </span>
-                                                        </td>
-                                                        <td align="right"> <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjSections&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Documents</a></span> <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjSections&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Photos</a></span> </td>
-                                                </tr>
-                                        </table>
-                                        <div class="GridArea">
-                                                <table class="detailGrid" style="width:900px">
-                                                        <tr>
-                                                                <td class="detailGridHead">#</td>
-                                                                <td class="detailGridHead">Section Name</td>
-                                                                <td class="detailGridHead">Section Details</td>
-                                                                <td class="detailGridHead">Modify:</td>
-                                                        </tr>
-                                                        <?php if($_SERVER[ "REQUEST_METHOD"]=="GET" &&isset($_GET[ 'ProjectID'])){LoadProjectSections();}?> 
-                                </table> 
-                                            
-                              <span style="white-space:nowrap">
-                                  <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}?>">Previous</a>
-                                  &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['GridPage'])){echo $GLOBALS['proj_sect_load_page'].' / '.$GLOBALS['proj_sect_num_pages'];}else{echo '1 / '.$GLOBALS['proj_sect_num_pages'];}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
-                                  <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_next_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_next_page'].'#ProjSections';}?>">Next</a>
-                              </span> 
-                          </div>
-                        </div>
-                    </div>
+                    
 					</div>
 				</div>
 			</div>

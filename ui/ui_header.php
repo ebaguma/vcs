@@ -1,15 +1,17 @@
 <link rel="stylesheet" type="text/css" href="css/site-master.css">
 <link rel='shortcut icon' type='image/x-icon' href='images/favicon.png' />
 <link rel="stylesheet" type="text/css" href="css/content-master.css">
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<script src="js/date_picker/moment.min.js"></script>
-<link rel="stylesheet" href="css/date_picker/pikaday.css">
-<link rel="stylesheet" href="css/date_picker/site.css">
 <link rel="stylesheet" href="css/jquery-ui.min.css">
 <script src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <script src="js/bootstrap.js"></script>
+<script src="js/date_picker/moment.min.js"></script>
+<link rel="stylesheet" href="css/date_picker/pikaday.css">
+<link rel="stylesheet" href="css/date_picker/site.css">
+
+
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
 	<div  class="Header">
@@ -120,22 +122,30 @@
     			<span style="color:#003366">Project:</span>
     			 <?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
 			</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a id="SelectedPAP" href="ui_pap_list.php?Mode=Read&ProjectID=<?php if (isset($_GET['ProjectID'])) { echo $_GET['ProjectID']; } ?>&ProjectCode=<?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?>&GridPage=1" >
-			    <span style="color:#003366">
-			        <?php 
-			        if (session_status() == PHP_SESSION_NONE) {
-                        session_start(); echo $_SESSION['session_pap_hhid']; } 
-                    else if (session_status() == PHP_SESSION_ACTIVE) {
-                        echo $_SESSION['session_pap_hhid']; }
-			        ?>:
-			    </span>
-			        <?php 
-                    if (session_status() == PHP_SESSION_NONE) {
-                        session_start(); echo $_SESSION['session_pap_name']; } 
-                    else if (session_status() == PHP_SESSION_ACTIVE) {
-                        echo $_SESSION['session_pap_name']; }
-                    ?>
-		    </a>
+                        <a id="SelectedPAP" href="ui_pap_list.php?Mode=Read&ProjectID=<?php if (isset($_GET['ProjectID'])) {
+                                echo $_GET['ProjectID'];
+                            } ?>&ProjectCode=<?php if (isset($_GET['ProjectCode'])) {
+                                    echo $_GET['ProjectCode'];
+                                } ?>&GridPage=1" >
+                            <span style="color:#003366">
+                                <?php
+                                if (session_status() == PHP_SESSION_NONE) {
+                                    session_start();
+                                    echo $_SESSION['session_pap_hhid'];
+                                } else if (session_status() == PHP_SESSION_ACTIVE) {
+                                    echo $_SESSION['session_pap_hhid'];
+                                }
+                                ?>:
+                            </span>
+                            <?php
+                            if (session_status() == PHP_SESSION_NONE) {
+                                session_start();
+                                echo $_SESSION['session_pap_name'];
+                            } else if (session_status() == PHP_SESSION_ACTIVE) {
+                                echo $_SESSION['session_pap_name'];
+                            }
+                            ?>
+                        </a>
 			</span>
 			<span class="spanUserStatus">
 				<ul >

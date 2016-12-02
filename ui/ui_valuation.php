@@ -233,40 +233,228 @@
                                                     
                                                         <div class="container" style="width:1000px; height:100px; margin-left: 0px; margin-top: 40px; padding:0px;">
                                                             <ul class="nav nav-tabs">
-                                                                    <li class="inactive">
-                                                                            <a>&nbsp;</a>
-                                                                    </li>
-                                                                    <li class="active">
-                                                                            <a data-toggle="tab" href="#LandGIS">GIS Info</a>
-                                                                    </li>
-                                                                    <li>
-                                                                            <a data-toggle="tab" href="#LandMap">Map</a>
-                                                                    </li>
-                                                                    <li>
-                                                                            <a data-toggle="tab" href="#LandNeighbour">Neighbours</a>
-                                                                    </li>
-                                                                    <li>
-                                                                            <a data-toggle="tab" href="#LandDisputes">Disputes</a>
-                                                                    </li>
-                                                                    <li >
-                                                                            <a data-toggle="tab" href="#LandStakeholder">Stakeholders</a>
-                                                                    </li>
-                                                                    <li class="inactive">
-                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                                                    </li>
-                                                                    <li class="inactive">
-                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                                                    </li>
-                                                                    <li class="inactive">
-                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                                                    </li>
-                                                                    <li class="inactive">
-                                                                            <a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                                                    </li>
+                                                                    <li class="inactive"><a>&nbsp;</a></li>
+                                                                    <li class="active"><a data-toggle="tab" href="#LandGIS">GIS Info</a></li>
+                                                                    <li><a data-toggle="tab" href="#LandMap">Map</a></li>
+                                                                    <li><a data-toggle="tab" href="#LandNeighbour">Neighbours</a></li>
+                                                                    <li><a data-toggle="tab" href="#LandDisputes">Disputes</a></li>
+                                                                    <li ><a data-toggle="tab" href="#LandStakeholder">Stakeholders</a></li>
+                                                                    <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                                    <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                                    <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                                    <li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                                                                    
                                                                     
                                                             </ul>
-                                                            <div class="tab-content" style="margin:20px;">
+                                                            
+                                                            <div class="tab-content" style="margin:10px;">
+                                                                <div id="LandGIS" class="tab-pane fade active in">
+                                                                    <p>
+                                                                        GIS Information (Coordinates)
+                                                                    </p>
+                                                                    <div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+                                                                        <form name="Address" action="" method="POST" autocomplete="off">
+                                                                            <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                                            <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                            <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) {
+    echo $_GET['MemberID'];
+} ?>" />
+                                                                            <table class="formTable">
+                                                                                <tr>
+                                                                                    <td class="formLabel">Common Disease:</td>
+                                                                                    <td class="formLabel">Number Affected:</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                        <!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+                                                                                    <td ><span class="formSingleLineBox" style="">
+                                                                                            Enter Common disease
+                                                                                        </span></td>
+                                                                                    <td ><span class="formSingleLineBox" style="">
+                                                                                            Enter no Of members affected
+                                                                                        </span></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
+                                                                                    <td >
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+
+                                                                    <div class="GridArea" style="width: 750px;">	
+                                                                        <table class="detailGrid" style="width:700px; margin-top:25px;">
+                                                                            <tr>
+                                                                                <td class = "detailGridHead">#</td>
+                                                                                <td class = "detailGridHead">Crop Name:</td>
+                                                                                <td  class = "detailGridHead">Crop Type:</td>
+                                                                                <td  class = "detailGridHead">Crop Description:</td>
+                                                                                <td  class = "detailGridHead">Units:</td>
+                                                                                <td  class = "detailGridHead">Crop Rate:</td>
+                                                                                <td  class = "detailGridHead">Crop Total:</td>
+                                                                                <td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Banana Plants</td>
+                                                                                <td>Seasonal</td>
+                                                                                <td>Young, Good Condition</td>
+                                                                                <td>100</td>
+                                                                                <td>25,000</td>
+                                                                                <td>2,500,000</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Orange Trees</td>
+                                                                                <td>Seasonal</td>
+                                                                                <td>Young, Good Condition</td>
+                                                                                <td>100</td>
+                                                                                <td>25,000</td>
+                                                                                <td>2,500,000</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>3</td>
+                                                                                <td>Eucalyptus Trees</td>
+                                                                                <td>Perenial</td>
+                                                                                <td>Mature, Good Condition</td>
+                                                                                <td>100</td>
+                                                                                <td>25,000</td>
+                                                                                <td>2,500,000</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>4</td>
+                                                                                <td>Banana Plants</td>
+                                                                                <td>Seasonal</td>
+                                                                                <td>Young, Good Condition</td>
+                                                                                <td>100</td>
+                                                                                <td>25,000</td>
+                                                                                <td>2,500,000</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>5</td>
+                                                                                <td>Nsambya Tree</td>
+                                                                                <td>Perenial</td>
+                                                                                <td>Mature, Good Condition</td>
+                                                                                <td>100</td>
+                                                                                <td>25,000</td>
+                                                                                <td>2,500,000</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        <table class="detailNavigation">
+                                                                            <tr>
+                                                                                <td><a href="#">Previous</a></td>
+                                                                                <td class="PageJump">1 / 2</td>
+                                                                                <td><a href="#">Next</a></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <!-- This is the land GIS Screen -->
+                                                                <div id="LandMap" class="tab-pane">
+                                                                     <p>
+                                                                        Map of Neighbourhood:
+                                                                    </p>
+                                                                    <div style="width:700px; height:400px; border:1px solid #bcddfe; float:left; ">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <!-- this is the neighbours screen -->
+                                                                <div id="LandNeighbour" class="tab-pane">
+                                                                    <p>
+                                                                        Neighbours Information
+                                                                    </p>
+                                                                    <div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+                                                                        <form name="Address" action="" method="POST" autocomplete="off">
+                                                                            <table style="float:left; margin-right:10px;">
+                                                                                <tr>
+                                                                                    <td class="formLabel">Neighbour Name:</td>
+                                                                                    <td class="formLabel">Select Direction</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><span class="formSingleLineBox" style="">Enter Neighbour</span></td>
+                                                                                    <td><span class="formSingleLineBox" style="">Select Direction</span></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="formLabel">
+                                                                                        <input type="checkbox">
+                                                                                        &nbsp;&nbsp;Boundary OK?</td>
+                                                                                    <td class="formLabel">
+                                                                                        <input type="checkbox">
+                                                                                        &nbsp;&nbsp;Is Disputed?</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><a class="saveButtonArea" href="#">Finish</a></td>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </form>
+                                                                    </div>
+
+                                                                    <div class="GridArea" style="width: 750px;">
+                                                                        <table class="detailGrid" style="width:700px; ">
+                                                                            <tr>
+                                                                                <td class = "detailGridHead">#</td>
+                                                                                <td class = "detailGridHead">Neighbour:</td>
+                                                                                <td  class = "detailGridHead">Direction:</td>
+                                                                                <td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Mudde Musa</td>
+                                                                                <td>East</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Guy Mulika</td>
+                                                                                <td>North</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>3</td>
+                                                                                <td>Ssenfuka Ben</td>
+                                                                                <td>South</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>4</td>
+                                                                                <td>Balikowa James</td>
+                                                                                <td>North East</td>
+                                                                                <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        <table class="detailNavigation">
+                                                                            <tr>
+                                                                                <td><a href="#">Previous</a></td>
+                                                                                <td class="PageJump">1 / 2</td>
+                                                                                <td><a href="#">Next</a></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <!-- this is the Disputes Screen -->
+                                                                <div id="LandDisputes" class="tab-pane">
+                                                                    <p>
+                                                                        Dispute Information
+                                                                    </p>
+                                                                    
+                                                                </div>
+                                                                
+                                                                <!-- this is the Plot Stakeholders Screen -->
+                                                                <div id="LandStakeholder" class="tab-pane">
+                                                                    <p>
+                                                                        Stakeholder Information
+                                                                    </p>
+                                                                </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     
