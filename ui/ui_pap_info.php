@@ -856,10 +856,11 @@
 						<li class="active"><a data-toggle="tab" href="#PapBasicInfo">Basic Info</a></li>
 						<li><a data-toggle="tab" href="#PapAddress">Address</a></li>
 						<li><a data-toggle="tab" href="#PapFamily">Family</a></li>
-                                                <li><a data-toggle="tab" href="#PapWelfare">Welfare</a></li>
+                                                <!-- li><a data-toggle="tab" href="#PapWelfare">Welfare</a></li -->
+                                                <li><a data-toggle="tab" href="#PapAssets">Welfare</a></li>
                                                 <li><a data-toggle="tab" href="#PapLivelihood">Livelihood</a></li>
                                                 <li><a data-toggle="tab" href="#PapHealth">Health</a>						</li>
-                                                <li><a data-toggle="tab" href="#PapAssets">Other Assets</a></li>
+                                                
                                                 <!-- li><a data-toggle="tab" href="#PapBusiness">Other Businesses</a></li -->
 						<li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 						<li class="inactive"><a  href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
@@ -877,43 +878,49 @@
 									<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
                                                                         <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
                                                                         <tr>
-                                                                            <td><table><tr><td class="formLabel" style="width:125px;  ">HHID:</td>
-                                                                                        <td class="formLabel">Reference Number</td></tr></table></td>
-                                                                            <td class="formLabel">Select Pap Type:</td>
+                                                                            <td><table><tr><td class="formLabel" style="width:125px">HHID:</td>
+                                                                                        <td class="formLabel">ID Number:</td></tr></table></td >
+                                                                            <td class="formLabel">Reference Number:</td>
                                                                             
                                                                         </tr>
                                                                         <tr>
                                                                             <td><table><tr>
-                                                                                <td><span class="formSingleLineBox" style=" width:145px; ">
+                                                                                        <td><span class="formSingleLineBox" style="width:145px;">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" readonly style="width:125px; font-size: 15px;" />
 										</span></td>
 										<td><span class="formSingleLineBox" style=" width:145px; ">
-										    <input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" name="PlotRef" style="width:125px; font-size: 15px;" />
+                                                                                        <input type="text" value="<?php # if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="ID Number" name="IDNo" style="width:125px; " />
                                                                                     </span></td></tr></table>
-                                                                                    </td>
+                                                                                    </td >
                                                                             <td><span class="formSingleLineBox">
-											<select name="PapType" >
-                                                                                        <option value="">-- Select Pap Type --</option>    
-                                                                                        <option value="IND">Individual</option>
-                                                                                        <option value='ENT' >Entity</option>
-                                                                                        <option value='GRP' >Group</option> 
-                                                                                        </select>
+											<input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="Plot Ref" name="PlotRef" style="font-size: 15px;" />
 										</span></td>
                                                                                 
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="formLabel">Pap Status:</td>
+                                                                            <td><table><tr><td class="formLabel" style="width:125px;  ">Pap Status:</td>
+                                                                                        <td class="formLabel">Pap Type:</td></tr></table></td>
                                                                             <td class="formLabel">Residence Status:</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><span class="formSingleLineBox" style="float: left; ">
-											<select name="PapStatus" >
-                                                                                        <option value="">-- Pap Status --</option>    
+                                                                            <td><table><tr>
+                                                                                <td><span class="formSingleLineBox" style=" width:145px; float:left;">
+                                                                                        <select name="PapStatus" style="width:125px;">
+                                                                                        <option value="">-- Status --</option>    
                                                                                         <option value="LO">Land Owner</option>
                                                                                         <option value='LIC' >Licensee</option>
                                                                                         <option value='TEN' >Tenant</option> 
                                                                                         </select>
                                                                                 </span></td>
+                                                                                <td><span class="formSingleLineBox" style=" width:145px; ">
+                                                                                        <select name="PapType" style="width:125px;">
+                                                                                        <option value="">-- Pap Type --</option>    
+                                                                                        <option value="IND">Individual</option>
+                                                                                        <option value='ENT' >Entity</option>
+                                                                                        <option value='GRP' >Group</option> 
+                                                                                        </select>
+                                                                                         </span></td></tr></table>
+                                                                                    </td>
                                                                                 <td ><span class="formSingleLineBox" style="float:left; ">
 											<select name="PapResidence" >
                                                                                         <option value="">-- Residence Status --</option>    
@@ -1082,12 +1089,18 @@
 								This is the PAP Address Screen
 							</p>
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
-								<form name="Address" action="<?php 
-		                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress'; }
-		                            else if ($_GET['Mode'] == 'ViewAddress') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress'; } ?>" method="POST" autocomplete="off">
-								<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                <input type="hidden" name="AddrID" value="<?php if (isset($_GET['AddrID'])) { echo $_GET['AddrID']; } ?>" />
+                                                            <form name="Address" action="<?php
+                                                            if ($_GET['Mode'] == 'Read') {
+                                                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
+                                                            } else if ($_GET['Mode'] == 'ViewAddress') {
+                                                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
+                                                            }
+                                                            ?>" method="POST" autocomplete="off">
+                                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                <input type="hidden" name="AddrID" value="<?php if (isset($_GET['AddrID'])) {
+                                                                echo $_GET['AddrID'];
+                                                            } ?>" />
 								<table class="formTable">
 									<tr>
 										<td class="formLabel">Plot No, Road:</td>
@@ -1107,20 +1120,31 @@
 										<td class="formLabel">Select County:</td>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox" >
-											<select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
-                                                <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['pap_addr_dist_id']); } ?> >-- Select District --</option>
-                                                <?php if (isset($_GET['ProjectID']) ) { SelectDistrict(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
-                                            </span>
-                                        </td>
-										<td><span class="formSingleLineBox">
-											<select name="Counties" id="SelectCounty" onchange="BindSubCounties()" >
-                                                <option value="" >-- Select County --</option>
-                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectCounty(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
-                                            </span>
-                                        </td>
+                                                                            <td><span class="formSingleLineBox" >
+                                                                                    <select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
+                                                                                        <option value="" <?php
+                                                                                        if ($_GET['Mode'] == 'Read') {
+                                                                                            echo 'selected';
+                                                                                            unset($_SESSION['pap_addr_dist_id']);
+                                                                                        }
+                                                                                        ?> >-- Select District --</option>
+                                                                                                <?php
+                                                                                                if (isset($_GET['ProjectID'])) {
+                                                                                                    SelectDistrict();
+                                                                                                }
+                                                                                                ?>
+                                                                                        <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
+                                                                                </span>
+                                                                            </td>
+                                                                            <td><span class="formSingleLineBox">
+                                                                                    <select name="Counties" id="SelectCounty" onchange="BindSubCounties()" >
+                                                                                        <option value="" >-- Select County --</option>
+                                                                                        <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') {
+                                                                                            SelectCounty();
+                                                                                        } ?>
+                                                                                        <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
+                                                                                </span>
+                                                                            </td>
 									</tr>
 									<tr>
 										<td class="formLabel">Select SubCounty:</td>
@@ -1158,17 +1182,25 @@
 								</form>
 							</div>
 							
-							<div class="GridArea" style="width: 750px;">	
-								<table class="detailGrid" style="width:800px; margin-top:25px;">
-									<tr>
-										<td class = "detailGridHead">#</td>
-										<td  class = "detailGridHead">Address</td>
-										<td  class = "detailGridHead">Village</td>
-										<td  class = "detailGridHead">District</td>
-										<td  class = "detailGridHead">Modify</td>
-									</tr>
-									<?php if (isset($_GET['ProjectID'])) { LoadPapAddr(); } ?>
-								</table>
+							<div class="GridArea" style="width: 750px;">
+                                                            <form>
+                                                                <fieldset class="fieldset" style="width:800px; margin:0px;;">
+                                                                    <legend class="legend" style="width:200px;">
+                                                                        <span class="legendText" >Pap Addresses:</span>
+                                                                    </legend>
+                                                                    <table class="detailGrid" style="width:800px; margin:10px 0px;">
+                                                                        <tr>
+                                                                            <td class = "detailGridHead">#</td>
+                                                                            <td  class = "detailGridHead">Address</td>
+                                                                            <td  class = "detailGridHead">Village</td>
+                                                                            <td  class = "detailGridHead">District</td>
+                                                                            <td  class = "detailGridHead">Modify</td>
+                                                                        </tr>
+                                                                        <?php if (isset($_GET['ProjectID'])) {
+                                                                            LoadPapAddr();
+                                                                        } ?>
+                                                                    </table>
+                                                                
 								
 								<!-- table class="detailNavigation">
 									<tr>
@@ -1179,13 +1211,15 @@
 								</table -->
 								
 								<span style="white-space: nowrap;">
-                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } ?>" >Previous</a>
-                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $pap_addr_load_page . ' / ' . $pap_addr_num_pages ; } else {echo '1 / ' . $pap_addr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } ?>" >Next</a>
-                            	</span>
-								
+                                                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } 
+                                                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } ?>" >Previous</a>
+                                                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $pap_addr_load_page . ' / ' . $pap_addr_num_pages ; } else {echo '1 / ' . $pap_addr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                                                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } 
+                                                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } ?>" >Next</a>
+                                                                </span>
+							
+                                                                </fieldset>
+                                                            </form>
 							</div>
 						</div>
 
@@ -1196,11 +1230,11 @@
 							</p>
 							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
 								<form name="Address" action="<?php 
-		                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family'; }
-		                            else if ($_GET['Mode'] == 'ViewMember') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family'; } ?>" method="POST" autocomplete="off">
-	                            <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
+                                                                                if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family'; }
+                                                                                else if ($_GET['Mode'] == 'ViewMember') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Family'; } ?>" method="POST" autocomplete="off">
+                                                                    <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                                    <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                                    <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
 								<table class="formTable">
 									<tr>
 										<td class="formLabel">Family Member Name:</td>
@@ -1332,18 +1366,24 @@
 								</form>
 							</div>
 							
-							<div class="GridArea" style="width: 750px;">	
-								<table class="detailGrid" style="width:700px; margin-top:25px;">
-									<tr>
-										<td class = "detailGridHead">#</td>
-										<td  class = "detailGridHead">Member Name</td>
-										<td  class = "detailGridHead">Sex</td>
-										<td  class = "detailGridHead">Age</td>
-										<td  class = "detailGridHead">Relation</td>
-										<td  class = "detailGridHead">Modify</td>
-									</tr>
+							<div class="GridArea" style="width: 750px;">
+                                                            <form>
+                                                                <fieldset class="fieldset" style="width:800px; margin:0px;">
+                                                                    <legend class="legend" style="width:200px;">
+                                                                        <span class="legendText" >Family Members:</span>
+                                                                    </legend>
+                                                                    <table class="detailGrid" style="width:800px; margin:10px 0px;">
+                                                                        <tr>
+                                                                            <td class = "detailGridHead">#</td>
+                                                                            <td  class = "detailGridHead">Member Name</td>
+                                                                            <td  class = "detailGridHead">Sex</td>
+                                                                            <td  class = "detailGridHead">Age</td>
+                                                                            <td  class = "detailGridHead">Relation</td>
+                                                                            <td  class = "detailGridHead">Modify</td>
+                                                                        </tr>
 									<?php if (isset($_GET['ProjectID'])) { LoadFamilyMember(); } ?>
-								</table>
+                                                                    </table>
+                                                                
 								
 								
 								<!-- table class="detailNavigation">
@@ -1354,7 +1394,7 @@
 									</tr>
 								</table -->
 								
-								<span style="white-space: nowrap;">
+								<span style="white-space: nowrap; ">
                                     <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#PapFamily'; } 
                                     else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#PapFamily'; } ?>" >Previous</a>
                                     &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $fam_mbr_load_page . ' / ' . $fam_mbr_num_pages ; } else {echo '1 / ' . $fam_mbr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
@@ -1362,6 +1402,8 @@
                                     else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_next_page'] . '#PapFamily'; } ?>" >Next</a>
                             	</span>
 
+                                                                </fieldset>
+                                                            </form>
 							</div>
 						</div>
                                                 
@@ -1413,8 +1455,13 @@
 							</table>
                                                         </div>
                                                         
-                                                        <div class="GridArea" style="width: 750px;">	
-								<table class="detailGrid" style="width:700px; margin-top:25px;">
+                                                        <div class="GridArea" style="width: 750px;">
+                                                            <form>
+                                                                <fieldset class="fieldset" style="width:800px; margin:0px;">
+                                                                    <legend class="legend" style="width:250px;">
+                                                                        <span class="legendText" >Pap Livelihood Information:</span>
+                                                                    </legend>
+								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
 											<td class = "detailGridHead">#</td>
 											<td class = "detailGridHead">Crop Name:</td>
@@ -1483,6 +1530,8 @@
 											<td><a href="#">Next</a></td>
 										</tr>
 									</table>
+                                                                </fieldset>
+                                                            </form>
                                                         </div>
                                                         
                                                 </div>
@@ -1544,8 +1593,14 @@
                                                                 </form>
                                                         </div>
                                                         
-                                                        <div class="GridArea" style="width: 750px;">	
-								<table class="detailGrid" style="width:700px; margin-top:25px;">
+                                                        <div class="GridArea" style="width: 750px;">
+                                                            
+                                                            <form>
+                                                                <fieldset class="fieldset" style="width:800px; margin:0px;">
+                                                                    <legend class="legend" style="width:200px;">
+                                                                        <span class="legendText" >Pap Addresses:</span>
+                                                                    </legend>
+								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
 											<td class = "detailGridHead">#</td>
 											<td class = "detailGridHead">Crop Name:</td>
@@ -1614,6 +1669,8 @@
 											<td><a href="#">Next</a></td>
 										</tr>
 									</table>
+                                                                </fieldset>
+                                                            </form>
                                                         </div>
                                                 </div>
                                                 
@@ -1668,76 +1725,83 @@
 							</table>
                                                         </div>
                                                         
-                                                        <div class="GridArea" style="width: 750px;">	
-								<table class="detailGrid" style="width:700px; margin-top:25px;">
-										<tr>
-											<td class = "detailGridHead">#</td>
-											<td class = "detailGridHead">Crop Name:</td>
-											<td  class = "detailGridHead">Crop Type:</td>
-											<td  class = "detailGridHead">Crop Description:</td>
-											<td  class = "detailGridHead">Units:</td>
-											<td  class = "detailGridHead">Crop Rate:</td>
-											<td  class = "detailGridHead">Crop Total:</td>
-											<td  class = "detailGridHead" colspan="2">Modify:</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>Banana Plants</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Orange Trees</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Eucalyptus Trees</td>
-											<td>Perenial</td>
-											<td>Mature, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Banana Plants</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>Nsambya Tree</td>
-											<td>Perenial</td>
-											<td>Mature, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-									</table>
-									<table class="detailNavigation">
-										<tr>
-											<td><a href="#">Previous</a></td>
-											<td class="PageJump">1 / 2</td>
-											<td><a href="#">Next</a></td>
-										</tr>
-									</table>
+                                                        <div class="GridArea" style="width: 750px;">
+                                                            <form>
+                                                                <fieldset class="fieldset" style="width:800px; margin:0px;">
+                                                                    <legend class="legend" style="width:200px;">
+                                                                        <span class="legendText" >Pap Addresses:</span>
+                                                                    </legend>
+                                                                    <table class="detailGrid" style="width:700px; margin:10px 0px;">
+                                                                        <tr>
+                                                                            <td class = "detailGridHead">#</td>
+                                                                            <td class = "detailGridHead">Crop Name:</td>
+                                                                            <td  class = "detailGridHead">Crop Type:</td>
+                                                                            <td  class = "detailGridHead">Crop Description:</td>
+                                                                            <td  class = "detailGridHead">Units:</td>
+                                                                            <td  class = "detailGridHead">Crop Rate:</td>
+                                                                            <td  class = "detailGridHead">Crop Total:</td>
+                                                                            <td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Banana Plants</td>
+                                                                            <td>Seasonal</td>
+                                                                            <td>Young, Good Condition</td>
+                                                                            <td>100</td>
+                                                                            <td>25,000</td>
+                                                                            <td>2,500,000</td>
+                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>2</td>
+                                                                            <td>Orange Trees</td>
+                                                                            <td>Seasonal</td>
+                                                                            <td>Young, Good Condition</td>
+                                                                            <td>100</td>
+                                                                            <td>25,000</td>
+                                                                            <td>2,500,000</td>
+                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>3</td>
+                                                                            <td>Eucalyptus Trees</td>
+                                                                            <td>Perenial</td>
+                                                                            <td>Mature, Good Condition</td>
+                                                                            <td>100</td>
+                                                                            <td>25,000</td>
+                                                                            <td>2,500,000</td>
+                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>4</td>
+                                                                            <td>Banana Plants</td>
+                                                                            <td>Seasonal</td>
+                                                                            <td>Young, Good Condition</td>
+                                                                            <td>100</td>
+                                                                            <td>25,000</td>
+                                                                            <td>2,500,000</td>
+                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>5</td>
+                                                                            <td>Nsambya Tree</td>
+                                                                            <td>Perenial</td>
+                                                                            <td>Mature, Good Condition</td>
+                                                                            <td>100</td>
+                                                                            <td>25,000</td>
+                                                                            <td>2,500,000</td>
+                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table class="detailNavigation">
+                                                                        <tr>
+                                                                            <td><a href="#">Previous</a></td>
+                                                                            <td class="PageJump">1 / 2</td>
+                                                                            <td><a href="#">Next</a></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </fieldset>
+                                                            </form>
                                                         </div>
                                                 </div>
                                                 

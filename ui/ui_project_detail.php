@@ -1400,7 +1400,7 @@
                     <li> <a data-toggle="tab" href="#ProjExpenses">Expenses</a> </li>
                     <li> <a data-toggle="tab" href="#ProjPersonnel">Personnel</a> </li>
                     <li> <a data-toggle="tab" href="#ProjPAP">PAP Definition</a> </li>
-                    <!-- li> <a data-toggle="tab" href="#Disputes">Disputes</a> </li -->
+                    <!-- li> <a data-toggle="tab" href="#ProjDisputes">Disputes</a> </li -->
                     <!-- li> <a data-toggle="tab" href="#ProjSections">Sections</a> </li -->
                     <li> <a data-toggle="tab" href="#ProjSections">Segments</a> </li>
                     <!-- li> <a data-toggle="tab" href="#Sections">OtherSections</a> </li -->
