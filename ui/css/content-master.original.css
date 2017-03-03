@@ -2,7 +2,7 @@
 @-moz-document url-prefix() {
 .a legend span {
 top: -30px;
-!important;
+/* !important; */
 left: 0 !important;
 }
 }
