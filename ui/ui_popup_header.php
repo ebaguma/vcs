@@ -56,6 +56,51 @@
 			window.close();
 		}
 	</script>
+        
+        <script>
+               $("#NextPage").click(function(n){
+                   n.preventDefault();
+                   var link = document.getElementById("NextPage").getAttribute("href");
+                    var final = link + " .GridArea";
+                    $(".GridArea").load(final);
+                
+                
+                   });
+        </script>
+            
+        <script>
+               $("#PreviousPage").click(function(o){
+                   o.preventDefault();
+                   var link = document.getElementById("PreviousPage").getAttribute("href");
+                  var final = link + " .GridArea";
+                $(".GridArea").load(final);
+                
+                
+                   });
+        </script>
+        
+        <script>
+               $("#NextPage").click(function(p){
+                   p.preventDefault();
+                   var link = document.getElementById("NextPage").getAttribute("href");
+                    var final = link + " .PapGrid";
+                    $(".PapGrid").load(final);
+                
+                
+                   });
+        </script>
+            
+        <script>
+               $("#PreviousPage").click(function(q){
+                   q.preventDefault();
+                   var link = document.getElementById("PreviousPage").getAttribute("href");
+                  var final = link + " .PapGrid";
+                $(".PapGrid").load(final);
+                
+                
+                   });
+        </script>
+           
 
 	<div class="BreadCrumbParent" style="margin-top: 0;">
 		<div class="BreadCrumbContent">

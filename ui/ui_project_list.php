@@ -184,7 +184,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
                                 </form>
                         </div>
                     
-			<div class="GridArea">
+			<div class="GridArea" >
 				<form>
 					<fieldset class="fieldset" style="height:425px; width:1000px;">
 						<legend class="legend" style="width:250px;">
@@ -336,7 +336,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 							<tr>
 								<td><a href="<?php if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $prev_page; } 
 								else if (isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PageNumber=' . $prev_page; } 
-								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $prev_page; } ?>" >Previous</a></td>
+								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $prev_page; } ?>" id="PreviousPage">Previous</a></td>
 								<td class="PageJump" style="width:70px;">
 								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" autocomplete="false" >
 									<input type="hidden" name="Mode" value="<?php if (isset($_GET['Mode'])) {echo $_GET['Mode']; } else {echo 'Read'; } ?>" />
@@ -348,7 +348,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 								</form></td>
 								<td><a href="<?php if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $next_page; } 
 								else if (isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PageNumber=' . $next_page; } 
-								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $next_page; } ?>" >Next</a></td>
+								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $next_page; } ?>" id="NextPage">Next</a></td>
 							</tr>
 						</table>
 
