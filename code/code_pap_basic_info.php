@@ -6,7 +6,7 @@ class PapBasicInfo {
 	public $selected_project_code;
 	public $session_user_id;
 
-	// Project Details
+	// PAP Details
 
 	// HHID,PAP_NAME,DOB,SEX,PLOT_REF,REF_NO,IS_RESIDENT,BIRTH_PLACE,IS_MARRIED,ADDR_ID,TRIBE_ID,RELGN_ID,OCCUPN_ID,
 	// PAP_STATUS_ID,DESIGN,PHOTO,PAP_TYPE,PROJ_ID,IS_DELETED,UPDATED_BY,UPDATED_DATE,CREATED_BY,CREATED_DATE
@@ -18,7 +18,6 @@ class PapBasicInfo {
 	public $pap_plot_ref;
 	public $pap_birth_place;
 	public $pap_is_married;
-	# public $pap_address_id;
 	public $pap_tribe_id;
 	public $pap_phone_no;
 	public $pap_other_phone_no;
@@ -27,7 +26,13 @@ class PapBasicInfo {
 	public $pap_occupation_id;
 	public $pap_status_id;
 
-	// Project Details
+	// Photo Details
+
+	public $photo_name;
+	public $photo_path;
+	public $photo_doc_type;
+	public $photo_ext;
+	public $photo_user = 1;
 
 	function LoadBasicInfo() {
 
@@ -58,6 +63,7 @@ class PapBasicInfo {
 			$this -> pap_occupation_id = $row -> OCCUPN_ID;
 			$this -> pap_status_id = $row -> PAP_STATUS_ID;
 			$this -> pap_phone_no = $row -> PHONE_NO;
+			$this -> pap_photo = $row -> PHOTO;
 			$this -> pap_other_phone_no = $row -> OTHR_PHONE_NO;
 			$this -> pap_email = $row -> EMAIL;
 
@@ -157,14 +163,14 @@ class PapBasicInfo {
 		$mysqli -> query("SET @PLOT_REF_ = " . "'" . $this -> pap_plot_ref . "'");
 		$mysqli -> query("SET @BIRTH_PLACE_ = " . "'" . $this -> pap_birth_place . "'");
 		$mysqli -> query("SET @IS_MARRIED_ = " . "'" . $this -> pap_is_married . "'");
-		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> pap_tribe_id );
-		$mysqli -> query("SET @RELGN_ID_ = " . $this -> pap_religion_id );
-		$mysqli -> query("SET @OCCUPN_ID_ = " . $this -> pap_occupation_id );
-		$mysqli -> query("SET @PAP_STATUS_ID_ = " . $this -> pap_status_id );
-		$mysqli -> query("SET @PHONE_NO_ = " . $this -> pap_phone_no );
-		$mysqli -> query("SET @OTHR_PHONE_NO_ = " . $this -> pap_other_phone_no );
+		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> pap_tribe_id);
+		$mysqli -> query("SET @RELGN_ID_ = " . $this -> pap_religion_id);
+		$mysqli -> query("SET @OCCUPN_ID_ = " . $this -> pap_occupation_id);
+		$mysqli -> query("SET @PAP_STATUS_ID_ = " . $this -> pap_status_id);
+		$mysqli -> query("SET @PHONE_NO_ = " . $this -> pap_phone_no);
+		$mysqli -> query("SET @OTHR_PHONE_NO_ = " . $this -> pap_other_phone_no);
 		$mysqli -> query("SET @EMAIL_ = " . "'" . $this -> pap_email . "'");
-		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id );
+		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 
 		$results = $mysqli -> query($sql);
 		if ($results) {
@@ -172,6 +178,44 @@ class PapBasicInfo {
 			echo '<script>alert("Data Updated Successfully");</script>';
 		} else {
 			echo '<script>alert("Update Not Successful");</script>';
+		}
+	}
+
+	function UpdatePhoto() {
+		# PAP_ID_, DOC_TYPE_, FILE_NAME_, FILE_PATH_, CONTENT_TYPE_, USER_ID_
+		include ('code_connect.php');
+		$sql = "CALL USP_INS_DOC_UPLOAD( @PAP_ID_, @DOC_TYPE_, @FILE_NAME_, @FILE_PATH_, @CONTENT_TYPE_, @USER_ID_ )";
+
+		$mysqli -> query("SET @PAP_ID_ = " . $this -> pap_hhid);
+		$mysqli -> query("SET @DOC_TYPE_ = " . 1);
+		$mysqli -> query("SET @FILE_NAME_ = '" . $this -> photo_name . "'");
+		$mysqli -> query("SET @FILE_PATH_ = '" . $this -> photo_path . "'");
+		$mysqli -> query("SET @CONTENT_TYPE_ = '" . $this -> photo_ext . "'");
+		$mysqli -> query("SET @USER_ID_ = " . 1);
+
+		$results = $mysqli -> query($sql);
+		if ($results) {
+			$row = $results -> fetch_object();
+			echo '<script>alert("Data Updated Successfully");</script>';
+		} else {
+			echo '<script>alert("Update Not Successful");</script>';
+		}
+	}
+
+	function DeletePhoto() {
+
+	}
+
+	function GetPapPhoto() {
+		include ('code_connect.php');
+		$sql = "CALL USP_GET_PAP_INFO_PHOTO( @HHID_ )";
+
+		$mysqli -> query("SET @HHID_ = " . $this -> pap_hhid);
+
+		$results = $mysqli -> query($sql);
+		if ($results) {
+			$row = $results -> fetch_object();
+			$this -> pap_photo = $row -> PHOTO;
 		}
 	}
 

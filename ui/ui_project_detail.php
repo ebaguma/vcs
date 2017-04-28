@@ -75,37 +75,35 @@
     ?>
 
 <html>
-	<head>
+    <head>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
+        <meta name="Me" content="Projects">
+        <title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Projects</title>
 		
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="Me" content="Projects">
-		<title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;Projects</title>
-		
-		<?php
+	<?php
         include ('ui_header.php');
 
         // <!-- meta charset="utf-8" -->
-
         // <!--#include virtual="ui_header.php"-->
-
         // Project Details
         function CheckReturnUser() {
-            include ('../code/code_index.php');
+            # include ('../code/code_index.php');
             $time = $_SERVER['REQUEST_TIME'];
 
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
 
-            if (session_status() == PHP_SESSION_ACTIVE && $time < $_SESSION['Expire']) {
+            if (session_status() == PHP_SESSION_ACTIVE && $time < $_COOKIE["session_expire"]) {
                 if (($time - $_SESSION['Last_Activity']) < 1800) {
                     // isset($_SESSION['session_user_id'])
-                    # include ('../code/code_index.php');
+                    include_once ('../code/code_index.php');
                     $CheckReturnUser = new LogInOut();
-                    $CheckReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $CheckReturnUser -> CheckLoginStatus();
+                    $CheckReturnUser->user_id = $_SESSION['session_user_id'];
+                    $CheckReturnUser->CheckLoginStatus();
                     # CheckPapSelection();
-                    if ($CheckReturnUser -> return_session_id == session_id() && $CheckReturnUser -> login_status == "TRUE") {
+                    if ($CheckReturnUser->return_session_id == session_id() && $CheckReturnUser->login_status == "TRUE") {
                         // header('Location: ui/ui_project_list.php?PageNumber=1');
                         echo 'SetActivePage()';
                         $_SESSION['Last_Activity'] = $time;
@@ -115,17 +113,24 @@
                         header('Location: ../index.php?Message=DB_Session_Expired');
                     }
                 } else {
-					$InactiveReturnUser = new LogInOut();
-                    $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                    $InactiveReturnUser -> LogOff();
+                    include_once ('../code/code_index.php');
+                    $InactiveReturnUser = new LogInOut();
+                    $InactiveReturnUser->user_id = $_SESSION['session_user_id'];
+                    $InactiveReturnUser->LogOff();
                     session_unset();
                     session_destroy();
                     header('Location: ../index.php?Message=Inactive_Session_Expired');
                 }
+            } else if ($time > $_COOKIE["session_expire"]) {
+                include_once ('../code/code_index.php');
+                $InactiveReturnUser = new LogInOut();
+                # $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
+                $InactiveReturnUser->user_id = $_COOKIE["last_user"];
+                $InactiveReturnUser->LogOff();
+                session_unset();
+                session_destroy();
+                header('Location: ../index.php?Message=Session_Expired');
             } else {
-            	$InactiveReturnUser = new LogInOut();
-                $InactiveReturnUser -> user_id = $_SESSION['session_user_id'];
-                $InactiveReturnUser -> LogOff();
                 session_unset();
                 session_destroy();
                 header('Location: ../index.php?Message=Session_Expired');
@@ -138,11 +143,11 @@
             $logout = new LogInOut();
             // session_start();
             if (isset($_SESSION['session_user_id'])) {
-                $logout -> user_id = $_SESSION['session_user_id'];
+                $logout->user_id = $_SESSION['session_user_id'];
             } else {
-                $logout -> user_id = $_COOKIE["last_user"];
+                $logout->user_id = $_COOKIE["last_user"];
             }
-            $logout -> LogOff();
+            $logout->LogOff();
         }
 
         function LoadProjDetails() {
@@ -151,71 +156,70 @@
             $project_id = $_GET['ProjectID'];
 
             $project_details = new ProjectDetail();
-            $project_details -> project_id = $project_id;
-            $project_details -> LoadProjectDetails();
+            $project_details->project_id = $project_id;
+            $project_details->LoadProjectDetails();
 
             global $project_name;
-            $project_name = $project_details -> project_name;
+            $project_name = $project_details->project_name;
             global $project_code;
-            $project_code = $project_details -> project_code;
+            $project_code = $project_details->project_code;
 
             $selected_project_code = $project_code;
 
             // SelectProject();
 
             global $start_date;
-            $start_date = $project_details -> start_date;
+            $start_date = $project_details->start_date;
             global $end_date;
-            $end_date = $project_details -> end_date;
+            $end_date = $project_details->end_date;
             global $project_obj;
-            $project_obj = $project_details -> project_obj;
+            $project_obj = $project_details->project_obj;
             global $project_desc;
-            $project_desc = $project_details -> project_desc;
+            $project_desc = $project_details->project_desc;
         }
 
         function UpdateProjectDetails() {
             include_once ('../code/code_project_detail.php');
             // set update parameters
             $update_details = new ProjectDetail();
-            $update_details -> project_id = $_POST['ProjectID'];
+            $update_details->project_id = $_POST['ProjectID'];
             $_SESSION['ProjectID'] = $_POST['ProjectID'];
-            $update_details -> project_name = $_POST['ProjectName'];
-            $update_details -> project_code = $_POST['ProjectCode'];
+            $update_details->project_name = $_POST['ProjectName'];
+            $update_details->project_code = $_POST['ProjectCode'];
             $_SESSION['ProjectCode'] = $_POST['ProjectCode'];
-            $update_details -> start_date = $_POST['StartDate'];
-            $update_details -> end_date = $_POST['EndDate'];
-            $update_details -> project_obj = $_POST['ProjectObj'];
-            $update_details -> project_desc = $_POST['ProjectDesc'];
-            $update_details -> UpdateProjectDetails();
+            $update_details->start_date = $_POST['StartDate'];
+            $update_details->end_date = $_POST['EndDate'];
+            $update_details->project_obj = $_POST['ProjectObj'];
+            $update_details->project_desc = $_POST['ProjectDesc'];
+            $update_details->UpdateProjectDetails();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $_SESSION['ProjectID'] . '&ProjectCode=' . $_SESSION['ProjectCode'] . '#Details');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $_SESSION['ProjectID'] . '&ProjectCode=' . $_SESSION['ProjectCode'] . '#ProjDetails');
             exit();
         }
 
-        function SelectProject(){
+        function SelectProject() {
             include_once ('../code/code_project_detail.php');
 
             $project_id = $_GET['ProjectID'];
 
             $project_details = new ProjectDetail();
-            $project_details -> project_id = $project_id;
-            $project_details -> LoadProjectDetails();
-            
+            $project_details->project_id = $project_id;
+            $project_details->LoadProjectDetails();
+
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
                 unset($_SESSION['session_pap_hhid']);
                 unset($_SESSION['session_pap_name']);
-                $_SESSION['session_project_name'] = $project_details -> project_name;
-                $_SESSION['session_project_code'] = $project_details -> project_code;
+                $_SESSION['session_project_name'] = $project_details->project_name;
+                $_SESSION['session_project_code'] = $project_details->project_code;
             } else if (session_status() == PHP_SESSION_ACTIVE) {
                 unset($_SESSION['session_pap_hhid']);
                 unset($_SESSION['session_pap_name']);
-                $_SESSION['session_project_name'] = $project_details -> project_name;
-                $_SESSION['session_project_code'] = $project_details -> project_code;
+                $_SESSION['session_project_name'] = $project_details->project_name;
+                $_SESSION['session_project_code'] = $project_details->project_code;
             }
         }
-
-		?>
+        ?>
 
         <?php
         
@@ -297,7 +301,7 @@
 
             $update_client -> UpdateClient();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $update_client -> select_project_id . '&ProjectCode=' . $update_client -> select_project_code . '&ClientID=' . $update_client -> client_id . '#Clients');
+            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $update_client -> select_project_id . '&ProjectCode=' . $update_client -> select_project_code . '&ClientID=' . $update_client -> client_id . '#ProjClients');
             exit();
         }
 
@@ -311,7 +315,7 @@
 
             $delete_client -> DeleteClient();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_client -> select_project_id . '&ProjectCode=' . $delete_client -> select_project_code . '#Clients');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_client -> select_project_id . '&ProjectCode=' . $delete_client -> select_project_code . '#ProjClients');
             exit();
         }
 
@@ -332,7 +336,7 @@
 
             $insert_client -> InsertClient();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_client -> select_project_id . '&ProjectCode=' . $insert_client -> select_project_code . '#Clients');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_client -> select_project_id . '&ProjectCode=' . $insert_client -> select_project_code . '#ProjClients');
             exit();
         }
         ?>
@@ -412,7 +416,7 @@
 
             $update_staff -> UpdateClientStaff();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $project_id . '&ProjectCode=' . $project_code . '&ClientID=' . $client_id . '&StaffID=' . $update_staff -> staff_id . '#Clients');
+            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $project_id . '&ProjectCode=' . $project_code . '&ClientID=' . $client_id . '&StaffID=' . $update_staff -> staff_id . '#ProjClients');
             exit();
         }
 
@@ -427,7 +431,7 @@
 
             $delete_staff -> DeleteClientStaff();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $project_id . '&ProjectCode=' . $project_code . '&ClientID=' . $client_id . '#Clients');
+            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $project_id . '&ProjectCode=' . $project_code . '&ClientID=' . $client_id . '#ProjClients');
             exit();
         }
 
@@ -446,7 +450,7 @@
 
             $insert_staff -> InsertClientStaff();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $project_id . '&ProjectCode=' . $project_code . '&ClientID=' . $insert_staff -> client_id . '#Clients');
+            header('Refresh:0; url=ui_project_detail.php?Mode=ViewClients&ProjectID=' . $project_id . '&ProjectCode=' . $project_code . '&ClientID=' . $insert_staff -> client_id . '#ProjClients');
             exit();
         }
         ?>
@@ -552,7 +556,7 @@
 
             $insert_budget_item -> InsertBudgetItem();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_budget_item -> selected_project_id . '&ProjectCode=' . $insert_budget_item -> selected_project_code . '#Budget');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_budget_item -> selected_project_id . '&ProjectCode=' . $insert_budget_item -> selected_project_code . '#ProjBudget');
             exit();
         }
         
@@ -570,7 +574,7 @@
 
             $update_budget_item -> UpdateBudgetItem();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_budget_item -> selected_project_id . '&ProjectCode=' . $update_budget_item -> selected_project_code . '#Budget');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_budget_item -> selected_project_id . '&ProjectCode=' . $update_budget_item -> selected_project_code . '#ProjBudget');
             exit();
         }
         
@@ -584,7 +588,7 @@
 
             $delete_budget_item -> DeleteBudgetItem();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_budget_item -> selected_project_id . '&ProjectCode=' . $delete_budget_item -> selected_project_code . '#Budget');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_budget_item -> selected_project_id . '&ProjectCode=' . $delete_budget_item -> selected_project_code . '#ProjBudget');
             exit();
         }
         
@@ -672,7 +676,7 @@
 
             $update_expense_item -> UpdateXpense();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_expense_item -> selected_project_id . '&ProjectCode=' . $update_expense_item -> selected_project_code . '#Expenses');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_expense_item -> selected_project_id . '&ProjectCode=' . $update_expense_item -> selected_project_code . '#ProjExpenses');
             exit();
         }
         
@@ -692,7 +696,7 @@
 
             $insert_expense_item -> InsertExpense();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_expense_item -> selected_project_id . '&ProjectCode=' . $insert_expense_item -> selected_project_code . '#Expenses');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_expense_item -> selected_project_id . '&ProjectCode=' . $insert_expense_item -> selected_project_code . '#ProjExpenses');
             exit();
         }
         
@@ -706,7 +710,7 @@
 
             $delete_expense_item -> DeleteXpense();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_expense_item -> selected_project_id . '&ProjectCode=' . $delete_expense_item -> selected_project_code . '#Expenses');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_expense_item -> selected_project_id . '&ProjectCode=' . $delete_expense_item -> selected_project_code . '#ProjExpenses');
             exit();
         }
 		
@@ -809,7 +813,7 @@
 
             $update_project_staff -> UpdateProjectStaff();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_project_staff -> selected_project_id . '&ProjectCode=' . $update_project_staff -> selected_project_code . '#Personnel');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $update_project_staff -> selected_project_id . '&ProjectCode=' . $update_project_staff -> selected_project_code . '#ProjPersonnel');
             exit();    
         }
 
@@ -833,7 +837,7 @@
 
             $insert_project_staff -> InsertProjectStaff();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_staff -> selected_project_id . '&ProjectCode=' . $insert_project_staff -> selected_project_code . '#Personnel');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_staff -> selected_project_id . '&ProjectCode=' . $insert_project_staff -> selected_project_code . '#ProjPersonnel');
             exit();    
         }
 
@@ -847,7 +851,7 @@
 
             $delete_project_staff ->DeleteProjectStaff();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_staff -> selected_project_id . '&ProjectCode=' . $delete_project_staff -> selected_project_code . '#Personnel');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_staff -> selected_project_id . '&ProjectCode=' . $delete_project_staff -> selected_project_code . '#ProjPersonnel');
             exit();
         }
         
@@ -979,7 +983,7 @@
 
             $insert_project_pap -> InsertProjectPap();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_pap -> selected_project_id . '&ProjectCode=' . $insert_project_pap -> selected_project_code . '#PAP');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_pap -> selected_project_id . '&ProjectCode=' . $insert_project_pap -> selected_project_code . '#ProjPAP');
             exit();
         }
 
@@ -1006,7 +1010,7 @@
 
             $update_project_pap -> UpdateProjectPap();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewPap&ProjectID=' . $update_project_pap -> selected_project_id . '&ProjectCode=' . $update_project_pap -> selected_project_code . '&HHID=' . $update_project_pap -> pap_hhid . '#PAP');
+            header('Refresh:0; url=ui_project_detail.php?Mode=ViewPap&ProjectID=' . $update_project_pap -> selected_project_id . '&ProjectCode=' . $update_project_pap -> selected_project_code . '&HHID=' . $update_project_pap -> pap_hhid . '#ProjPAP');
             exit();
         }
 
@@ -1020,7 +1024,7 @@
 
             $delete_project_pap -> DeleteProjectPap();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_pap -> selected_project_id . '&ProjectCode=' . $delete_project_pap -> selected_project_code . '#PAP');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_pap -> selected_project_id . '&ProjectCode=' . $delete_project_pap -> selected_project_code . '#ProjPAP');
             exit();
         }
 		?>
@@ -1189,7 +1193,7 @@
 
             $insert_project_section -> InsertSection();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_section -> selected_project_id . '&ProjectCode=' . $insert_project_section -> selected_project_code . '#Sections');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $insert_project_section -> selected_project_id . '&ProjectCode=' . $insert_project_section -> selected_project_code . '#ProjSections');
             exit();
         }
 
@@ -1215,7 +1219,7 @@
 
             $update_project_section -> UpdateSection();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=ViewSection&ProjectID=' . $update_project_section -> selected_project_id . '&ProjectCode=' . $update_project_section -> selected_project_code . '&SectID=' . $update_project_section -> proj_sect_id . '#Sections');
+            header('Refresh:0; url=ui_project_detail.php?Mode=ViewSection&ProjectID=' . $update_project_section -> selected_project_id . '&ProjectCode=' . $update_project_section -> selected_project_code . '&SectID=' . $update_project_section -> proj_sect_id . '#ProjSections');
             exit();
         }
 
@@ -1229,7 +1233,7 @@
 
             $delete_project_section -> DeleteSection();
             unset($_POST);
-            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_section -> selected_project_id . '&ProjectCode=' . $delete_project_section -> selected_project_code . '#Sections');
+            header('Refresh:0; url=ui_project_detail.php?Mode=Read&ProjectID=' . $delete_project_section -> selected_project_id . '&ProjectCode=' . $delete_project_section -> selected_project_code . '#ProjSections');
             exit();
         }
         ?>
@@ -1370,93 +1374,107 @@
                 httpxml.open("GET", url, true);
                 httpxml.send(null);
             }
+            
+            function Focus(b){
+                document.getElementById(b).style.color = "#ff6600";
+            }
+            
+            function Blur(b){
+                document.getElementById(b).style.color = "#797979";
+            }
 		</script>
 
 		<!-- @formatter:off -->
     <div class="ContentParent">
         <div class="Content">
-            <div class="ContentTitle2"> Details, Related Information </div>
-            <br>
-            <br>
-            <div class="container">
-                <ul class="nav nav-tabs">
+            <div class="ContentTitle2" > Project Information: </div>
+            <!--br>
+            <br -->
+            <div class="container" >
+                <div style="display: block;">
+                <ul class="nav nav-tabs" >
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
-                    <li class="active"> <a data-toggle="tab" href="#Details">Details</a> </li>
-                    <li> <a data-toggle="tab" href="#Clients">Clients</a> </li>
-                    <li> <a data-toggle="tab" href="#Budget">Budget</a> </li>
-                    <li> <a data-toggle="tab" href="#Expenses">Expenses</a> </li>
-                    <li> <a data-toggle="tab" href="#Personnel">Personnel</a> </li>
-                    <li> <a data-toggle="tab" href="#PAP">PAP Definition</a> </li>
-                    <!-- li> <a data-toggle="tab" href="#Disputes">Disputes</a> </li -->
-                    <li> <a data-toggle="tab" href="#Sections">Sections</a> </li>
+                    <li class="active"> <a data-toggle="tab" href="#ProjDetails">Details</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjClients">Clients</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjBudget">Budget</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjExpenses">Expenses</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjPersonnel">Personnel</a> </li>
+                    <li> <a data-toggle="tab" href="#ProjPAP">PAP Definition</a> </li>
+                    <!-- li> <a data-toggle="tab" href="#ProjDisputes">Disputes</a> </li -->
+                    <!-- li> <a data-toggle="tab" href="#ProjSections">Sections</a> </li -->
+                    <li> <a data-toggle="tab" href="#ProjSections">Segments</a> </li>
+                    <!-- li> <a data-toggle="tab" href="#Sections">OtherSections</a> </li -->
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                     <li class="inactive"> <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li>
                 </ul>
+                </div>
                 <div class="tab-content"> 
 
                     <!-- @formatter:off this is the project details screen -->
-                    <div id="Details" class="tab-pane fade in active">
+                    <div id="ProjDetails" class="tab-pane fade in active">
                         <div id="FormArea" class="left-form">
                             <p> This is the Project Details Screen </p>
                             <!-- @formatter:off -->
-                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Details'; ?>" method="post" autocomplete="off">
+                            <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjDetails'; ?>" method="post" autocomplete="off">
                                 <table class="formTable" cellpadding="10px">
                                     <tr>
-                                        <td class="formLabel">Project Name</td>
-                                        <td class="formLabel">Project Code</td>
+                                        <td class="formLabel">Project Name </td>
+                                        <td class="formLabel">Project Code </td>
                                     </tr>
                                     <tr>
-                                        <td><span class="formSingleLineBox"> <input type="text" value="<?php
-                                        if (isset($project_name)) {
-                                            echo $project_name;
-                                        }
-                                                ?>" name="ProjectName"/> </span></td>
-                                        <td><span class="formSingleLineBox"> <input type="text" value="<?php
-                                        if (isset($project_name)) {
-                                            echo $project_code;
-                                        }
-                                                ?>" name="ProjectCode"/> <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID'] ?>" /> <input type='hidden' name='post_id' value='".createPassword(64)."'> <input type="hidden" value="EditDetails" name="Mode"/> </span></td>
+                                        <td> <span class="formSingleLineBox" >
+                                                <input id="dtlProjName" onfocus="Focus(this.id)" onblur="Blur(this.id)"  type="text" value="<?php if(isset($project_name)){echo $project_name;}?>" name="ProjectName"/>
+                                                </span> </td>
+                                            <td> <span class="formSingleLineBox">
+                                                <input id="dtlProjCode" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php if(isset($project_name)){echo $project_code;}?>" name="ProjectCode"/>
+                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']?>" />
+                                                <input type='hidden' name='post_id' value='".createPassword(64)."'>
+                                                <input type="hidden" value="EditDetails" name="Mode"/>
+                                                </span> </td>
                                     </tr>
                                     <tr>
-                                        <td class="formLabel">Start Date</td>
-                                        <td class="formLabel">End Date</td>
+                                            <td class="formLabel">Start Date </td>
+                                            <td class="formLabel">End Date </td>
                                     </tr>
                                     <tr>
-                                        <td><span class="formSingleLineBox"> <input title="DD/MM/YYYY" type="text" id="start_date" 
-                                            value="<?php if (isset($project_name)) { echo $start_date; } ?>" 
-                                            placeholder="DD/MM/YYYY" name="StartDate" readonly /> </span></td>
-                                        <td><span class="formSingleLineBox"> <input type="text" id="end_date" 
-                                            value="<?php if (isset($project_name)) { echo $end_date; } ?>" 
-                                            placeholder="DD/MM/YYYY" name="EndDate" readonly /> </span></td>
+                                            <td> <span class="formSingleLineBox">
+                                    <input onfocus="Focus(this.id)" onblur="Blur(this.id)" title="DD/MM/YYYY" type="text" id="start_date" value="<?php if(isset($project_name)){echo $start_date;}?>" placeholder="DD/MM/YYYY" name="StartDate" readonly />
+                                    </span> </td>
+                                            <td> <span class="formSingleLineBox">
+                                    <input onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" id="end_date" value="<?php if(isset($project_name)){echo $end_date;}?>" placeholder="DD/MM/YYYY" name="EndDate" readonly />
+                                    </span> </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2" class="formLabel">Project Objective</td>
+                                        <td colspan="2" class="formLabel">Project Objective </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><span class="formMultiLineBox">
-                                                <textarea type="text" id="end_date" placeholder="Enter Project Objective" name="ProjectObj"><?php
-                                                if (isset($project_obj)) {
-                                                    echo $project_obj;
-                                                }
-                                                ?></textarea>
-                                            </span></td>
+                                        <td colspan="2"> 
+                                            <span class="formMultiLineBox">
+                                               <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Enter Project Objective" name="ProjectObj"><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
+                                            </span> </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2" class="formLabel">Project Description / Summary</td>
+                                        <td colspan="2" class="formLabel">Project Description / Summary </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><span class="formMultiLineBox">
-                                                <textarea type="text" id="end_date"	placeholder="Project Description, Summary" name="ProjectDesc"><?php
-                                                if (isset($project_name)) { echo $project_desc;
-                                                }?></textarea>
-                                            </span></td>
+                                        <td colspan="2"> 
+                                            <span class="formMultiLineBox">
+                                                <textarea id="dtlProjSumm" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Project Description, Summary" name="ProjectDesc"><?php if(isset($project_name)){echo $project_desc;}?></textarea>
+                                            </span> 
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><span class="saveButtonArea"> <input type="submit" value="Update" name="SaveDetails"/> 
+                                        <td> <span class="saveButtonArea"> 
+                                                <input type="submit" value="Update" name="SaveDetails"/> 
                                                 <!-- input type="submit" value="Delete" style="background-color: #FF0616;" / --> 
-                                            </span></td>
-                                        <td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-                                                class="formLinks"><a href="#">Photos</a></span></td>
+                                            </span> </td>
+                                        <td align="right"> <span class="formLinks SideBar">
+                                                <a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjDetails&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents
+                                                </a>
+                                            </span> <span class="formLinks">
+                                                <a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjDetails&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos
+                                                </a>
+                                            </span> </td>
                                     </tr>
                                 </table>
                             </form>
@@ -1464,15 +1482,14 @@
                         <div id="SideSet" style="margin-top: 30px">
                             <form>
                                 <fieldset class="fieldset" style="height: 525px; width: 300px;">
-                                    <legend class="legend" style="width: 125px;"> <span class="legendText">Project Staff</span> </legend>
-                                    This is the region with managers
-                                </fieldset>
+                                    <legend class="legend" style="width: 125px;"> <span class="legendText">Project Staff
+                                        </span> </legend> This is the region with managers </fieldset>
                             </form>
                         </div>
-                    </div>
-
+                    </div>   
+                    
                     <!-- Client Area Tab Starts here -->
-                    <div id="Clients" class="tab-pane fade">
+                    <div id="ProjClients" class="tab-pane fade">
                         <p> This is the Project's Clients and Stakeholders Screen </p>
 
                         <!-- Main Client Form -->
@@ -1480,470 +1497,474 @@
                             <!-- @formatter:off -->
                             <form action="<?php
                             if ($_GET['Mode'] == 'ViewClients') {
-                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients';
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=EditClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjClients';
                             } else if ($_GET['Mode'] == 'Read') {
-                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients';
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjClients';
                             }
                             ?>" method="POST" autocomplete="off">    
-                            <table class="formTable">
-                                <tr>
-                                    <td colspan="3" class="formLabel">Company Name</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <span class="formSingleLineBox" style="width: 625px;">
-                                            <input type="text" value="<?php
-                                            if (isset($GLOBALS['client_name'])) {
-                                                echo $GLOBALS['client_name'];
-                                            }
-                                                ?>" name = "ClientName" placeholder="Enter Client Name" style="width:600px;" /></span></td>
-                                                <input type="hidden" name="ClientID" value="<?php echo $_GET['ClientID']; ?>" />
-                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                                <input type="hidden" name="ClientPage" value="<?php echo $_GET['ClientPage']; ?>" />
-                                                <input type="hidden" name="Mode" value="<?php echo 'Insert Client'; ?>" />
-                                                
-                                </tr>
-                                <tr>
-                                    <td class="formLabel">Company Number</td>
-                                    <td class="formLabel">Company Email</td>
-                                    <td class="formLabel">Company Website</td>
-                                    
-                                </tr>
-                                <tr>
-                                    <td><span class="formSingleLineBox" style="width: 200px;">
-                                        <input type="text" value="<?php
-                                        if (isset($GLOBALS['client_number'])) {
-                                            echo $GLOBALS['client_number'];
-                                        }
-											?>" name = "ClientNumber" placeholder="Enter Client Number" style="width: 180px;" /></span></td>
-                                    <td><span class="formSingleLineBox" style="width: 200px;">
-                                        <input type="text" value="<?php
-                                        if (isset($GLOBALS['client_email'])) {
-                                            echo $GLOBALS['client_email'];
-                                        }
-											?>" name = "ClientEmail" placeholder="Enter Client Email" style="width: 180px;" /></span></td>
-                                    <td><span class="formSingleLineBox" style="width: 200px;">
-                                        <input type="text" value="<?php
-                                        if (isset($GLOBALS['client_website'])) {
-                                            echo $GLOBALS['client_website'];
-                                        }
-                                                ?>" name = "ClientWebsite" placeholder="Enter Website" style="width: 180px;" /></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="formLabel">Principal Contact</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <span class="formSingleLineBox" style="width: 625px;">
-                                            <input type="text" value="<?php
-                                            if (isset($GLOBALS['client_contact_person'])) {
-                                                echo $GLOBALS['client_contact_person'];
-                                            }
-                                                ?>" name = "PrincipalContact" placeholder="Enter Principal Contact" style="width:600px;" />
-                                        </span></td>
-                                </tr>
-                                <tr>
-                                    <td class="formLabel">Company Address</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" nowrap="nowrap">
-                                        <span class="formMultiLineBox" style="width: 625px;">
-                                            <!-- formatter:off -->
-                                            <textarea type="text" name = "ClientAddr" placeholder="Enter Address"><?php
-                                            if (isset($GLOBALS['client_addr'])) {echo $GLOBALS['client_addr'];
-                                            }
-                                            ?></textarea></span></td>
-										</tr>
-										<tr>
-											<td colspan="2"> <span class="saveButtonArea">
-												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewClients') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
-												<?php $new_client = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients';
-                                                if ($_GET['Mode'] == 'ViewClients') {echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_client . '>New Client</a></span>'; } ?>
-                                                </span></td>
-											<td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-											class="formLinks"><a href="#">Photos</a></span></td>
-										</tr>
-									</table>
-								</form>
-
-								<!-- Grid Area Showing Client List -->
-								<div class="GridArea" style="width: 650px;">
-									<table class="detailGrid" style="width: 625px;">
-										<tr>
-											<td class="detailGridHead">#</td>
-											<td class="detailGridHead">Company Name</td>
-											<!--  class="detailGridHead">Company Address</td -->
-											<td class="detailGridHead">Company Email</td>
-											<td class="detailGridHead">Company Website</td>
-											<td class="detailGridHead">Edit:</td>
-										</tr>
-										<!-- @formatter:on -->
-										<?php if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ProjectID'])) { LoadProjectClients(); } ?>
-									</table>
-									
-									<!-- table class="detailNavigation">
-										<tr>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients';
-                                            }
-											?>" >Previous</a></td>
-											<td class="PageJump" style="width: 70px;"> <?php echo $load_page; ?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php echo $num_pages; ?></td>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients';
-                                            }
-											?>" >Next</a></td>
-										</tr>
-									</table -->
-									
-									<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['prev_page'] . '#Clients'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ClientPage'])) { echo $load_page . ' / ' . $num_pages ; } else {echo '1 / ' . $num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientPage=' . $GLOBALS['next_page'] . '#Clients'; } ?>" >Next</a>
-                                    </span>
-									
-								</div>
-							</div>
-
-							<!-- Side Form for Client Staff -->
-							<div
-							style="width: 325px; float: left; margin-top: 10px; margin-left: 10px;">
-								<!-- form -->
-								<fieldset class="fieldset" style="padding: 20px; width: 350px;">
-									<legend class="legend" style="width: 120px;">
-										<span class="legendText">Client Staff:</span>
-									</legend>
-
-									<form action="<?php if (!isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients';
-                                    } else if (isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients'; } ?>" method="POST" autocomplete="off" >
-										<table class="formTable" style="width:300px; margin-bottom: 20px;">
-											<tr>
-												<td class="formLabel">Staff Name:</td>
-											</tr>
-											<tr>
-												<td><span class="formSingleLineBox">
-													<input type="text" name="StaffName" value="<?php
-                                                    if (isset($GLOBALS['staff_name'])) {echo $GLOBALS['staff_name'];
-                                                    }
-													?>" placeholder="Enter Staff Name" />
-													<input type="hidden" name="ClientID" value="<?php echo $_GET['ClientID']; ?>" />
-													<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-													<input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-													<input type="hidden" name="StaffID" value="<?php echo $_GET['StaffID']; ?>" />
-													<!-- a class="LinkInBox" href="#">New</a --></span></td>
-											</tr>
-											<tr>
-												<td class="formLabel">Mobile Number:</td>
-											</tr>
-											<tr>
-												<td><span class="formSingleLineBox">
-													<input type="text" name="StaffNumber" value="<?php
-                                                    if (isset($GLOBALS['staff_number'])) {echo $GLOBALS['staff_number'];
-                                                    }
-													?>" placeholder="Enter Staff Number" />
-												</span></td>
-											</tr>
-											<tr>
-												<td class="formLabel">Email Address:</td>
-											</tr>
-											<tr>
-												<td><span class="formSingleLineBox">
-													<input type="text" name="StaffEmail" value="<?php
-                                                    if (isset($GLOBALS['staff_email'])) {echo $GLOBALS['staff_email'];
-                                                    }
-												?>" placeholder="Enter Staff Email" />
-												</span></td>
-											</tr>
-											<tr>
-												<td class="formLabel">Staff Role</td>
-											</tr>
-											<tr>
-												<td><span class="formSingleLineBox">
-													<input type="text" name="StaffRole" value="<?php
-                                                    if (isset($GLOBALS['staff_role'])) {echo $GLOBALS['staff_role'];
-                                                    }
-													?>"  placeholder="Enter Staff Role" />
-												</span></td>
-											</tr>
-											<tr>
-												<td><span class="saveButtonArea" href="#"> <!-- @formatter:off -->
-													<?php
-                                                    if ($_GET['Mode'] == 'ViewClients' && !isset($_GET['StaffID'])) { echo '<input type="submit" value="Add Staff" style="float:left;"/>';
-                                                    } else if (isset($_GET['StaffID'])) { echo '<input type="submit" value="Update" style="float:left;"/>';
-                                                    }
-													?>
-													<?php
-                                                    if (isset($_GET['StaffID'])) {
-                                                        $new_staff = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#Clients';
-                                                        echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_staff . '>New Staff</a></span>';
-                                                    }
-													?></span></td>
-											</tr>
-										</table>
-									</form>
-
-									<!-- Grid Area showing client staff -->
-									<table class="detailGridSmall" style="width: 300px; margin-top: 25px;">
-										<tr>
-											<td class="detailGridHead">#</td>
-											<td class="detailGridHead">Staff Name:</td>
-											<!-- td class="detailGridHead">Role:</td -->
-											<td class="detailGridHead">Modify:</td>
-										</tr>
-										<?php
-                                        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ClientID'])) {
-                                            LoadClientStaff();
-                                        }?>
-									</table>
-
-									<!-- table class="detailNavigation">
-										<tr>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_prev_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; }
-											?>" >Previous</a></td>
-											<td class="PageJump" style="width: 70px;"> <?php
-                                            if (isset($GLOBALS['staff_load_page'])) {echo $GLOBALS['staff_load_page']; } else { echo 1; }
-											?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php
-                                            if (isset($GLOBALS['staff_num_pages'])) { echo $GLOBALS['staff_num_pages']; } else { echo 0; }
-											?></td>
-											<td><a href="<?php
-                                            if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_next_page'] . '#Clients';
-                                            } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; }
-											?>" >Next</a></td>
-										</tr>
-									</table -->
-									
-									<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_prev_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ClientID'])) { echo $GLOBALS['staff_load_page'] . ' / ' . $GLOBALS['staff_num_pages'] ; } else { echo '1 / 0'; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '&ClientPage=' . $_GET['ClientPage'] . '&StaffPage=' . $GLOBALS['staff_next_page'] . '#Clients'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Clients'; } ?>" >Next</a>
-                                    </span>
-									
-								</fieldset>
-								<!-- /form -->
-							</div>
-						</div>
-
-					<!-- Projects Budget Tab Starts here -->
-					<div id="Budget" class="tab-pane fade">
-						<p>
-							This is the Project Budgets, and Financials Screen
-						</p>
-						<div class="left-form">
-						    <form name="SaveBudget" action="<?php 
-						    if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Budget'; }
-                            else if ($_GET['Mode'] == 'ViewBudget') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Budget'; } ?>" method="post" autocomplete="off">
-							<table class="formTable" >
-								<tr>
-									<td class="formLabel">Category Line Total</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2"><span class="formSingleLineBox" style="width: 610px;">
-									<input type="text" name="TotalBudget" 
-									value="<?php if (isset($GLOBALS['budget_grand_total'])) {echo $GLOBALS['budget_grand_total']; } ?>"  
-									placeholder="Auto Budget Total" readonly />
-									<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-									<input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-									<input type="hidden" name="BudgetID" value="<?php echo $_GET['BudgetID']; ?>" />
-									</span></td>
-								</tr>
-								<tr>
-									<td class="formLabel">Select Category</td>
-									<td class="formLabel">Select Sub Category</td>
-								</tr>
-								<tr>
-									<td><span class="formSingleLineBox">
-										<select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()" >
-										    <option value="">-- Select Category --</option>
-											<?php if (isset($_GET['ProjectID']) || isset($_GET['Cat'])) { BindBudgetCat(); } ?>
-										</select>
-										</span></td>
-									<td><span class="formSingleLineBox">
-										<select name="SubCategories" id="SelectBudgetSubCat">
-											<option value="">-- Select Sub Category --</option>
-											<?php if(isset($_GET['Cat']) && isset($_GET['SubCat'])){ BindBudgetSubCat(); } ?>
-										</select>
-										</span></td>
-								</tr>
-								<tr>
-									<td class="formLabel">Item Value</td>
-									<td class="formLabel">Item (%) Of Category</td>
-								</tr>
-								<tr>
-									<td><span class="formSingleLineBox">
-									<input type="text" name="BudgetValue" 
-                                    value="<?php if (isset($GLOBALS['budget_item_amount'])) {echo $GLOBALS['budget_item_amount']; } ?>"  
-                                    placeholder="Budget Value" />
-									</span></td>
-									<td><span class="formSingleLineBox">
-									<input type="text" name="BudgetPercent" 
-                                    value="<?php if (isset($GLOBALS['budget_item_pct'])) {echo $GLOBALS['budget_item_pct'] . ' %' ; } ?>"  
-                                    placeholder="Budget Percentage" readonly />
-									</span></td>
-								</tr>
-								<tr>
-								    <td class="formLabel">Other Item Details</td>
-								</tr>
-								<tr>
-								    <td colspan="2">
-								   <span class="formMultiLineBox" style="width: 610px;">
-								       <textarea type="text" name = "BudgetDetails" placeholder="Any Other Details"><?php 
-								           if(isset($GLOBALS['budget_other_dtl'])){ echo $GLOBALS['budget_other_dtl']; } ?></textarea>
-								       </span></td> 
-								</tr>
-								<tr>
-									<td><span class="saveButtonArea">
-									    <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewBudget') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                        <?php $new_budget = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Budget';
-                                            if ($_GET['Mode'] == 'ViewBudget') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_budget . '>New Budget</a></span>'; } ?>
-									</span></td>
-									<td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-									class="formLinks"><a href="#">Photos</a></span></td>
-								</tr>
-							</table>
-							</form>
-						</div>
-						
-						<!-- Side Form for budget charts etc -->
-						<!-- div id="SideSet" style="margin-top: 10px">
-							<form>
-								<fieldset class="fieldset" style="height: 425px; width: 300px;">
-									<legend class="legend" style="width: 170px;">
-										<span class="legendText">Budget Snapshot</span>
-									</legend>
-									Other Budget Details
-								</fieldset>
-							</form>
-						</div -->
-						
-						<!-- detailed grid showing project expenses -->
-						<div class="GridArea" style="width: 750px;">
-							<table class="detailGrid" style="width:725px;">
-								<tr>
-									<td class="detailGridHead">#</td>
-									<td class="detailGridHead">Budget Item</td>
-									<td class="detailGridHead">Item Category</td>
-									<td class="detailGridHead">Item Value</td>
-									<td class="detailGridHead">Delete</td>
-									<!-- td class="detailGridHead">Edit:</td -->
-								</tr>
-								<?php if (isset($_GET['ProjectID'])) { LoadBudgetItems(); } ?>
-							</table>
-							
-							<!-- table class="detailNavigation">
+                                <table class="formTable">
                                     <tr>
-                                        <td><a href="<?php
-                                        if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget';
-                                        } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget'; }
-                                        ?>" >Previous</a></td>
-                                        <td class="PageJump" style="width: 70px;"> <?php echo $budget_load_page; ?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php echo $budget_num_pages; ?></td>
-                                        <td><a href="<?php
-                                        if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget';
-                                        } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget'; }
-                                        ?>" >Next</a></td>
+                                        <td colspan="3" class="formLabel">Company Name</td>
                                     </tr>
-                            </table -->
-                            
-                            <span style="white-space: nowrap;">
-                                    <a href="<?php if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_prev_page'] . '#Budget'; } ?>" >Previous</a>
-                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['BudgetPage'])) { echo $budget_load_page . ' / ' . $budget_num_pages ; } else {echo '1 / ' . $budget_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                    <a href="<?php if (isset($_GET['BudgetID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $_GET['BudgetID'] . '&Cat=' . $_GET['Cat'] . '&SubCat=' . $_GET['SubCat'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetPage=' . $GLOBALS['budget_next_page'] . '#Budget'; } ?>" >Next</a>
-                            </span>
-                            
-						</div>
-					</div>
-
-                    <!-- Projects Expenses Tab Starts here -->
-					<div id="Expenses" class="tab-pane fade">
-						<p>
-							This is the projects expenses screen
-						</p>
-						<div class="left-form">
-						    <form name="SaveExpense" action="<?php 
-                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Expenses'; }
-                            else if ($_GET['Mode'] == 'ViewExpense') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Expenses'; } ?>" method="POST" autocomplete="off">
-							<table class="formTable" >
-							    <tr>
-							        <td class="formLabel">Expense Name</td>
-							    </tr>
-							    <tr>
-							        <td colspan="2">
-							        <span class="formSingleLineBox" style="width: 610px;">
-                                    <input type="text" name="ExpenseName" 
-                                    value="<?php if (isset($GLOBALS['expense_item_name'])) {echo $GLOBALS['expense_item_name']; } ?>"
-                                    placeholder="Enter Expense Name" style="width: 580px;" />
+                                    <tr>
+                                        <td colspan="3">
+                                            <span class="formSingleLineBox" style="width: 625px;">
+                                                <input id="ClientName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
+                                                if (isset($GLOBALS['client_name'])) {
+                                                    echo $GLOBALS['client_name'];
+                                                }
+                                                ?>" name = "ClientName" placeholder="Enter Client Name" style="width:600px;" /></span></td>
+                                    <input type="hidden" name="ClientID" value="<?php echo $_GET['ClientID']; ?>" />
                                     <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
                                     <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                    <input type="hidden" name="ExpenseID" value="<?php echo $_GET['ExpenseID']; ?>" />
-                                    </span></td> 
-							    </tr>
-								<tr>
-									<td class="formLabel">Select Category</td>
-									<td class="formLabel">Select Sub Category</td>
-								</tr>
-								<tr>
-									<td><span class="formSingleLineBox">
-									    <select name="ExpCategories" id="SelectExpenseCat" onchange="SelectExpSubCat()" >
-                                            <option value="">-- Select Category --</option>
-                                            <?php if (isset($_GET['ProjectID']) || isset($_GET['ExpCat'])) { BindBudgetCat(); } ?>
-                                        </select>
-									</span></td>
-									<td><span class="formSingleLineBox">
-									    <select name="ExpSubCategories" id="SelectExpenseSubCat">
-                                            <option value="">-- Select Sub Category --</option>
-                                            <?php if(isset($_GET['ExpCat']) && isset($_GET['ExpSubCat'])){ BindBudgetSubCat(); } ?>
-                                            </select>
-									</span></td>
-								</tr>
-								<tr>
-									<td class="formLabel">Value Of Expense</td>
-									<td class="formLabel">Expense Date</td>
-								</tr>
-								<tr>
-									<td><span class="formSingleLineBox">
-									    <input type="text" name="ExpenseAmount" 
-									    value="<?php if (isset($GLOBALS['expense_item_amount'])) {echo $GLOBALS['expense_item_amount']; } ?>" 
-									    placeholder="Enter Expense Amount" />
-									</span></td>
-									<td><span class="formSingleLineBox">
-									    <input title="DD/MM/YYYY" type="text" id="expense_date" 
-                                        value="<?php if (isset($GLOBALS['expense_date'])) {echo $GLOBALS['expense_date']; } ?>" 
-                                        placeholder="DD/MM/YYYY" name="ExpenseDate" readonly />
-									</span></td>
-								</tr>
-								<tr>
-									<td class="formLabel">Other Details</td>
-								</tr>
-								<tr>
-									<td colspan="2"><span class="formMultiLineBox" style="width: 610px;">
-									    <textarea type="text" name = "ExpenseDetails" placeholder="Any Other Details"><?php
-									     if (isset($GLOBALS['expense_other_dtl'])) {echo $GLOBALS['expense_other_dtl']; } ?></textarea>
-									    </span></td>
-								</tr>
-								<tr>
-                                    <td><span class="saveButtonArea">
-                                        <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewExpense') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                        <?php $new_expense = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Expenses';
-                                            if ($_GET['Mode'] == 'ViewExpense') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_expense . '>New Expense</a></span>'; } ?>
-                                    </span></td>
-                                    <td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-                                    class="formLinks"><a href="#">Photos</a></span></td>
+                                    <input type="hidden" name="ClientPage" value="<?php echo $_GET['ClientPage']; ?>" />
+                                    <input type="hidden" name="Mode" value="<?php echo 'Insert Client'; ?>" />
+
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Company Number</td>
+                                        <td class="formLabel">Company Email</td>
+                                        <td class="formLabel">Company Website</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><span class="formSingleLineBox" style="width: 200px;">
+                                                <input id="ClientNumber" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
+                                                if (isset($GLOBALS['client_number'])) {
+                                                    echo $GLOBALS['client_number'];
+                                                }
+                                                ?>" name = "ClientNumber" placeholder="Enter Client Number" style="width: 180px;" /></span></td>
+                                        <td><span class="formSingleLineBox" style="width: 200px;">
+                                                <input id="ClientEmail" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
+                                                if (isset($GLOBALS['client_email'])) {
+                                                    echo $GLOBALS['client_email'];
+                                                }
+                                                ?>" name = "ClientEmail" placeholder="Enter Client Email" style="width: 180px;" /></span></td>
+                                        <td><span class="formSingleLineBox" style="width: 200px;">
+                                                <input id="ClientWebsite" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
+                                                if (isset($GLOBALS['client_website'])) {
+                                                    echo $GLOBALS['client_website'];
+                                                }
+                                                ?>" name = "ClientWebsite" placeholder="Enter Website" style="width: 180px;" /></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Principal Contact</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <span class="formSingleLineBox" style="width: 625px;">
+                                                <input id="PrincipalContact" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" value="<?php
+                                                if (isset($GLOBALS['client_contact_person'])) {
+                                                    echo $GLOBALS['client_contact_person'];
+                                                }
+                                                ?>" name = "PrincipalContact" placeholder="Enter Principal Contact" style="width:600px;" />
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Company Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" nowrap="nowrap">
+                                            <span class="formMultiLineBox" style="width: 625px;">
+                                                <!-- formatter:off -->
+                                                <textarea id="ClientAddr" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name = "ClientAddr" placeholder="Enter Address"><?php
+                                                    if (isset($GLOBALS['client_addr'])) {
+                                                        echo $GLOBALS['client_addr'];
+                                                    }
+                                                    ?></textarea></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"> <span class="saveButtonArea">
+                                                <input type="submit" value="<?php
+                                                if ($_GET['Mode'] == 'ViewClients') {
+                                                    echo 'Update';
+                                                } else {
+                                                    echo 'Save';
+                                                }
+                                                ?>" name="UpdateMode" style="float:left;" />
+                                                       <?php
+                                                       $new_client = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjClients';
+                                                       if ($_GET['Mode'] == 'ViewClients') {
+                                                           echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_client . '>New Client</a></span>';
+                                                       }
+                                                       ?>
+                                            </span></td>
+                                        <td align="right">
+                                            <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+                                            <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjClients&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+
+                            <!-- Grid Area Showing Client List -->
+                            <div class="GridArea" style="width: 650px;">
+                                <table class="detailGrid" style="width: 625px;">
+                                    <tr>
+                                        <td class="detailGridHead">#</td>
+                                        <td class="detailGridHead">Company Name</td>
+                                        <!--  class="detailGridHead">Company Address</td -->
+                                        <td class="detailGridHead">Company Email</td>
+                                        <td class="detailGridHead">Company Website</td>
+                                        <td class="detailGridHead">Edit:</td>
+                                    </tr>
+                                    <!-- @formatter:on -->
+                                    <?php
+                                    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ProjectID'])) {
+                                        LoadProjectClients();
+                                    }
+                                    ?>
+                                </table>
+
+                                
+
+                                <span style="white-space: nowrap;">
+                                   <a href="<?php if(isset($_GET['ClientID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewClients&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientID='.$_GET['ClientID'].'&ClientPage='.$GLOBALS['prev_page'].'#ProjClients';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientPage='.$GLOBALS['prev_page'].'#ProjClients';}?>">Previous</a>
+                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['ClientPage'])){echo $load_page.' / '.$num_pages;}else{echo '1 / '.$num_pages;}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                    <a href="<?php if(isset($_GET['ClientID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewClients&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientID='.$_GET['ClientID'].'&ClientPage='.$GLOBALS['next_page'].'#ProjClients';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientPage='.$GLOBALS['next_page'].'#ProjClients';}?>">Next</a>
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <!-- Side Form for Client Staff -->
+                        <div
+                            style="width: 325px; float: left; margin-top: 10px; margin-left: 10px;">
+                            <!-- form -->
+                            <fieldset class="fieldset" style="padding: 20px; width: 350px;">
+                                <legend class="legend" style="width: 120px;">
+                                    <span class="legendText">Client Staff:</span>
+                                </legend>
+
+                                <form action="<?php
+                                if (!isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#ProjClients';
+                                } else if (isset($_GET['StaffID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateStaff&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ClientID=' . $_GET['ClientID'] . '#ProjClients'; }
+                                ?>" method="POST" autocomplete="off" >
+                                    <table class="formTable" style="width:300px; margin-bottom: 20px;">
+                                        <tr>
+                                            <td class="formLabel">Staff Name:</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="formSingleLineBox">
+                                                    <input id="StaffName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffName" value="<?php if(isset($GLOBALS['staff_name'])){echo $GLOBALS['staff_name'];}?>" placeholder="Enter Staff Name" />
+                                                    <input type="hidden" name="ClientID" value="<?php echo $_GET['ClientID']; ?>" />
+                                                    <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                    <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                    <input type="hidden" name="StaffID" value="<?php echo $_GET['StaffID']; ?>" />
+                                                    <!-- a class="LinkInBox" href="#">New</a --></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formLabel">Mobile Number:</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="formSingleLineBox">
+                                                    <input id="StaffNumber" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffNumber" value="<?php
+                                                    if (isset($GLOBALS['staff_number'])) {
+                                                        echo $GLOBALS['staff_number'];
+                                                    }
+                                                    ?>" placeholder="Enter Staff Number" />
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formLabel">Email Address:</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="formSingleLineBox">
+                                                    <input id="StaffEmail" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffEmail" value="<?php
+                                                    if (isset($GLOBALS['staff_email'])) {
+                                                        echo $GLOBALS['staff_email'];
+                                                    }
+                                                    ?>" placeholder="Enter Staff Email" />
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formLabel">Staff Role</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="formSingleLineBox">
+                                                    <input id="StaffRole" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="StaffRole" value="<?php
+                                                    if (isset($GLOBALS['staff_role'])) {
+                                                        echo $GLOBALS['staff_role'];
+                                                    }
+                                                    ?>"  placeholder="Enter Staff Role" />
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="saveButtonArea" href="#"> <!-- @formatter:off -->
+                                                    <?php if($_GET['Mode']=='ViewClients'&&!isset($_GET['StaffID'])){echo '<input type="submit" value="Add Staff" style="float:left;"/>';}else if(isset($_GET['StaffID'])){echo '<input type="submit" value="Update" style="float:left;"/>';}?>
+                                                    <?php if(isset($_GET['StaffID'])){$new_staff=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewClients&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientID='.$_GET['ClientID'].'#ProjClients';echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_staff.'>New Staff</a></span>';}?>
+                                                </span></td>
+                                        </tr>
+                                    </table>
+                                </form>
+
+                                <!-- Grid Area showing client staff -->
+                                <table class="detailGridSmall" style="width: 300px; margin-top: 25px;">
+                                    <tr>
+                                        <td class="detailGridHead">#</td>
+                                        <td class="detailGridHead">Staff Name:</td>
+                                        <!-- td class="detailGridHead">Role:</td -->
+                                        <td class="detailGridHead">Modify:</td>
+                                    </tr>
+                                    <?php
+                                    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ClientID'])) {
+                                        LoadClientStaff();
+                                    }
+                                    ?>
+                                </table>
+
+                                
+
+                                <span style="white-space: nowrap;">
+                                    <a href="<?php if(isset($_GET['ClientID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewClients&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientID='.$_GET['ClientID'].'&ClientPage='.$_GET['ClientPage'].'&StaffPage='.$GLOBALS['staff_prev_page'].'#ProjClients';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjClients';}?>">Previous</a>
+                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['ClientID'])){echo $GLOBALS['staff_load_page'].' / '.$GLOBALS['staff_num_pages'];}else{echo '1 / 0';}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                    <a href="<?php if(isset($_GET['ClientID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewClients&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ClientID='.$_GET['ClientID'].'&ClientPage='.$_GET['ClientPage'].'&StaffPage='.$GLOBALS['staff_next_page'].'#ProjClients';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjClients';}?>">Next</a>
+                                </span>
+
+                            </fieldset>
+                            <!-- /form -->
+                        </div>
+                    </div>
+
+                    <!-- Projects Budget Tab Starts here -->
+                    <div id="ProjBudget" class="tab-pane fade">
+                        <p>
+                            This is the Project Budgets, and Financials Screen
+                        </p>
+                        <div class="left-form">
+                            <form name="SaveBudget" action="<?php
+                            if ($_GET['Mode'] == 'Read') {
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjBudget';
+                            } else if ($_GET['Mode'] == 'ViewBudget') {
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjBudget';
+                            }
+                            ?>" method="post" autocomplete="off">
+                                <table class="formTable" >
+                                    <tr>
+                                        <td class="formLabel">Category Line Total</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span class="formSingleLineBox" style="width: 610px;">
+                                                <input id="TotalBudget" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="TotalBudget" 
+                                                       value="<?php if (isset($GLOBALS['budget_grand_total'])) {
+                                echo $GLOBALS['budget_grand_total'];
+                            } ?>"  
+                                                       placeholder="Auto Budget Total" readonly />
+                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                <input type="hidden" name="BudgetID" value="<?php echo $_GET['BudgetID']; ?>" />
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Select Category</td>
+                                        <td class="formLabel">Select Sub Category</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="formSingleLineBox">
+                                                <select name="Categories" id="SelectBudgetCat" onchange="SelectSubCat()" >
+                                                    <option value="">-- Select Category --</option>
+                                                    <?php if (isset($_GET['ProjectID']) || isset($_GET['Cat'])) {
+                                                        BindBudgetCat();
+                                                    } ?>
+                                                </select>
+                                            </span></td>
+                                        <td><span class="formSingleLineBox">
+                                                <select name="SubCategories" id="SelectBudgetSubCat">
+                                                    <option value="">-- Select Sub Category --</option>
+                                                    <?php if (isset($_GET['Cat']) && isset($_GET['SubCat'])) {
+                                                    BindBudgetSubCat();
+                                                    } ?>
+                                                </select>
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Item Value</td>
+                                        <td class="formLabel">Item (%) Of Category</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="formSingleLineBox">
+                                                <input id="BudgetValue" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="BudgetValue" 
+                                                       value="<?php if (isset($GLOBALS['budget_item_amount'])) {
+                                                        echo $GLOBALS['budget_item_amount'];
+                                                        } ?>"  
+                                                       placeholder="Budget Value" />
+                                            </span></td>
+                                        <td><span class="formSingleLineBox">
+                                                <input id="BudgetPercent" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="BudgetPercent" 
+                                                       value="<?php if (isset($GLOBALS['budget_item_pct'])) {
+                                                        echo $GLOBALS['budget_item_pct'] . ' %';
+                                                        } ?>"  
+                                                       placeholder="Budget Percentage" readonly />
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Other Item Details</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="formMultiLineBox" style="width: 610px;">
+                                                <textarea id="BudgetDetails" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name = "BudgetDetails" placeholder="Any Other Details"><?php if (isset($GLOBALS['budget_other_dtl'])) {
+                                                echo $GLOBALS['budget_other_dtl'];
+                                                } ?></textarea>
+                                            </span></td> 
+                                    </tr>
+                                    <tr>
+                                        <td><span class="saveButtonArea">
+                                                <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewBudget') {
+                                                    echo 'Update';
+                                                    } else {
+                                                    echo 'Save';
+                                                    } ?>" name="UpdateMode" style="float:left;"/>
+                                                    <?php $new_budget = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjBudget';
+                                                    if ($_GET['Mode'] == 'ViewBudget') {
+                                                    echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_budget . '>New Budget</a></span>';
+                                                    }
+                                                    ?>
+                                            </span></td>
+                                        <td align="right">
+                                            <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+                                            <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+
+                        <!-- Side Form for budget charts etc -->
+                        <!-- div id="SideSet" style="margin-top: 10px">
+                                <form>
+                                        <fieldset class="fieldset" style="height: 425px; width: 300px;">
+                                                <legend class="legend" style="width: 170px;">
+                                                        <span class="legendText">Budget Snapshot</span>
+                                                </legend>
+                                                Other Budget Details
+                                        </fieldset>
+                                </form>
+                        </div -->
+
+                        <!-- detailed grid showing project expenses -->
+                        <div class="GridArea" style="width: 750px;">
+                            <table class="detailGrid" style="width:725px;">
+                                <tr>
+                                    <td class="detailGridHead">#</td>
+                                    <td class="detailGridHead">Budget Item</td>
+                                    <td class="detailGridHead">Item Category</td>
+                                    <td class="detailGridHead">Item Value</td>
+                                    <td class="detailGridHead">Delete</td>
+                                    <!-- td class="detailGridHead">Edit:</td -->
                                 </tr>
-							</table>
-							</form>
-						</div>
-						
-						<!-- Side Form for budget charts etc -->
+                                <?php
+                                if (isset($_GET['ProjectID'])) {
+                                LoadBudgetItems();
+                                }
+                                ?>
+                            </table>
+
+
+
+                            <span style="white-space: nowrap;">
+                                <a href="<?php if(isset($_GET['BudgetID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewBudget&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&BudgetID='.$_GET['BudgetID'].'&Cat='.$_GET['Cat'].'&SubCat='.$_GET['SubCat'].'&BudgetPage='.$GLOBALS['budget_prev_page'].'#ProjBudget';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&BudgetPage='.$GLOBALS['budget_prev_page'].'#ProjBudget';}?>" >Previous</a>
+                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['BudgetPage'])){echo $budget_load_page.' / '.$budget_num_pages;}else{echo '1 / '.$budget_num_pages;}?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
+                                <a href="<?php if(isset($_GET['BudgetID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewBudget&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&BudgetID='.$_GET['BudgetID'].'&Cat='.$_GET['Cat'].'&SubCat='.$_GET['SubCat'].'&BudgetPage='.$GLOBALS['budget_next_page'].'#ProjBudget';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&BudgetPage='.$GLOBALS['budget_next_page'].'#ProjBudget';}?>" >Next</a>
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <!-- Projects Expenses Tab Starts here -->
+                    <div id="ProjExpenses" class="tab-pane fade">
+                        <p>
+                            This is the projects expenses screen
+                        </p>
+                        <div class="left-form">
+                            <form name="SaveExpense" action="<?php
+                            if ($_GET['Mode'] == 'Read') {
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjExpenses';
+                            } else if ($_GET['Mode'] == 'ViewExpense') {
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjExpenses';
+                            }
+                            ?>" method="POST" autocomplete="off">
+                                <table class="formTable" >
+                                    <tr>
+                                        <td class="formLabel">Expense Name</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="formSingleLineBox" style="width: 610px;">
+                                                <input id="ExpenseName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="ExpenseName" 
+                                                       value="<?php if (isset($GLOBALS['expense_item_name'])) {
+                                                                    echo $GLOBALS['expense_item_name'];
+                                                                } ?>" placeholder="Enter Expense Name" style="width: 580px;" />
+                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                <input type="hidden" name="ExpenseID" value="<?php echo $_GET['ExpenseID']; ?>" />
+                                            </span></td> 
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Select Category</td>
+                                        <td class="formLabel">Select Sub Category</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="formSingleLineBox">
+                                                <select name="ExpCategories" id="SelectExpenseCat" onchange="SelectExpSubCat()" >
+                                                    <option value="">-- Select Category --</option>
+                                                    <?php if (isset($_GET['ProjectID']) || isset($_GET['ExpCat'])) {
+                                                        BindBudgetCat();
+                                                    } ?>
+                                                </select>
+                                            </span></td>
+                                        <td><span class="formSingleLineBox">
+                                                <select name="ExpSubCategories" id="SelectExpenseSubCat">
+                                                    <option value="">-- Select Sub Category --</option>
+                                                    <?php if (isset($_GET['ExpCat']) && isset($_GET['ExpSubCat'])) {
+                                                        BindBudgetSubCat();
+                                                    } ?>
+                                                </select>
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Value Of Expense</td>
+                                        <td class="formLabel">Expense Date</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="formSingleLineBox">
+                                                <input id="ExpenseAmount" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="ExpenseAmount" 
+                                                       value="<?php if (isset($GLOBALS['expense_item_amount'])) {
+                                                        echo $GLOBALS['expense_item_amount'];
+                                                    } ?>" placeholder="Enter Expense Amount" />
+                                            </span></td>
+                                        <td><span class="formSingleLineBox">
+                                                <input onfocus="Focus(this.id)" onblur="Blur(this.id)" title="DD/MM/YYYY" type="text" id="expense_date" 
+                                                       value="<?php if (isset($GLOBALS['expense_date'])) {
+    echo $GLOBALS['expense_date'];
+} ?>" 
+                                                       placeholder="DD/MM/YYYY" name="ExpenseDate" readonly />
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Other Details</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span class="formMultiLineBox" style="width: 610px;">
+                                                <textarea id="ExpenseDetails" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="ExpenseDetails" placeholder="Any Other Details"><?php if(isset($GLOBALS['expense_other_dtl'])){echo $GLOBALS['expense_other_dtl'];}?></textarea>
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="saveButtonArea">
+                                                <input type="submit" value="<?php if($_GET['Mode']=='ViewExpense'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
+                                                <?php $new_expense=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjExpenses';if($_GET['Mode']=='ViewExpense'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_expense.'>New Expense</a></span>';}?>
+                                            </span></td>
+                                        <td align="right">
+                                            <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjExpenses&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+                                            <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjExpenses&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+
+                        <!-- Side Form for budget charts etc -->
                         <!-- div id="SideSet" style="margin-top: 10px">
                             <form>
                                 <fieldset class="fieldset" style="height: 425px; width: 300px;">
@@ -1954,456 +1975,391 @@
                                 </fieldset>
                             </form>
                         </div -->
-						
-						<div class="GridArea" style="width: 750px;">
-							<table class="detailGrid" style="width: 725px;">
-								<tr>
-									<td class="detailGridHead">#</td>
-									<td class="detailGridHead">Expense</td>
-									<td class="detailGridHead">Budget Sub Category</td>
-									<td class="detailGridHead">Budget Category</td>
-									<td class="detailGridHead">Expense Amount</td>
-									<td class="detailGridHead">Delete</td>
-									<!-- td class="detailGridHead">Expense (%)</td -->
-								</tr>
-								<?php if (isset($_GET['ProjectID'])) { LoadExpenses(); } ?>
-							</table>
-							
-							<!-- table class="detailNavigation">
-								<tr>
-                                        <td><a href="<?php
-                                        if (isset($_GET['ExpenseID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses';
-                                        } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses'; }
-                                        ?>" >Previous</a></td>
-                                        <td class="PageJump" style="width: 70px;"> <?php echo $expense_load_page; ?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php echo $expense_num_pages; ?></td>
-                                        <td><a href="<?php
-                                        if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses';
-                                        } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses'; }
-                                        ?>" >Next</a></td>
-                                </tr>
-							</table -->
-							
-							<span style="white-space: nowrap;">
-                                    <a href="<?php if (isset($_GET['ExpenseID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_prev_page'] . '#Expenses'; } ?>" >Previous</a>
-                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['ExpensePage'])) { echo $expense_load_page . ' / ' . $expense_num_pages ; } else {echo '1 / ' . $expense_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                    <a href="<?php if (isset($_GET['ClientID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $_GET['ExpenseID'] . '&ExpCat=' . $_GET['ExpCat'] . '&ExpSubCat=' . $_GET['ExpSubCat'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpensePage=' . $GLOBALS['expense_next_page'] . '#Expenses'; } ?>" >Next</a>
-                            </span>
-							
-						</div>
-					</div>
 
-					<!-- Projects Personnel Tab Starts here -->
-					<div id="Personnel" class="tab-pane fade">
-						<p>
-							This is the Project Personnel Screen
-						</p>
-						<div class="left-form">
-						    <form name="SavePersonnel" action="<?php 
-                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Personnel'; }
-                            else if ($_GET['Mode'] == 'ViewPersonnel') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Personnel'; } ?>" method="POST" autocomplete="off">
-							<table class="formTable">
-							    <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                        <div class="GridArea" style="width: 750px;">
+                            <table class="detailGrid" style="width: 725px;">
+                                <tr>
+                                    <td class="detailGridHead">#</td>
+                                    <td class="detailGridHead">Expense</td>
+                                    <td class="detailGridHead">Budget Sub Category</td>
+                                    <td class="detailGridHead">Budget Category</td>
+                                    <td class="detailGridHead">Expense Amount</td>
+                                    <td class="detailGridHead">Delete</td>
+                                    <!-- td class="detailGridHead">Expense (%)</td -->
+                                </tr>
+                                <?php if (isset($_GET['ProjectID'])) {
+                                    LoadExpenses();
+                                } ?>
+                            </table>
+
+
+
+                            <span style="white-space: nowrap;">
+                                <a href="<?php if(isset($_GET['ExpenseID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewExpense&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ExpenseID='.$_GET['ExpenseID'].'&ExpCat='.$_GET['ExpCat'].'&ExpSubCat='.$_GET['ExpSubCat'].'&ExpensePage='.$GLOBALS['expense_prev_page'].'#ProjExpenses';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ExpensePage='.$GLOBALS['expense_prev_page'].'#ProjExpenses';}?>" >Previous</a>
+                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['ExpensePage'])){echo $expense_load_page.' / '.$expense_num_pages;}else{echo '1 / '.$expense_num_pages;}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                <a href="<?php if(isset($_GET['ClientID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewExpense&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ExpenseID='.$_GET['ExpenseID'].'&ExpCat='.$_GET['ExpCat'].'&ExpSubCat='.$_GET['ExpSubCat'].'&ExpensePage='.$GLOBALS['expense_next_page'].'#ProjExpenses';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&ExpensePage='.$GLOBALS['expense_next_page'].'#ProjExpenses';}?>">Next</a>
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <!-- Projects Personnel Tab Starts here -->
+                    <div id="ProjPersonnel" class="tab-pane fade">
+                        <p>
+                            This is the Project Personnel Screen
+                        </p>
+                        <div class="left-form">
+                            <form name="SavePersonnel" action="<?php
+                            if ($_GET['Mode'] == 'Read') {
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjPersonnel';
+                            } else if ($_GET['Mode'] == 'ViewPersonnel') {
+                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#ProjPersonnel';
+                            }
+                            ?>" method="POST" autocomplete="off">
+                                <table class="formTable">
+                                    <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
                                     <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
                                     <input type="hidden" name="ID" value="<?php echo $_GET['ID']; ?>" />
-								<tr>
-									<td class="formLabel">Select User</td>
-									<td class="formLabel">User Role</td>
-								</tr>
-								<tr>
-									<td>
-									    <span class="formSingleLineBox">
-									        <select name="UserID" onchange="">
-                                                <option value="">-- Select User --</option>
-                                                    <?php if (isset($_GET['ProjectID']) ) { BindAllUsers(); } ?>
-                                            </select>
-									    </span></td>
-									<td>
-									    <span class="formSingleLineBox">
-									        <select name="RoleID" id="SelectRole" onchange="">
-                                                <option value="">-- Select Role --</option>
-                                                    <?php if (isset($_GET['ProjectID']) ) { BindAllRoles(); } ?>
-                                            </select>
-										</span></td>
-								</tr>
-								<tr>
-								    <td class="formLabel">Other User Details</td>
-								</tr>
-								<tr>
-								    <td colspan="2"><span class="formMultiLineBox" style="width: 610px;">
-                                        <textarea type="text" name = "OtherDetail" placeholder="Any Other Details"><?php if(isset($_GET['UserID'])){ echo $GLOBALS['personnel_other_dtl']; } ?></textarea>
-                                        </span></td>
-								</tr>
-								<tr>
-									<td><span class="saveButtonArea">
-                                        <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewPersonnel') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                        <?php $new_expense = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Personnel';
-                                            if ($_GET['Mode'] == 'ViewPersonnel') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_expense . '>New Staff</a></span>'; } ?>
-                                    </span></td>
-                                    <td align="right"><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-                                    class="formLinks"><a href="#">Photos</a></span></td>
-								</tr>
-							</table>
-							</form>
-						</div>
-						
-						<div class="GridArea">
-							<table class="detailGrid" style="width: 700px;">
-								<tr>
-									<td class="detailGridHead">#</td>
-									<td class="detailGridHead">Username</td>
-									<td class="detailGridHead">Display Name</td>
-									<!-- td class="detailGridHead">Job Title</td -->
-									<td class="detailGridHead">System Role</td>
-									<td class="detailGridHead">Delete</td>
-								</tr>
-								<?php if (isset($_GET['ProjectID'])) { LoadProjectStaff(); } ?>
-							</table>
-							
-							<!-- table class="detailNavigation">
-								<tr>
-									<td><a href="<?php
-                                        if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&UserPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel';
-                                        } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel'; }
-                                        ?>" >Previous</a></td>
-                                        <td class="PageJump" style="width: 70px;"> <?php echo $personnel_load_page; ?>&nbsp;&nbsp;/&nbsp;&nbsp;<?php echo $personnel_num_pages; ?></td>
-                                        <td><a href="<?php
-                                        if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&UserPage=' . $GLOBALS['personnel_next_page'] . '#Personnel';
-                                        } else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_next_page'] . '#Personnel'; }
-                                        ?>" >Next</a></td>
-								</tr>
-							</table -->
-							
-							<span style="white-space: nowrap;">
-                                    <a href="<?php if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&StaffPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_prev_page'] . '#Personnel'; } ?>" >Previous</a>
-                                    &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['StaffPage'])) { echo $personnel_load_page . ' / ' . $personnel_num_pages ; } else {echo '1 / ' . $personnel_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                    <a href="<?php if (isset($_GET['UserID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&UserID=' . $_GET['UserID'] . '&RoleID=' . $_GET['RoleID'] . '&StaffPage=' . $GLOBALS['personnel_next_page'] . '#Personnel'; } 
-                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&StaffPage=' . $GLOBALS['personnel_next_page'] . '#Personnel'; } ?>" >Next</a>
-                            </span>
-							
-						</div>
-					</div>
-
-					<!-- Projects PAP Definition Starts here -->
-					<div id="PAP" class="tab-pane fade">
-						<p>
-							This is the PAP Definition Screen
-						</p>
-						<div class="left-form">
-						    <form name="SavePersonnel" action="<?php 
-                            if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; }
-                            else if ($_GET['Mode'] == 'ViewPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } ?>" method="POST" autocomplete="off">
-							<table class="formTable">
-					             <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                 <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-								<tr>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2" class="formLabel">PAP Name</td>
-								</tr>
-								<tr>
-									<td colspan="2"><span class="formSingleLineBox" style="width: 610px;" >
-									    <input type="text" name="PapName" value="<?php if (isset($GLOBALS['pap_name'])){ echo $GLOBALS['pap_name']; } ?>" placeholder="Enter PAP Name" style="width: 580px;" />
-									    </span></td>
-								</tr>
-								<tr>
-									<td class="formLabel">PAP HHID</td>
-									<td class="formLabel">Land Plot Reference</td>
-								</tr>
-								<tr>
-									<td><span class="formSingleLineBox">
-									    <input type="text" name="HHID" value="<?php if (isset($_GET['HHID'])){ echo $_GET['HHID']; } ?>" placeholder="PAP HHID" readonly="true" />
-									</span></td>
-									<td><span class="formSingleLineBox">
-									    <input type="text" name="PlotRef" value="<?php if (isset($GLOBALS['pap_plot_ref'])){ echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="Enter PAP Plot Ref" />
-									</span></td>
-								</tr>
-								<tr>
-									<td class="formLabel">PAP Designation</td>
-									<td class="formLabel">PAP Type</td>
-								</tr>
-								<tr>
-									<td><span class="formSingleLineBox">
-									    <input type="text" name="PapDesign" value="<?php if (isset($GLOBALS['pap_design'])){ echo $GLOBALS['pap_design']; } ?>" placeholder="Enter PAP Designation" />
-									</span></td>
-									<td><span class="formSingleLineBox">
-									    <select name="PapType" onchange="" >
-                                                <option value="">-- Select Type --</option>
-                                                <option value="IND" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Individual</option>
-                                                <option value="INS" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'INS') { echo 'selected'; }  ?>>Institution</option> 
-                                        </select>
-									</span></td>
-								</tr>
-								<tr>
-									<td><span class="saveButtonArea">
-                                        <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewPap') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                        <?php $new_pap_defn = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP';
-                                            if ($_GET['Mode'] == 'ViewPap') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_pap_defn . '>New PAP</a></span>'; } ?>
-                                    </span></td>
-									<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-									class="formLinks"><a href="#">Photos</a></span></td>
-								</tr>
-							</table>
-							</form>
-						</div>
-						
-						<div class="GridArea">
-							<table class="detailGrid" style="width: 800px;">
-								<tr>
-									<td class="detailGridHead">#</td>
-									<td class="detailGridHead">HHID</td>
-									<td class="detailGridHead">PAP Name</td>
-									<td class="detailGridHead">Plot Ref</td>
-									<td class="detailGridHead">Designation</td>
-									<td class="detailGridHead">PAP Type</td>
-									<td class="detailGridHead">Delete</td>
-								</tr>
-								<?php if ($_GET['Mode'] == 'Read') { LoadProjectPaps(); } else if ($_GET['Mode'] == 'SearchPap'){ SearchProjectPaps();  } else { LoadProjectPaps(); } ?>
-							</table>
-							
-							<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#PAP'; ?>" method="GET" autocomplete="off" >
-                                <input type="hidden" name="Mode" value="<?php if ($_GET['Mode'] == 'SearchPap') { echo 'SearchPap'; } else { echo 'Read'; } ?>" />
-                                <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                                <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                                <input type="hidden" name="KeyWord" value="<?php if (isset($_GET['KeyWord'])) {echo $_GET['KeyWord']; } else {echo ''; } ?>" />
-							    <span style="white-space: nowrap; float:left;">
-							        <a href="<?php if (isset($_GET['PapID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PapID=' . $_GET['HHID'] . '&GridPage=' . $GLOBALS['pap_prev_page'] . '#PAP'; }
-                                    else if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_prev_page'] . '#PAP'; } 
-							        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_prev_page'] . '#PAP'; } ?>" >Previous</a>
-							        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $_GET['GridPage'] . ' / ' . $GLOBALS['pap_num_pages'] ; } else {echo '1 / ' . $GLOBALS['pap_num_pages'] ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-						            <a href="<?php if (isset($_GET['PapID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PapID=' . $_GET['HHID'] . '&GridPage=' . $GLOBALS['pap_next_page'] . '#PAP'; }
-                                    else if (isset($_GET['KeyWord'])){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=SearchPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&KeyWord=' .  $_GET['KeyWord'] . '&GridPage=' . $GLOBALS['pap_next_page'] . '#PAP'; } 
-						            else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_next_page'] . '#PAP'; } ?>" >Next</a>
-                                </span>
-							    <input type="submit" style="position: absolute; left: -99999px;" />
+                                    <tr>
+                                        <td class="formLabel">Select User</td>
+                                        <td class="formLabel">User Role</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="formSingleLineBox">
+                                                <select name="UserID" onchange="">
+                                                    <option value="">-- Select User --</option>
+                                                    <?php if (isset($_GET['ProjectID'])) {
+                                                        BindAllUsers();
+                                                    } ?>
+                                                </select>
+                                            </span></td>
+                                        <td>
+                                            <span class="formSingleLineBox">
+                                                <select name="RoleID" id="SelectRole" onchange="">
+                                                    <option value="">-- Select Role --</option>
+                                                    <?php if (isset($_GET['ProjectID'])) { BindAllRoles(); } ?>
+                                                </select>
+                                            </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="formLabel">Other User Details</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span class="formMultiLineBox" style="width:610px">
+                                                <textarea id="OtherDetail" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($_GET['UserID'])){echo $GLOBALS['personnel_other_dtl'];}?></textarea>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="saveButtonArea">
+                                                <input type="submit" value="<?php if($_GET['Mode']=='ViewPersonnel'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
+                                                <?php $new_expense=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjPersonnel';if($_GET['Mode']=='ViewPersonnel'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_expense.'>New Staff</a></span>';}?>
+                                            </span>
+                                        </td>
+                                        <td align="right">
+                                            <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+                                            <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjPersonnel&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
                             </form>
-                            
-                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#PAP'; ?>" method="GET" autocomplete="off" >
-                                <input type="hidden" name="Mode" value="<?php echo 'SearchPap'; ?>" />
-                                <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                                <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                                <span style="white-space: nowrap; margin-left: 50px; font-weight: bold; color: #ff6600;">
-                                    Search:&nbsp;&nbsp;<input name="KeyWord" type="text" value="<?php if (isset($_GET['KeyWord'])) { echo $_GET['KeyWord'];  } ?>" style="width: 200px; margin-right: 0px; border: 1px solid #337ab7;" placeholder="Search For PAP" />&nbsp;&nbsp;
-                                    <a href="<?php if ($_GET['Mode'] == 'SearchPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } else { echo '#'; } ?>" >Reset</a>    
+                        </div>
+
+                        <div class="GridArea">
+                            <table class="detailGrid" style="width: 700px;">
+                                <tr>
+                                    <td class="detailGridHead">#</td>
+                                    <td class="detailGridHead">Username</td>
+                                    <td class="detailGridHead">Display Name</td>
+                                    <!-- td class="detailGridHead">Job Title</td -->
+                                    <td class="detailGridHead">System Role</td>
+                                    <td class="detailGridHead">Delete</td>
+                                </tr>
+                                <?php if (isset($_GET['ProjectID'])) {
+                                    LoadProjectStaff();
+                                } ?>
+                            </table>
+
+
+
+                            <span style="white-space: nowrap;">
+                                <a href="<?php if(isset($_GET['UserID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewPersonnel&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&UserID='.$_GET['UserID'].'&RoleID='.$_GET['RoleID'].'&StaffPage='.$GLOBALS['personnel_prev_page'].'#ProjPersonnel';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&StaffPage='.$GLOBALS['personnel_prev_page'].'#ProjPersonnel';}?>">Previous</a>
+                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['StaffPage'])){echo $personnel_load_page.' / '.$personnel_num_pages;}else{echo '1 / '.$personnel_num_pages;}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                <a href="<?php if(isset($_GET['UserID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewPersonnel&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&UserID='.$_GET['UserID'].'&RoleID='.$_GET['RoleID'].'&StaffPage='.$GLOBALS['personnel_next_page'].'#ProjPersonnel';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&StaffPage='.$GLOBALS['personnel_next_page'].'#ProjPersonnel';}?>">Next</a>
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <!-- Projects PAP Definition Starts here -->
+                    <div id="ProjPAP" class="tab-pane fade">
+                        <p>
+                            This is the PAP Definition Screen
+                        </p>
+                        <div class="left-form">
+                                <form name="SavePersonnel" action="<?php if($_GET['Mode']=='Read'){echo htmlspecialchars($_SERVER[" PHP_SELF "]).'?Mode=InsertPap&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjPAP';}else if($_GET['Mode']=='ViewPap'){echo htmlspecialchars($_SERVER["PHP_SELF "]).'?Mode=UpdatePap&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjPAP';}?>" method="POST" autocomplete="off">
+                                        <table class="formTable">
+                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID'];?>" />
+                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode'];?>" />
+                                                <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="2" class="formLabel">PAP Name</td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="2"><span class="formSingleLineBox" style="width:610px">
+                                        <input id="PapName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="PapName" value="<?php if(isset($GLOBALS['pap_name'])){echo $GLOBALS['pap_name'];}?>" placeholder="Enter PAP Name" style="width:580px" />
+                                        </span> </td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="formLabel">PAP HHID</td>
+                                                        <td class="formLabel">Land Plot Reference</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><span class="formSingleLineBox">
+                                        <input id="HHID" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="HHID" value="<?php if(isset($_GET['HHID'])){echo $_GET['HHID'];}?>" placeholder="PAP HHID" readonly="true" />
+                                        </span> </td>
+                                                        <td><span class="formSingleLineBox">
+                                        <input id="PlotRef" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="PlotRef" value="<?php if(isset($GLOBALS['pap_plot_ref'])){echo $GLOBALS['pap_plot_ref'];}?>" placeholder="Enter PAP Plot Ref" />
+                                        </span> </td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="formLabel">PAP Designation</td>
+                                                        <td class="formLabel">PAP Type</td>
+                                                </tr>
+                                                <tr>
+                                                        <td><span class="formSingleLineBox">
+                                        <input id="PapDesign" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="PapDesign" value="<?php if(isset($GLOBALS['pap_design'])){echo $GLOBALS['pap_design'];}?>" placeholder="Enter PAP Designation" />
+                                        </span> </td>
+                                                        <td><span class="formSingleLineBox">
+                                        <select name="PapType" onchange="">
+                                        <option value="">-- Select Type --</option>
+                                        <option value="IND" <?php if(isset($GLOBALS['pap_type'])&&$GLOBALS['pap_type']=='IND'){echo 'selected';}?>>Individual</option>
+                                        <option value="INS" <?php if(isset($GLOBALS['pap_type'])&&$GLOBALS['pap_type']=='INS'){echo 'selected';}?>>Institution</option>
+                                        </select>
+                                        </span> </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><span class="saveButtonArea">
+                                        <input type="submit" value="<?php if($_GET['Mode']=='ViewPap'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
+                                        <?php $new_pap_defn=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjPAP';if($_GET['Mode']=='ViewPap'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_pap_defn.'>New PAP</a></span>';}?> </span>
+                                                        </td>
+                                                        <td align="right"> <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjPAP&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Documents</a></span> <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjPAP&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Photos</a></span> </td>
+                                                </tr>
+                                        </table>
+                                </form>
+                        </div>
+
+                        <div class="GridArea">
+                            <table class="detailGrid" style="width:800px">
+                                    <tr>
+                                            <td class="detailGridHead">#</td>
+                                            <td class="detailGridHead">HHID</td>
+                                            <td class="detailGridHead">PAP Name</td>
+                                            <td class="detailGridHead">Plot Ref</td>
+                                            <td class="detailGridHead">Designation</td>
+                                            <td class="detailGridHead">PAP Type</td>
+                                            <td class="detailGridHead">Delete</td>
+                                    </tr>
+                                    <?php if($_GET[ 'Mode']=='Read' ){LoadProjectPaps();}else if($_GET[ 'Mode']=='SearchPap' ){SearchProjectPaps();}else{LoadProjectPaps();}?> 
+                            </table>
+
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#ProjPAP'; ?>" method="GET" autocomplete="off" >
+                                <input type="hidden" name="Mode" value="<?php if($_GET['Mode']=='SearchPap'){echo 'SearchPap';}else{echo 'Read';}?>" />
+                                <input type="hidden" name="ProjectID" value="<?php if(isset($_GET['ProjectID'])){echo $_GET['ProjectID'];}else{echo '';}?>" />
+                                <input type="hidden" name="ProjectCode" value="<?php if(isset($_GET['ProjectCode'])){echo $_GET['ProjectCode'];}else{echo '';}?>" />
+                                <input type="hidden" name="KeyWord" value="<?php if(isset($_GET['KeyWord'])){echo $_GET['KeyWord'];}else{echo '';}?>" />
+                                <span style="white-space: nowrap; float:left;">
+                                <a href="<?php if(isset($_GET['PapID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewPap&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&PapID='.$_GET['HHID'].'&GridPage='.$GLOBALS['pap_prev_page'].'#ProjPAP';}else if(isset($_GET['KeyWord'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=SearchPap&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&KeyWord='.$_GET['KeyWord'].'&GridPage='.$GLOBALS['pap_prev_page'].'#ProjPAP';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['pap_prev_page'].'#ProjPAP';}?>">Previous</a>
+                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['GridPage'])){echo $_GET['GridPage'].' / '.$GLOBALS['pap_num_pages'];}else{echo '1 / '.$GLOBALS['pap_num_pages'];}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                <a href="<?php if(isset($_GET['PapID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewPap&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&PapID='.$_GET['HHID'].'&GridPage='.$GLOBALS['pap_next_page'].'#ProjPAP';}else if(isset($_GET['KeyWord'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=SearchPap&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&KeyWord='.$_GET['KeyWord'].'&GridPage='.$GLOBALS['pap_next_page'].'#ProjPAP';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['pap_next_page'].'#ProjPAP';}?>">Next</a>
                                 </span>
                                 <input type="submit" style="position: absolute; left: -99999px;" />
                             </form>
-                            
-						</div>
-					</div>
 
-					<!-- Projects Disputes Starts here -->
-					<div id="Disputes" class="tab-pane fade">
-							<p>
-								This is the Project Disputes Screen
-							</p>
-							<div class="left-form">
-							    
-								<table class="formTable">
-								    <tr>
-                                        <td class="formLabel" style="font-weight: bold; color: #ff6600;" >
-                                            Search PAP:&nbsp;&nbsp;&nbsp;  
-                                        </td>
-                                        <td class="formLabel">PAP Name:</td>
-                                    </tr>
-                                    <tr>
-                                       <td>
-                                            <span class="formSingleLineBox" style="color: #ff6600;" >
-                                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#Disputes'; ?>" method="GET" autocomplete="off" >
-                                                    <input type="hidden" name="Mode" value="<?php echo 'SearchPap'; ?>" />
-                                                    <input type="hidden" name="ProjectID" value="<?php if (isset($_GET['ProjectID'])) {echo $_GET['ProjectID']; } else {echo ''; } ?>" />
-                                                    <input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-                                                    <input name="KeyWord" type="text" value="<?php if (isset($_GET['KeyWord'])) { echo $_GET['KeyWord'];  } ?>" placeholder="Search For PAP By Name" style="width:200px;" />
-                                                        <!-- a href="<?php if ($_GET['Mode'] == 'SearchPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } else { echo '#'; } ?>" >Reset</a -->    
-                                                    <input type="submit" style="position: absolute; left: -99999px;" />
-                                                    <a class="LinkInBox" href="<?php if ($_GET['Mode'] == 'SearchPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Disputes'; } else { echo '#'; } ?>" >Clear</a>
-                                                </form> 
-                                            </span>
-                                        </td>
-                                        
-                                        <!-- form name="SavePersonnel" action="<?php 
-                                        if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; }
-                                        else if ($_GET['Mode'] == 'ViewPap') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdatePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PAP'; } ?>" method="POST" autocomplete="off" -->
-                                        
-                                        <td>
-                                            <span class="formSingleLineBox" >
-                                                <select name="HHID" onchange="" >
-                                                    <option value="">-- Select PAP --</option>
-                                                        <?php if ($_GET['Mode'] == 'SearchPap') { SearchDisputePaps(); } else { BindAllProjectPaps(); } ?>
-                                                </select>
-                                                
-                                                <!-- form action='' method='post'>
-                                                <input type="text" name="country" value="<?php // echo 'SearchPap'; ?>" class="auto" placeholder="Enter PAP Name" />
-                                                </form -->
-                                            </span>
-                                        </td>
-                                        
-                                    </tr>
-									<tr>
-										<td class="formLabel">Dispute Type</td>
-										<td class="formLabel">Dispute Status</td>
-									</tr>
-									<tr>
-										<td><span class="formSingleLineBox">
-										    <select name="DispID" onchange="">
-                                                    <option value="">-- Select Dispute Type --</option>
-                                                        <?php if (isset($_GET['ProjectID']) ) { BindDisputeCategory(); } ?>
-                                            </select>
-										</span></td>
-										<td><span class="formSingleLineBox">
-										    <select name="DispStatus" onchange="">
-                                                    <option value="">-- Select Dispute Status --</option>
-                                                    <option value='Pending' <?php if (isset($GLOBALS['proj_disp_status']) && $GLOBALS['proj_disp_status'] == 'Pending' ) { echo 'selected'; }  ?> >Pending</option>
-                                                    <option value='Resolved' <?php if (isset($GLOBALS['proj_disp_status']) && $GLOBALS['proj_disp_status'] == 'Resolved' ) { echo 'selected'; }  ?> >Resolved</option> 
-                                            </select>
-										</span></td>
-									</tr>
-									<tr>
-										<td class="formLabel">Date Logged</td>
-										<td class="formLabel">Logged By</td>
-									</tr>
-									<tr>
-										<td><span class="formSingleLineBox">
-										    <input title="DD/MM/YYYY" type="text" id="dispute_date" 
-                                            value="<?php if (isset($GLOBALS['proj_disp_date_log'])) { echo $GLOBALS['proj_disp_date_log']; } ?>" 
-                                            placeholder="DD/MM/YYYY" name="DisputeDate" readonly />
-										</span></td>
-										<td><span class="formSingleLineBox">
-										    <select name="UserID" onchange="">
-                                                    <option value="">-- Select User --</option>
-                                                        <?php if (isset($_GET['ProjectID']) ) { BindAllUsers(); } ?>
-                                            </select>
-										</span></td>
-									</tr>
-									<tr>
-										<td class="formLabel">Dispute Details</td>
-									</tr>
-									<tr>
-										<td colspan="2"><span class="formMultiLineBox">
-										    <textarea type="text" name = "DisputeDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_disp_other_dtl'])){ echo $GLOBALS['proj_disp_other_dtl']; } ?></textarea>
-										</span></td>
-									</tr>
-									<tr>
-										<td><span class="saveButtonArea" href="#">
-										    <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewDispute') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                            <?php $new_dispute = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Disputes';
-                                                if ($_GET['Mode'] == 'ViewDispute') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_dispute . '>New Dispute</a></span>'; } ?>
-										</span></td>
-										<td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-										class="formLinks"><a href="#">Photos</a></span></td>
-									</tr>
-								</table>
-								<!-- /form -->
-							</div>
-							<div class="GridArea">
-								<table class="detailGrid" style="width: 800px;">
-									<tr>
-										<td class="detailGridHead">#</td>
-										<td class="detailGridHead">PAP Name</td>
-										<td class="detailGridHead">Dispute Category</td>
-										<td class="detailGridHead">Date Log</td>
-										<td class="detailGridHead">Edit:</td>
-									</tr>
-									<?php if (isset($_GET['ProjectID'])) { LoadProjectDisputes(); } ?>
-								</table>
-								
-								
-								<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['DispID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $_GET['DispID'] . '&UserID=' . $_GET['UserID'] . '&DispStatus=' . $_GET['DispStatus'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $proj_disp_load_page . ' / ' . $proj_disp_num_pages ; } else {echo '1 / ' . $proj_disp_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['DispID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewDispute&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&DispID=' . $_GET['DispID'] . '&UserID=' . $_GET['UserID'] . '&DispStatus=' . $_GET['DispStatus'] . '&GridPage=' . $GLOBALS['proj_disp_next_page'] . '#Disputes'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_disp_prev_page'] . '#Disputes'; } ?>" >Next</a>
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '#ProjPAP'; ?>" method="GET" autocomplete="off" >
+                                <input type="hidden" name="Mode" value="<?php echo 'SearchPap'; ?>" />
+                                <input type="hidden" name="ProjectID" value="<?php if(isset($_GET['ProjectID'])){echo $_GET['ProjectID'];}else{echo '';}?>" />
+                                <input type="hidden" name="ProjectCode" value="<?php if(isset($_GET['ProjectCode'])){echo $_GET['ProjectCode'];}else{echo '';}?>" />
+                                <span style="white-space:nowrap;margin-left:50px;font-weight:bold;color:#f60">
+                                    Search:&nbsp;&nbsp;<input name="KeyWord" type="text" value="<?php if(isset($_GET['KeyWord'])){echo $_GET['KeyWord'];}?>" style="width:200px;margin-right:0;border:1px solid #337ab7" placeholder="Search For PAP" />&nbsp;&nbsp;
+                                    <a href="<?php if($_GET['Mode']=='SearchPap'){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjPAP';}else{echo '#';}?>">Reset</a>
                                 </span>
                                 
-							</div>
-						</div>
+                                <input type="submit" style="position: absolute; left: -99999px;" />
+                            </form>
 
-					<!-- Projects Sections Starts here -->
-					<div id="Sections" class="tab-pane fade">
+                        </div>
+                    </div>
 
-							<p>
-								This is the Project Sections Screen
-							</p>
-							<div class="left-form">
-							    <form name="SavePersonnel" action="<?php 
-                                if($_GET['Mode'] == 'Read'){ echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Sections'; }
-                                else if ($_GET['Mode'] == 'ViewSection') { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Sections'; } ?>" method="POST" autocomplete="off">
-								<table class="formTable">
-								    <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                    <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                    <input type="hidden" name="SectID" value="<?php echo $_GET['SectID']; ?>" />
-									<tr>
-										<td class="formLabel">Section Name:</td>
-									</tr>
-									<tr>
-										<td colspan="2"><span class="formSingleLineBox" style="width: 610px;">
-										    <input type="text" name="SectName" value="<?php if (isset($GLOBALS['proj_sect_name'])){ echo $GLOBALS['proj_sect_name']; } ?>" placeholder="Enter Section Name" style="width: 580px;" />
-										    </span></td>
-									</tr>
-									<tr>
-										<!-- td class="formLabel">Estimated Budget:</td -->
-										<td class="formLabel">Section Length (Km):</td>
-									</tr>
-									<tr>
-										<!-- td><span class="formSingleLineBox">Estimated Budget</span></td -->
-										<td><span class="formSingleLineBox">
-										    <input type="text" name="SectLength" value="<?php if (isset($GLOBALS['proj_sect_length'])){ echo $GLOBALS['proj_sect_length']; } ?>" placeholder="Enter Section Length" />
-										</span></td>
-									</tr>
-									<!-- tr>
-										<td class="formLabel">Est Start Date:</td>
-										<td class="formLabel">Est End Date:</td>
-									</tr>
-									<tr>
-										<td><span class="formSingleLineBox">Start Date</span></td>
-										<td><span class="formSingleLineBox">End Date</span></td>
-									</tr -->
-									<tr>
-										<td class="formLabel">Other Details:</td>
-									</tr>
-									<tr>
-										<td colspan="2" style="width: 610px;"><span class="formMultiLineBox">
-										    <textarea type="text" name = "OtherDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_sect_other_dtl'])){ echo $GLOBALS['proj_sect_other_dtl']; } ?></textarea>
-										    </span></td>
-									</tr>
-									<tr>
-                                        <td><span class="saveButtonArea" href="#">
-                                            <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewSection') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;"/>
-                                            <?php $new_section = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Sections';
-                                                if ($_GET['Mode'] == 'ViewSection') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_section . '>New Section</a></span>'; } ?>
-                                        </span></td>
-                                        <td><span class="formLinks SideBar"><a href="#">Documents</a></span><span
-                                        class="formLinks"><a href="#">Photos</a></span></td>
-                                    </tr>
-								</table>
-								
-								<div class="GridArea">
-									<table class="detailGrid" style="width: 900px; ">
-										<tr>
-											<td class="detailGridHead">#</td>
-											<td class="detailGridHead">Section Name</td>
-											<td class="detailGridHead">Section Details</td>
-											<td class="detailGridHead">Modify:</td>
-										</tr>
-										<?php if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ProjectID'])) { LoadProjectSections(); } ?>
-									</table>
-									
-									<span style="white-space: nowrap;">
-                                        <a href="<?php if (isset($_GET['SectID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $_GET['SectID'] . '&GridPage=' . $GLOBALS['proj_sect_prev_page'] . '#Sections'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_sect_prev_page'] . '#Sections'; } ?>" >Previous</a>
-                                        &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $GLOBALS['proj_sect_load_page'] . ' / ' . $GLOBALS['proj_sect_num_pages'] ; } else { echo '1 / ' . $GLOBALS['proj_sect_num_pages'] ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                        <a href="<?php if (isset($_GET['SectID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewSection&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&SectID=' . $_GET['SectID'] . '&GridPage=' . $GLOBALS['proj_sect_next_page'] . '#Sections'; } 
-                                        else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['proj_sect_next_page'] . '#Sections'; } ?>" >Next</a>
-                                    </span>
-									
-								</div>
-							</div>
-						</div>
+                    <div id="ProjSections" class="tab-pane">
+                        <p> This is the Project Sections Screen </p>
+                        <div class="left-form">
+                                <form name="SavePersonnel" action="<?php if($_GET['Mode']=='Read'){echo htmlspecialchars($_SERVER[" PHP_SELF "]).'?Mode=InsertSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';}else if($_GET['Mode']=='ViewSection'){echo htmlspecialchars($_SERVER["PHP_SELF "]).'?Mode=UpdateSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';}?>" method="POST" autocomplete="off">
+                                        <table class="formTable">
+                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID'];?>" />
+                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode'];?>" />
+                                                <input type="hidden" name="SectID" value="<?php echo $_GET['SectID'];?>" />
+                                                <tr>
+                                                        <td class="formLabel">Section Name:</td>
+                                                        <td class="formLabel">Section Length (Km):</td>
+                                                </tr>
+                                                <tr>
+                                                        <td ><span class="formSingleLineBox" >
+                                                          <input id="SectName" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectName" value="<?php if(isset($GLOBALS['proj_sect_name'])){echo $GLOBALS['proj_sect_name'];}?>" placeholder="Enter Section Name" />
+                                                          </span>
+                                                        </td>
+                                                        <td><span class="formSingleLineBox">
+                                                          <input id="SectLength" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="SectLength" value="<?php if(isset($GLOBALS['proj_sect_length'])){echo $GLOBALS['proj_sect_length'];}?>" placeholder="Enter Section Length" />
+                                                          </span>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="formLabel">Other Details:</td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="2" style="width:610px"><span class="formMultiLineBox">
+                                                            <textarea id="OtherDtl" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" name="OtherDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_sect_other_dtl'])){echo $GLOBALS['proj_sect_other_dtl'];}?></textarea>
+                                                            </span>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><span class="saveButtonArea" href="#">
+                                                            <input type="submit" value="<?php if($_GET['Mode']=='ViewSection'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
+                                                            <?php $new_section=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#ProjSections';if($_GET['Mode']=='ViewSection'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_section.'>New Section</a></span>';}?> </span>
+                                                        </td>
+                                                        <td align="right"> <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ProjDoc&Tag=ProjSections&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Documents</a></span> <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=ProjPhoto&Tag=ProjSections&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'];?>">Photos</a></span> </td>
+                                                </tr>
+                                        </table>
+                                        <div class="GridArea">
+                                                <table class="detailGrid" style="width:900px">
+                                                        <tr>
+                                                                <td class="detailGridHead">#</td>
+                                                                <td class="detailGridHead">Section Name</td>
+                                                                <td class="detailGridHead">Section Details</td>
+                                                                <td class="detailGridHead">Modify:</td>
+                                                        </tr>
+                                                        <?php if($_SERVER[ "REQUEST_METHOD"]=="GET" &&isset($_GET[ 'ProjectID'])){LoadProjectSections();}?> 
+                                </table> 
+                                            
+                                            <span style="white-space:nowrap">
+                                                <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_prev_page'].'#ProjSections';}?>">Previous</a>
+                                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['GridPage'])){echo $GLOBALS['proj_sect_load_page'].' / '.$GLOBALS['proj_sect_num_pages'];}else{echo '1 / '.$GLOBALS['proj_sect_num_pages'];}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                                <a href="<?php if(isset($_GET['SectID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewSection&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&SectID='.$_GET['SectID'].'&GridPage='.$GLOBALS['proj_sect_next_page'].'#ProjSections';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_sect_next_page'].'#ProjSections';}?>">Next</a>
+                                            </span> 
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Projects Disputes Starts here -->        
+                    <div id="ProjDisputes" class="tab-pane fade">
+                        <p> This is the Project Disputes Screen </p>
+                        <div class="left-form">
+                                <table class="formTable">
+                                        <tr>
+                                                <td class="formLabel" style="font-weight:bold;color:#f60"> Search PAP:&nbsp;&nbsp;&nbsp; </td>
+                                                <td class="formLabel">PAP Name:</td>
+                                        </tr>
+                                        <tr>
+                                                <td> <span class="formSingleLineBox" style="color:#f60">
+                                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]).'#Disputes';?>" method="GET" autocomplete="off">
+                                                    <input type="hidden" name="Mode" value="<?php echo 'SearchPap';?>" />
+                                                    <input type="hidden" name="ProjectID" value="<?php if(isset($_GET['ProjectID'])){echo $_GET['ProjectID'];}else{echo '';}?>" />
+                                                    <input type="hidden" name="ProjectCode" value="<?php if(isset($_GET['ProjectCode'])){echo $_GET['ProjectCode'];}else{echo '';}?>" />
+                                                    <input name="KeyWord" type="text" value="<?php if(isset($_GET['KeyWord'])){echo $_GET['KeyWord'];}?>" placeholder="Search For PAP By Name" style="width:200px" />
+                                                    <input type="submit" style="position:absolute;left:-99999px" />
+                                                    <a class="LinkInBox" href="<?php if($_GET['Mode']=='SearchPap'){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#Disputes';}else{echo '#';}?>">Clear</a>
+                                                    </form>
+                                                </span> </td>
+                                                <td> <span class="formSingleLineBox">
+                                                    <select name="HHID" onchange="">
+                                                    <option value="">-- Select PAP --</option>
+                                                    <?php if($_GET['Mode']=='SearchPap'){SearchDisputePaps();}else{BindAllProjectPaps();}?>
+                                                    </select>
+                                                    </span> </td>
+                                        </tr>
+                                        <tr>
+                                                <td class="formLabel">Dispute Type</td>
+                                                <td class="formLabel">Dispute Status</td>
+                                        </tr>
+                                        <tr>
+                                                <td><span class="formSingleLineBox">
+                                                    <select name="DispID" onchange="">
+                                                    <option value="">-- Select Dispute Type --</option>
+                                                    <?php if(isset($_GET['ProjectID'])){BindDisputeCategory();}?>
+                                                    </select>
+                                                    </span>
+                                                </td>
+                                                <td><span class="formSingleLineBox">
+                                                    <select name="DispStatus" onchange="">
+                                                    <option value="">-- Select Dispute Status --</option>
+                                                    <option value='Pending' <?php if(isset($GLOBALS['proj_disp_status'])&&$GLOBALS['proj_disp_status']=='Pending'){echo 'selected';}?>>Pending</option>
+                                                    <option value='Resolved' <?php if(isset($GLOBALS['proj_disp_status'])&&$GLOBALS['proj_disp_status']=='Resolved'){echo 'selected';}?>>Resolved</option>
+                                                    </select>
+                                                    </span>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td class="formLabel">Date Logged</td>
+                                                <td class="formLabel">Logged By</td>
+                                        </tr>
+                                        <tr>
+                                                <td><span class="formSingleLineBox">
+                                                    <input title="DD/MM/YYYY" type="text" id="dispute_date" value="<?php if(isset($GLOBALS['proj_disp_date_log'])){echo $GLOBALS['proj_disp_date_log'];}?>" placeholder="DD/MM/YYYY" name="DisputeDate" readonly />
+                                                    </span>
+                                                </td>
+                                                <td><span class="formSingleLineBox">
+                                                    <select name="UserID" onchange="">
+                                                    <option value="">-- Select User --</option>
+                                                    <?php if(isset($_GET['ProjectID'])){BindAllUsers();}?>
+                                                    </select>
+                                                    </span>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td class="formLabel">Dispute Details</td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan="2"><span class="formMultiLineBox">
+                                                    <textarea type="text" name="DisputeDetail" placeholder="Any Other Details"><?php if(isset($GLOBALS['proj_disp_other_dtl'])){echo $GLOBALS['proj_disp_other_dtl'];}?></textarea>
+                                                    </span>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td><span class="saveButtonArea" href="#">
+                                                    <input type="submit" value="<?php if($_GET['Mode']=='ViewDispute'){echo 'Update';}else{echo 'Save';}?>" name="UpdateMode" style="float:left"/>
+                                                    <?php $new_dispute=htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'#Disputes';if($_GET['Mode']=='ViewDispute'){echo '<span class="formLinks" style="margin-top:0px;"><a href='.$new_dispute.'>New Dispute</a></span>';}?> </span>
+                                                </td>
+                                                <td><span class="formLinks SideBar"><a href="#">Documents</a></span><span class="formLinks"><a href="#">Photos</a></span>
+                                                </td>
+                                        </tr>
+                                </table>
+                        </div>
+                        <div class="GridArea">
+                                <table class="detailGrid" style="width:800px">
+                                        <tr>
+                                                <td class="detailGridHead">#</td>
+                                                <td class="detailGridHead">PAP Name</td>
+                                                <td class="detailGridHead">Dispute Category</td>
+                                                <td class="detailGridHead">Date Log</td>
+                                                <td class="detailGridHead">Edit:</td>
+                                        </tr>
+                                        <?php if(isset($_GET[ 'ProjectID'])){LoadProjectDisputes();}?> 
+                                </table> 
+                            <span style="white-space:nowrap">
+                                <a href="<?php if(isset($_GET['DispID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewDispute&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&DispID='.$_GET['DispID'].'&UserID='.$_GET['UserID'].'&DispStatus='.$_GET['DispStatus'].'&GridPage='.$GLOBALS['proj_disp_prev_page'].'#Disputes';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_disp_prev_page'].'#Disputes';}?>">Previous</a>
+                                &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if(isset($_GET['GridPage'])){echo $proj_disp_load_page.' / '.$proj_disp_num_pages;}else{echo '1 / '.$proj_disp_num_pages;}?>" style="width:60px;margin-right:0;text-align:center;border:1px solid #337ab7" />&nbsp;&nbsp;
+                                <a href="<?php if(isset($_GET['DispID'])){echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=ViewDispute&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&DispID='.$_GET['DispID'].'&UserID='.$_GET['UserID'].'&DispStatus='.$_GET['DispStatus'].'&GridPage='.$GLOBALS['proj_disp_next_page'].'#Disputes';}else{echo htmlspecialchars($_SERVER["PHP_SELF"]).'?Mode=Read&ProjectID='.$_GET['ProjectID'].'&ProjectCode='.$_GET['ProjectCode'].'&GridPage='.$GLOBALS['proj_disp_prev_page'].'#Disputes';}?>">Next</a>
+                                </span> 
+                        </div>
+                    </div>
+
+                    
 					</div>
 				</div>
 			</div>
@@ -2418,36 +2374,36 @@
 				field : document.getElementById('start_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
-				minDate : new Date(1980, 0, 1),
-				maxDate : new Date(2050, 12, 31),
-				yearRange : [1980, 2050]
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
 			});
 
 			var picker = new Pikaday({
 				field : document.getElementById('end_date'),
 				format : 'DD/MM/YYYY',
 				firstDay : 1,
-				minDate : new Date(1980, 0, 1),
-				maxDate : new Date(2050, 12, 31),
-				yearRange : [1980, 2050]
+				minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
 			});
 			
 			var picker = new Pikaday({
                 field : document.getElementById('expense_date'),
                 format : 'DD/MM/YYYY',
                 firstDay : 1,
-                minDate : new Date(1980, 0, 1),
-                maxDate : new Date(2050, 12, 31),
-                yearRange : [1980, 2050]
+                minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
             });
             
             var picker = new Pikaday({
                 field : document.getElementById('dispute_date'),
                 format : 'DD/MM/YYYY',
                 firstDay : 1,
-                minDate : new Date(1980, 0, 1),
-                maxDate : new Date(2050, 12, 31),
-                yearRange : [1980, 2050]
+                minDate : new Date(1900, 0, 1),
+				maxDate : new Date(2100, 12, 31),
+				yearRange : [1900, 2100]
             });
 
 		</script>

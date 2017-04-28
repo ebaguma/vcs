@@ -1,15 +1,17 @@
 <link rel="stylesheet" type="text/css" href="css/site-master.css">
 <link rel='shortcut icon' type='image/x-icon' href='images/favicon.png' />
 <link rel="stylesheet" type="text/css" href="css/content-master.css">
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<script src="js/date_picker/moment.min.js"></script>
-<link rel="stylesheet" href="css/date_picker/pikaday.css">
-<link rel="stylesheet" href="css/date_picker/site.css">
 <link rel="stylesheet" href="css/jquery-ui.min.css">
 <script src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <script src="js/bootstrap.js"></script>
+<script src="js/date_picker/moment.min.js"></script>
+<link rel="stylesheet" href="css/date_picker/pikaday.css">
+<link rel="stylesheet" href="css/date_picker/site.css">
+
+
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
 	<div  class="Header">
@@ -23,16 +25,16 @@
 						<a href="<?php echo 'ui_home.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>" >HOME</a>
 					</li>
 					<li id="Projects">
-						<a href="<?php echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Details'; ?>">PROJECT</a>
+						<a href="<?php echo 'ui_project_detail.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; ?>">PROJECT</a>
 					</li>
 					<!-- li id="Masters">
 						<a href="<?php echo 'ui_masters.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BioID'; ?>">MASTERS</a>
 					</li -->
 					<li id="Bio">
-						<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#BasicInfo'; ?>">PAP INFO</a>
+						<a href="<?php echo 'ui_pap_info.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; ?>">PAP INFO</a>
 					</li>
 					<li id="Valuation">
-						<a href="<?php echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#Land'; ?>">VALUATION</a>
+						<a href="<?php echo 'ui_valuation.php?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] ; ?>">VALUATION</a>
 					</li>
 					<li id="Reports">
 						<a href="Reports.html">REPORTS</a>
@@ -78,6 +80,8 @@
 	
 	<script type="text/javascript">
             $(document).ready(function() {
+                
+                
                 // show active tab on reload
                 if (location.hash !== '') 
                 $('a[href="' + location.hash + '"]').tab('show');
@@ -88,12 +92,15 @@
                  else { location.hash = '#' + $(e.target).attr('href').substr(1); }
                  });
                 
+                //e.preventDefault();
                 // important line, prevents scroll to content on load
                 window.scrollTo(0,0);
-                // document.documentElement.scrollTop = 0;
-                // document.body.scrollLeft = 0; 
+                
+                
+                
+               
             });
-        </script>
+    </script>
 
 	<!-- script>
 	function OpenProjectList(){
@@ -115,22 +122,30 @@
     			<span style="color:#003366">Project:</span>
     			 <?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
 			</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a id="SelectedPAP" href="ui_pap_list.php?Mode=Read&ProjectID=<?php if (isset($_GET['ProjectID'])) { echo $_GET['ProjectID']; } ?>&ProjectCode=<?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?>&GridPage=1" >
-			    <span style="color:#003366">
-			        <?php 
-			        if (session_status() == PHP_SESSION_NONE) {
-                        session_start(); echo $_SESSION['session_pap_hhid']; } 
-                    else if (session_status() == PHP_SESSION_ACTIVE) {
-                        echo $_SESSION['session_pap_hhid']; }
-			        ?>:
-			    </span>
-			        <?php 
-                    if (session_status() == PHP_SESSION_NONE) {
-                        session_start(); echo $_SESSION['session_pap_name']; } 
-                    else if (session_status() == PHP_SESSION_ACTIVE) {
-                        echo $_SESSION['session_pap_name']; }
-                    ?>
-		    </a>
+                        <a id="SelectedPAP" href="ui_pap_list.php?Mode=Read&ProjectID=<?php if (isset($_GET['ProjectID'])) {
+                                echo $_GET['ProjectID'];
+                            } ?>&ProjectCode=<?php if (isset($_GET['ProjectCode'])) {
+                                    echo $_GET['ProjectCode'];
+                                } ?>&GridPage=1" >
+                            <span style="color:#003366">
+                                <?php
+                                if (session_status() == PHP_SESSION_NONE) {
+                                    session_start();
+                                    echo $_SESSION['session_pap_hhid'];
+                                } else if (session_status() == PHP_SESSION_ACTIVE) {
+                                    echo $_SESSION['session_pap_hhid'];
+                                }
+                                ?>:
+                            </span>
+                            <?php
+                            if (session_status() == PHP_SESSION_NONE) {
+                                session_start();
+                                echo $_SESSION['session_pap_name'];
+                            } else if (session_status() == PHP_SESSION_ACTIVE) {
+                                echo $_SESSION['session_pap_name'];
+                            }
+                            ?>
+                        </a>
 			</span>
 			<span class="spanUserStatus">
 				<ul >

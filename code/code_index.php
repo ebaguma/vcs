@@ -67,7 +67,8 @@ class LogInOut {
         $_SESSION['session_user_id'] = $this -> user_id;
         $_SESSION['display_name'] = $this -> displayname;
         $_SESSION['email'] = $this -> email;
-        $_SESSION['Expire']=time() + (12*60*60);
+        # 86400sec is 1 day
+        $_SESSION['Expire']=time() + (43200); 
         $_SESSION['Last_Activity'] = time();
         $_SESSION['post_id'] = "start";
         $_SESSION['client_page_number'] = 1;
@@ -83,8 +84,9 @@ class LogInOut {
         $other_dtl = "User Login";
 
         //Set Remember me cookies
-        setcookie("last_user", $this -> user_id, time() + (7200), "/");
-        setcookie("last_session", session_id(), time() + (7200), "/");
+        setcookie("last_user", $this -> user_id, time() + (86400*30), "/");
+        setcookie("last_session", session_id(), time() + (86400*30), "/");
+        setcookie("session_expire", time() + (43200), time() + (86400*30), "/");
 
         // send USERID_, LOGINDATE_, DEVICEMAC_, UPDATEDBY_, UPDATEDDATE_, ISDELETED_ to the database
         $sql = "CALL USP_INS_SYS_SESSION(" . $user . ",'" . $device_ip . "','" . $device . "','" . $session_id . "','" . $other_dtl . "'," . $user . ",'" . $is_deleted . "')";
@@ -136,4 +138,5 @@ class LogInOut {
     }
 
 }
+
 ?>

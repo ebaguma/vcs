@@ -46,9 +46,9 @@ class ProjectBudget {
             $OTHER_DTL = $row -> OTHER_DTL;
             $budget_page = 1;
 
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '&Cat=' . $CATG_ID . '&SubCat=' . $SUB_CATG_ID . '#Budget';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '#Budget';
-            $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '&Cat=' . $CATG_ID . '&SubCat=' . $SUB_CATG_ID . '#ProjBudget';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteBudget&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&BudgetID=' . $ID . '#ProjBudget';
+            $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Budget Item?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> budget_record_num = $this -> budget_record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> budget_record_num, $ACTION, $SUB_CATG, $CATG, $ITEM_AMT, $DEL_ACTION);

@@ -48,9 +48,9 @@ class ProjectPap {
 
             $pap_page = 1;
 
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#PAP';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#PAP';
-            $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#ProjPAP';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#ProjPAP';
+            $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete PAP?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> pap_record_num = $this -> pap_record_num + 1;
             printf("<tr><td>%s</td><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> pap_record_num, $HHID, $ACTION, $PAP_NAME, $PLOT_REF, $DESIGN, $PAP_TYPE, $DEL_ACTION);
@@ -81,8 +81,8 @@ class ProjectPap {
 
             $pap_page = 1;
 
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#PAP';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#PAP';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewPap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#ProjPAP';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeletePap&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $HHID . '#ProjPAP';
             $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> pap_record_num = $this -> pap_record_num + 1;

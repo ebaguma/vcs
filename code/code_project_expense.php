@@ -55,9 +55,9 @@ class ProjectExpense {
             $OTHER_DTL = $row -> OTHER_DTL;
             $expense_page = 1;
 
-            $ACTION = '../ui/ui_project_detail.php?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $ID . '&ExpCat=' . $CATG_ID . '&ExpSubCat=' . $SUB_CATG_ID . '#Expenses';
-            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $ID . '#Expenses';
-            $DEL_ACTION = '<a href="' . $DEL_URL . '"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
+            $ACTION = '../ui/ui_project_detail.php?Mode=ViewExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $ID . '&ExpCat=' . $CATG_ID . '&ExpSubCat=' . $SUB_CATG_ID . '#ProjExpenses';
+            $DEL_URL = '../ui/ui_project_detail.php?Mode=DeleteExpense&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&ExpenseID=' . $ID . '#ProjExpenses';
+            $DEL_ACTION = '<a href="' . $DEL_URL . '" onClick="return confirm(\'Are You Sure, Delete Expense?\');"><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> expense_record_num = $this -> expense_record_num + 1;
             printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> expense_record_num, $ACTION, $EXP_NAME, $SUB_CATG, $CATG, $EXP_AMT, $DEL_ACTION);
