@@ -7,15 +7,15 @@ $off_site_doc_dir = "file://bagz-vostro/uploads/";
 
 
 # Database Connection Parameters
-$database_server = "192.168.7.3";
+$database_server = "127.0.0.1";
 $database = "VCS_DB";
-$database_user = "application";
-$database_pwd = "application";
+$database_user = "root";
+$database_pwd = "SSemanda@5656";
 
 
 
 /************************
  It is a good practise to omit closing PHP delimiter at the end of file. It's just a source of "Headers already sent" errors.
  ****************/
-
+//this is a text
 ?>

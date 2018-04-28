@@ -12,7 +12,11 @@ class PapBasicInfo {
 	// PAP_STATUS_ID,DESIGN,PHOTO,PAP_TYPE,PROJ_ID,IS_DELETED,UPDATED_BY,UPDATED_DATE,CREATED_BY,CREATED_DATE
 
 	public $pap_hhid;
-	public $pap_name;
+        public $pap_id_no;
+        Public $pap_status;
+        Public $pap_type;
+        Public $residence_status;
+        public $pap_name;
 	public $pap_dob;
 	public $pap_sex;
 	public $pap_plot_ref;
@@ -24,9 +28,12 @@ class PapBasicInfo {
 	public $pap_email;
 	public $pap_religion_id;
 	public $pap_occupation_id;
+        public $pap_lit_lev;
 	public $pap_status_id;
+        public $pap_interviewer;
+        public $pap_interview_date;
 
-	// Photo Details
+        // Photo Details
 
 	public $photo_name;
 	public $photo_path;
@@ -52,6 +59,10 @@ class PapBasicInfo {
 			$row = $results -> fetch_object();
 
 			$this -> pap_hhid = $row -> HHID;
+                        $this -> pap_id_no = $row -> ID_NO;
+                        $this -> pap_status = $row -> PAP_STATUS;
+                        $this -> pap_type = $row -> PAP_TYPE;
+                        $this -> residence_status = $row -> RESIDENCE_STATUS;
 			$this -> pap_name = $row -> PAP_NAME;
 			$this -> pap_dob = $row -> DOB;
 			$this -> pap_sex = $row -> SEX;
@@ -61,11 +72,14 @@ class PapBasicInfo {
 			$this -> pap_tribe_id = $row -> TRIBE_ID;
 			$this -> pap_religion_id = $row -> RELGN_ID;
 			$this -> pap_occupation_id = $row -> OCCUPN_ID;
+                        $this -> pap_lit_lev = $row -> LIT_LEV;
 			$this -> pap_status_id = $row -> PAP_STATUS_ID;
 			$this -> pap_phone_no = $row -> PHONE_NO;
 			$this -> pap_photo = $row -> PHOTO;
 			$this -> pap_other_phone_no = $row -> OTHR_PHONE_NO;
 			$this -> pap_email = $row -> EMAIL;
+                        $this -> pap_interviewer = $row -> INTERVIEWER;
+                        $this -> pap_interview_date = $row -> INTERVIEW_DATE;
 
 		} else {
 			echo '<script>alert("Not Done");</script>';
@@ -154,9 +168,13 @@ class PapBasicInfo {
 
 	function UpdatePapBasicInfo() {
 		include ('code_connect.php');
-		$sql = "CALL USP_UPD_PAP_INFO_BASIC(@HHID_,@PAP_NAME_,@DOB_,@SEX_,@PLOT_REF_,@BIRTH_PLACE_,@IS_MARRIED_,@TRIBE_ID_,@RELGN_ID_,@OCCUPN_ID_,@PAP_STATUS_ID_, @PHONE_NO_, @OTHR_PHONE_NO_, @EMAIL_, @UPDATED_BY_)";
+		$sql = "CALL USP_UPD_PAP_INFO_BASIC(@HHID_,@ID_NO_,@PAP_STATUS_,@PAP_TYPE_,@RESIDENCE_STATUS_,@PAP_NAME_,@DOB_,@SEX_,@PLOT_REF_,@BIRTH_PLACE_,@IS_MARRIED_,@TRIBE_ID_,@RELGN_ID_,@OCCUPN_ID_,@LIT_LEV_, @PAP_STATUS_ID_, @PHONE_NO_, @OTHR_PHONE_NO_, @EMAIL_, @INTERVIEWER_, @INTERVIEW_DATE_, @UPDATED_BY_)";
 
 		$mysqli -> query("SET @HHID_ = " . $this -> pap_hhid);
+                $mysqli -> query("SET @ID_NO_ = " . $this -> pap_id_no);
+                $mysqli -> query("SET @PAP_STATUS_ = " . "'" . $this -> pap_status . "'");
+                $mysqli -> query("SET @PAP_TYPE_ = " . "'" . $this -> pap_type . "'");
+                $mysqli -> query("SET @RESIDENCE_STATUS_ = " . "'" . $this -> residence_status . "'");
 		$mysqli -> query("SET @PAP_NAME_ = " . "'" . $this -> pap_name . "'");
 		$mysqli -> query("SET @DOB_ = '" . DateTime::createFromFormat('d/m/Y', $this -> pap_dob) -> format('Y-m-d') . "'");
 		$mysqli -> query("SET @SEX_ = " . "'" . $this -> pap_sex . "'");
@@ -166,10 +184,14 @@ class PapBasicInfo {
 		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> pap_tribe_id);
 		$mysqli -> query("SET @RELGN_ID_ = " . $this -> pap_religion_id);
 		$mysqli -> query("SET @OCCUPN_ID_ = " . $this -> pap_occupation_id);
+                $mysqli -> query("SET @LIT_LEV_ = " . "'" . $this -> pap_lit_lev . "'");
 		$mysqli -> query("SET @PAP_STATUS_ID_ = " . $this -> pap_status_id);
 		$mysqli -> query("SET @PHONE_NO_ = " . $this -> pap_phone_no);
 		$mysqli -> query("SET @OTHR_PHONE_NO_ = " . $this -> pap_other_phone_no);
 		$mysqli -> query("SET @EMAIL_ = " . "'" . $this -> pap_email . "'");
+                $mysqli -> query("SET @INTERVIEWER_ = " . "'" . $this -> pap_interviewer . "'");
+//                $mysqli -> query("SET @INTERVIEWER_DATE_ = '" . DateTime::createFromFormat('d/m/Y', $this -> pap_interview_date) -> format('Y-m-d') . "'");
+                $mysqli -> query("SET @INTERVIEW_DATE_ = '" . DateTime::createFromFormat('d/m/Y', $this -> pap_interview_date) -> format('Y-m-d') . "'");
 		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 
 		$results = $mysqli -> query($sql);
