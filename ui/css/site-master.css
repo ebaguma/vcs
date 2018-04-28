@@ -4,7 +4,7 @@ a{
 
 .Header {
 	background-color: #003366;
-	position: fixed;
+	 /*position: fixed;*/
 	top: 0;
 	width: 100%;
 	height: 60px; /*60px*/

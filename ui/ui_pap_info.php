@@ -158,6 +158,10 @@
 			$pap_basic_info -> LoadBasicInfo();
 
 			$GLOBALS['pap_hhid'] = $pap_basic_info -> pap_hhid;
+                        $GLOBALS['pap_id_no'] = $pap_basic_info -> pap_id_no;
+                        $GLOBALS['pap_status'] = $pap_basic_info -> pap_status;
+                        $GLOBALS['pap_type'] = $pap_basic_info -> pap_type;
+                        $GLOBALS['residence_status'] = $pap_basic_info -> residence_status;
 			$GLOBALS['pap_name'] = $pap_basic_info -> pap_name;
 			$GLOBALS['pap_dob'] = $pap_basic_info -> pap_dob;
 			$GLOBALS['pap_sex'] = $pap_basic_info -> pap_sex;
@@ -168,7 +172,10 @@
 			$GLOBALS['other_pap_phone_no'] = $pap_basic_info -> pap_other_phone_no;
 			$GLOBALS['email'] = $pap_basic_info -> pap_email;
 			$GLOBALS['pap_photo'] = $pap_basic_info -> pap_photo;
-
+                        $GLOBALS['pap_lit_lev'] = $pap_basic_info -> pap_lit_lev;
+                        $GLOBALS['pap_interviewer'] = $pap_basic_info -> pap_interviewer;
+                        $GLOBALS['pap_interview_date'] = $pap_basic_info -> pap_interview_date;
+                        
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
 				$_SESSION['pap_religion_id'] = $pap_basic_info -> pap_religion_id;
@@ -211,6 +218,10 @@
 			$update_basic_info = new PapBasicInfo();
 			// set update parameters
 			$update_basic_info -> pap_hhid = $_POST['HHID'];
+                        $update_basic_info -> pap_id_no = $_POST['ID_NO'];
+                        $update_basic_info -> pap_status = $_POST ['PapStatus'];
+                        $update_basic_info -> pap_type = $_POST ['PapType'];
+                        $update_basic_info -> residence_status = $_POST ['ResidenceStatus'];
 			$update_basic_info -> pap_name = $_POST['PapName'];
 			$update_basic_info -> pap_dob = $_POST['BirthDate'];
 			$update_basic_info -> pap_sex = $_POST['PapSex'];
@@ -224,6 +235,9 @@
 			$update_basic_info -> pap_email = $_POST['PapEmail'];
 			$update_basic_info -> pap_religion_id = $_POST['PapReligion'];
 			$update_basic_info -> pap_occupation_id = $_POST['PapOccupation'];
+                        $update_basic_info -> pap_lit_lev = $_POST['LiteracyLevel'];
+                        $update_basic_info -> pap_interviewer = $_POST['Interviewer'];
+                        $update_basic_info -> pap_interview_date = $_POST['InterviewDate'];
 			# $update_basic_info->pap_status_id=$_POST['PapStatus'];
 
 			$update_basic_info -> selected_project_id = $_POST['ProjectID'];
@@ -889,7 +903,7 @@
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" readonly style="width:125px; font-size: 15px;" />
 										</span></td>
 										<td><span class="formSingleLineBox" style=" width:145px; ">
-                                                                                        <input type="text" value="<?php # if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="ID Number" name="IDNo" style="width:125px; " />
+                                                                                        <input type="text" value="<?php if (isset($GLOBALS['pap_id_no'])) { echo $GLOBALS['pap_id_no']; } ?>" placeholder="ID Number" name="ID_NO" style="width:125px; " />
                                                                                     </span></td></tr></table>
                                                                                     </td >
                                                                             <td><span class="formSingleLineBox">
@@ -907,26 +921,26 @@
                                                                                 <td><span class="formSingleLineBox" style=" width:145px; float:left;">
                                                                                         <select name="PapStatus" style="width:125px;">
                                                                                         <option value="">-- Status --</option>    
-                                                                                        <option value="LO">Land Owner</option>
-                                                                                        <option value='LIC' >Licensee</option>
-                                                                                        <option value='TEN' >Tenant</option> 
+                                                                                        <option value="LO" <?php if (isset($GLOBALS['pap_status']) && $GLOBALS['pap_status'] == 'LO') { echo 'selected'; }  ?> >Land Owner </option>
+                                                                                        <option value='LIC' <?php if (isset($GLOBALS['pap_status']) && $GLOBALS['pap_status'] == 'LIC') { echo 'selected'; }  ?> >Licensee </option>
+                                                                                        <option value='TEN' <?php if (isset($GLOBALS['pap_status']) && $GLOBALS['pap_status'] == 'TEN') { echo 'selected'; }  ?> >Tenant </option> 
                                                                                         </select>
                                                                                 </span></td>
                                                                                 <td><span class="formSingleLineBox" style=" width:145px; ">
                                                                                         <select name="PapType" style="width:125px;">
                                                                                         <option value="">-- Pap Type --</option>    
-                                                                                        <option value="IND">Individual</option>
-                                                                                        <option value='ENT' >Entity</option>
-                                                                                        <option value='GRP' >Group</option> 
+                                                                                        <option value="IND" <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'IND') { echo 'selected'; }  ?> >Individual </option>
+                                                                                        <option value='ENT' <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'ENT') { echo 'selected'; }  ?> >Entity </option>
+                                                                                        <option value='GRP' <?php if (isset($GLOBALS['pap_type']) && $GLOBALS['pap_type'] == 'GRP') { echo 'selected'; }  ?> >Group </option> 
                                                                                         </select>
                                                                                          </span></td></tr></table>
                                                                                     </td>
                                                                                 <td ><span class="formSingleLineBox" style="float:left; ">
-											<select name="PapResidence" >
+											<select name="ResidenceStatus" >
                                                                                         <option value="">-- Residence Status --</option>    
-                                                                                        <option value="RES">Resident</option>
-                                                                                        <option value='NON' >Non Resident</option>
-                                                                                        <option value='TEN' >Tenant</option> 
+                                                                                        <option value="RES" <?php if (isset($GLOBALS['residence_status']) && $GLOBALS['residence_status'] == 'RES') { echo 'selected'; }  ?> >Resident </option>
+                                                                                        <option value='NON' <?php if (isset($GLOBALS['residence_status']) && $GLOBALS['residence_status'] == 'NON') { echo 'selected'; }  ?> >Non Resident </option>
+                                                                                        <option value='TEN' <?php if (isset($GLOBALS['residence_status']) && $GLOBALS['residence_status'] == 'TEN') { echo 'selected'; }  ?> >Tenant </option> 
                                                                                         </select>
 										</span>
 										</td>
@@ -1016,6 +1030,16 @@
                                                                                 <td><span class="formSingleLineBox">
 											<select name="LiteracyLevel" >
                                                                                         <option value="">-- Select Literacy --</option>
+                                                                                        <option value="PRI" <?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'PRI') { echo 'selected'; }  ?> >Primary </option>
+                                                                                        <option value='SEC' <?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'SEC') { echo 'selected'; }  ?> >Secondary </option>
+                                                                                        <option value='DIP' <?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'DIP') { echo 'selected'; }  ?> >Diploma </option>
+                                                                                        <option value='HDP' <?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'HDP') { echo 'selected'; }  ?> >Higher Diploma </option>
+                                                                                        <option value='GRAD' <?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'GRAD') { echo 'selected'; }  ?> >Under Graduate </option>
+                                                                                        <option value='PGRAD'<?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'PGRAD') { echo 'selected'; }  ?> >Post Graduate </option>
+                                                                                        <option value='DOC' <?php if (isset($GLOBALS['pap_lit_lev']) && $GLOBALS['pap_lit_lev'] == 'DOC') { echo 'selected'; }  ?> >Doctorate </option>
+                                                                                        </select>
+                                                                                        </select>
+										</span></td>
                                                                                         </select>
 										</span></td>
 										
@@ -1042,10 +1066,10 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td><span class="formSingleLineBox">
-										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) {  } ?>" placeholder="Interviewer" name="Interviewer" readonly />
+                                                                                    <input type="text" value="<?php if (isset($GLOBALS['pap_interviewer'])) {echo $GLOBALS['pap_interviewer']; } ?>" name="Interviewer" placeholder="Interviewer" />
 										</span></td>
                                                                                 <td><span class="formSingleLineBox">
-											<input title="DD/MM/YYYY" type="text" id="interview_date" value="<?php if (isset($GLOBALS['pap_dob'])) {  } ?>" placeholder="DD/MM/YYYY" name="InterviewDate" readonly />
+                                                                                        <input title="DD/MM/YYYY" type="text" id="interview_date" value="<?php if (isset($GLOBALS['pap_interview_date'])) { echo $GLOBALS['pap_interview_date']; } ?>" placeholder="DD/MM/YYYY" name="InterviewDate" readonly />
 										</span></td>
                                                                         </tr>
 									<tr>
@@ -1107,8 +1131,9 @@
 										<td class="formLabel">
 										<input type="checkbox">
                                                                                 &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
-                                                                                <input type="checkbox">
-										&nbsp;Affected Plot?</td>
+                                                                                <input type="checkbox" value="<?php if (isset($POST['pap_addr_is_resident'])) { echo $POST['pap_addr_is_resident']; } ?>" name="Is Residence" name="Affected Plot">
+										&nbsp;Affected Plot?
+                                                                                </td>
 									</tr>
 									<tr>
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
@@ -1211,10 +1236,10 @@
 								</table -->
 								
 								<span style="white-space: nowrap;">
-                                                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } 
-                                                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } ?>" >Previous</a>
+                                                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; }                                                 
+                                                                    else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_prev_page'] . '#PapAddress'; } ?>" >Previous</a>                                                                    
                                                                     &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $pap_addr_load_page . ' / ' . $pap_addr_num_pages ; } else {echo '1 / ' . $pap_addr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
-                                                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } 
+                                                                    <a href="<?php if (isset($_GET['AddrID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] .  '&AddrID=' . $_GET['AddrID'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; }                                                                
                                                                     else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['pap_addr_next_page'] . '#PapAddress'; } ?>" >Next</a>
                                                                 </span>
 							
@@ -1302,11 +1327,11 @@
 										<td><span class="formSingleLineBox" style="float: left; ">
 											<select name="EducLevel" >
                                                                                         <option value="">-- Literacy Level --</option>    
-                                                                                        <option value="LO">Illiterate</option>
-                                                                                        <option value='LIC' >Primary</option>
-                                                                                        <option value='TEN' >Secondary</option>
-                                                                                        <option value='TEN' >Vocational</option>
-                                                                                        <option value='TEN' >Tertiary</option>
+                                                                                        <option value="LO" <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'LO') { echo 'selected'; }  ?>> Illiterate</option>
+                                                                                        <option value='LIC' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'LIC') { echo 'selected'; }  ?>> Primary</option>
+                                                                                        <option value='TEN' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'TEN') { echo 'selected'; }  ?>> Secondary</option>
+                                                                                        <option value='TEN' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'TEN') { echo 'selected'; }  ?>> Vocational</option>
+                                                                                        <option value='TEN' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'TEN') { echo 'selected'; }  ?>> Tertiary</option>
                                                                                         </select>
                                                                                 </span></td>
 										<td><span class="formSingleLineBox" style="float: left; ">
@@ -1386,7 +1411,7 @@
                                                                 
 								
 								
-								<!-- table class="detailNavigation">
+								<!--table class="detailNavigation">
 									<tr>
 										<td><a href="#">Previous</a></td>
 										<td class="PageJump">1 / 2</td>
@@ -1394,7 +1419,7 @@
 									</tr>
 								</table -->
 								
-								<span style="white-space: nowrap; ">
+				<span style="white-space: nowrap; ">
                                     <a href="<?php if (isset($_GET['MemberID'])) { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $_GET['MemberID'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#PapFamily'; } 
                                     else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&GridPage=' . $GLOBALS['fam_mbr_prev_page'] . '#PapFamily'; } ?>" >Previous</a>
                                     &nbsp;&nbsp;<input name="GridPage" type="text" value="<?php if (isset($_GET['GridPage'])) { echo $fam_mbr_load_page . ' / ' . $fam_mbr_num_pages ; } else {echo '1 / ' . $fam_mbr_num_pages ; } ?>" style="width: 60px; margin-right: 0px; text-align: center; border: 1px solid #337ab7;"  />&nbsp;&nbsp;
@@ -1409,6 +1434,58 @@
                                                 
                                                 <!-- This is the Welfare info screen -->
                                                 <div id="PapWelfare" class="tab-pane">
+                                                    <!-- p>
+                                                           <div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+								<form name="Address" action="" method="POST" autocomplete="off">
+                                                                <input type="hidden" name="ProjectID" value="10" />
+                                                                <input type="hidden" name="ProjectCode" value="BIP" />
+                                                                <input type="hidden" name="MemberID" value="" />
+								<table class="formTable">
+									<tr>
+										<td class="formLabel">Asset/Business Name:</td>
+                                                                                <td class="formLabel">Number of Assets:</td>
+									</tr>
+                                                                        <tr>
+                                                                            <td><span class="formSingleLineBox">
+                                                                                    <input type="text" value="<?php if (isset($GLOBALS[''])) {echo $GLOBALS['']; } ?>" name="Asset/Business Name" placeholder="Asset/Business Name" />
+										</span></td>
+                                                                                  <td><span class="formSingleLineBox">
+                                                                                    <input type="text" value="<?php if (isset($GLOBALS[''])) {echo $GLOBALS['']; } ?>" name="NOA" placeholder="Number of Assets" />
+										  </span></td>         
+									</tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<!--<td ><span class="formSingleLineBox" style="">
+										    Enter Activity Name
+										</span></td>
+                                                                                <td ><span class="formSingleLineBox" style="">
+										    Enter Income per Season
+										</span></td>
+                                                                                
+                                                                               
+                                                                        <tr>
+										<td class="formLabel">Purpose:</td>
+                                                     
+									</tr> 
+                                                                        <tr>
+										<td class="formLabel">Other Detail:</td>
+									</tr>
+                                                                        <tr>
+										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
+										<!--<td colspan="2"><span class="formMultiLineBox">
+										    Other details about this Asset
+										</span></td>
+                                                                        </tr>
+                                                                        <tr>
+									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
+									<td >
+										<span class="formLinks SideBar"><a href="ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=10&ProjectCode=BIP">Documents</a></span>
+										<span class="formLinks"><a href="#">Photos</a></span>
+									</td>
+								</tr>
+							</table>
+
+  
+                                                    </p --!>
                                                     
                                                 </div>
                                                 

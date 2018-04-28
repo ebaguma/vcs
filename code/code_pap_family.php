@@ -30,13 +30,15 @@ Class FamilyMember {
 	public $fam_mbr_sex;
 	public $fam_mbr_tribe_id;
 	public $fam_mbr_relgn_id;
+        public $fam_mbr_edu_lev;
 	public $fam_mbr_other_dtl;
 	
-	
+                
 
 	function LoadFamilyMember() {
 		include ('code_connect.php');
 		// @PROJ_ID_, @LIMIT_, @OFFSET_
+                
 		$sql = "CALL USP_GET_PAP_FAMILY_LIMIT (@PAP_ID_, @OFFSET_, @LIMIT_)";
 		$mysqli -> query("SET @PAP_ID_ = " . $this -> fam_mbr_pap_id);
 		$mysqli -> query("SET @OFFSET_ = " . $this -> fam_mbr_data_offset);
@@ -60,8 +62,9 @@ Class FamilyMember {
 			$SEX = $row -> SEX;
 			$TRIBE_ID = $row -> TRIBE_ID;
 			$RELGN_ID = $row -> RELGN_ID;
+                        $EDU_LEV = $row->EDU_LEV;
 			$OTHER_DTL = $row->OTHER_DTL;
-
+                        
 			$confirm = "Are You Sure?";
 			$ACTION = '../ui/ui_pap_info.php?Mode=ViewMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $ID . '#PapFamily';
 			$DEL_URL = '../ui/ui_pap_info.php?Mode=DeleteMember&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&MemberID=' . $ID . '#PapFamily';
@@ -95,6 +98,7 @@ Class FamilyMember {
 			$this -> fam_mbr_birth_place = $row -> BIRTH_PLACE;
 			$this -> fam_mbr_tribe_id = $row -> TRIBE_ID;
 			$this -> fam_mbr_relgn_id = $row -> RELGN_ID;
+                        $this -> fam_mbr_edu_lev = $row -> EDU_LEV;
 
 		}
 
@@ -102,7 +106,7 @@ Class FamilyMember {
 
 	function InsertFamilyMember() {
 		include ('code_connect.php');
-		$sql = "CALL USP_INS_PAP_FAMILY_MBR(@MBR_NAME_, @PAP_ID_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_, @OTHER_DTL_, @CREATED_BY_)";
+		$sql = "CALL USP_INS_PAP_FAMILY_MBR(@MBR_NAME_, @PAP_ID_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_, @EDU_LEV_, @OTHER_DTL_, @CREATED_BY_)";
 
 		$mysqli -> query("SET @PAP_ID_ = " . $this -> fam_mbr_pap_id);
 		$mysqli -> query("SET @MBR_NAME_ = " . "'" . $this -> fam_mbr_name . "'");
@@ -112,6 +116,7 @@ Class FamilyMember {
 		$mysqli -> query("SET @SEX_ = " . "'" . $this -> fam_mbr_sex . "'");
 		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> fam_mbr_tribe_id );
 		$mysqli -> query("SET @RELGN_ID_ = " . $this -> fam_mbr_relgn_id );
+                $mysqli -> query("SET @EDU_LEV_ = " . $this -> fam_mbr_edu_lev );
 		$mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> fam_mbr_other_dtl . "'");
 		$mysqli -> query("SET @CREATED_BY_ = " . $this -> session_user_id);
 
@@ -126,7 +131,7 @@ Class FamilyMember {
 
 	function UpdateFamilyMember() {
 		include ('code_connect.php');
-		$sql = "CALL USP_UPD_PAP_FAMILY_MBR(@ID_, @MBR_NAME_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_, @OTHER_DTL_, @UPDATED_BY_)";
+		$sql = "CALL USP_UPD_PAP_FAMILY_MBR(@ID_, @MBR_NAME_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_,@EDU_LEV_, @OTHER_DTL_, @UPDATED_BY_)";
 
 		$mysqli -> query("SET @ID_ = " . $this -> fam_mbr_id);
 		$mysqli -> query("SET @MBR_NAME_ = " . "'" . $this -> fam_mbr_name . "'");
@@ -136,6 +141,7 @@ Class FamilyMember {
 		$mysqli -> query("SET @SEX_ = " . "'" . $this -> fam_mbr_sex . "'");
 		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> fam_mbr_tribe_id );
 		$mysqli -> query("SET @RELGN_ID_ = " . $this -> fam_mbr_relgn_id );
+                $mysqli -> query("SET @EDU_LEV_ = " . $this -> fam_mbr_edu_lev );
 		$mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> fam_mbr_other_dtl . "'");
 		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 
