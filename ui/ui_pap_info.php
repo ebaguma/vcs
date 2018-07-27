@@ -878,19 +878,19 @@
 									<input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
                                                                         <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
                                                                         <tr>
-                                                                            <td><table><tr><td class="formLabel" style="width:125px">HHID:</td>
-                                                                                        <td class="formLabel">ID Number:</td></tr></table></td >
+                                                                            <td><table><tr><tbody><td class="formLabel" style="width:125px">HHID:</td>
+                                                                                    <td class="formLabel">ID Number:</td></tbody></tr></table></td >
                                                                             <td class="formLabel">Reference Number:</td>
                                                                             
                                                                         </tr>
                                                                         <tr>
                                                                             <td><table><tr>
-                                                                                        <td><span class="formSingleLineBox" style="width:145px;">
+                                                                                    <tbody> <td><span class="formSingleLineBox" style="width:145px;">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) { echo $GLOBALS['pap_hhid']; } ?>" name="HHID" readonly style="width:125px; font-size: 15px;" />
 										</span></td>
 										<td><span class="formSingleLineBox" style=" width:145px; ">
                                                                                         <input type="text" value="<?php # if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="ID Number" name="IDNo" style="width:125px; " />
-                                                                                    </span></td></tr></table>
+                                                                                    </span></td></tr><tbody></table>
                                                                                     </td >
                                                                             <td><span class="formSingleLineBox">
 											<input type="text" value="<?php if (isset($GLOBALS['pap_plot_ref'])) { echo $GLOBALS['pap_plot_ref']; } ?>" placeholder="Plot Ref" name="PlotRef" style="font-size: 15px;" />
@@ -898,20 +898,20 @@
                                                                                 
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><table><tr><td class="formLabel" style="width:125px;  ">Pap Status:</td>
-                                                                                        <td class="formLabel">Pap Type:</td></tr></table></td>
+                                                                            <td><table><tr><tbody><td class="formLabel" style="width:125px;  ">Pap Status:</td>
+                                                                                    <td class="formLabel">Pap Type:</td></tbody></tr></table></td>
                                                                             <td class="formLabel">Residence Status:</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><table><tr>
-                                                                                <td><span class="formSingleLineBox" style=" width:145px; float:left;">
+                                                                           <tbody> <td><table><tr>
+                                                                                     <td><span class="formSingleLineBox" style=" width:145px; float:left;">
                                                                                         <select name="PapStatus" style="width:125px;">
                                                                                         <option value="">-- Status --</option>    
                                                                                         <option value="LO">Land Owner</option>
                                                                                         <option value='LIC' >Licensee</option>
                                                                                         <option value='TEN' >Tenant</option> 
                                                                                         </select>
-                                                                                </span></td>
+                                                                                        </span></td>
                                                                                 <td><span class="formSingleLineBox" style=" width:145px; ">
                                                                                         <select name="PapType" style="width:125px;">
                                                                                         <option value="">-- Pap Type --</option>    
@@ -930,14 +930,15 @@
                                                                                         </select>
 										</span>
 										</td>
+                                                                                </tbody>
                                                                         </tr>
                                                                         <tr>
-										<td class="formLabel">PAP Name:</td>
+                                                                        <tbody><td class="formLabel">PAP Name:</td> </tbody>
 									</tr>
 									<tr>
-										<td colspan="2" ><span class="formSingleLineBox" style="width:610px;">
+                                                                        <tbody><td colspan="2" ><span class="formSingleLineBox" style="width:610px;">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_name'])) { echo $GLOBALS['pap_name']; } ?>" name="PapName" style="width: 580px;" /> 
-										</span></td>
+                                                                            </span></td></tbody>
 									</tr>
                                                                         <!-- tr>
 										<td class="formLabel">HHID:</td>
@@ -953,22 +954,26 @@
 									</tr -->
 									
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Date Of Birth:</td>
 										<td class="formLabel">Place Of Birth:</td>
+                                                                                </tbody>
 									</tr>
 									<tr>
-										<td><span class="formSingleLineBox">
+										<tbody><td><span class="formSingleLineBox">
 											<input title="DD/MM/YYYY" type="text" id="birth_date" value="<?php if (isset($GLOBALS['pap_dob'])) { echo $GLOBALS['pap_dob']; } ?>" placeholder="DD/MM/YYYY" name="BirthDate" readonly />
 										</span></td>
 										<td><span class="formSingleLineBox">
 											<input type="text" value="<?php if (isset($GLOBALS['pap_birth_place'])) { echo $GLOBALS['pap_birth_place']; } ?>" name="BirthPlace" placeholder="Enter Birth Place" />
-										</span></td>
+                                                                                    </span></td> </tbody>
 									</tr>
-									<tr>
+                                                                        <tr> <tbody>
 										<td class="formLabel">Select Sex:</td>
 										<td class="formLabel">Select Marital Status:</td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formSingleLineBox">
 											<select name="PapSex" >
                                                                                         <option value="">-- Select Sex --</option>
@@ -983,12 +988,14 @@
                                                                                         <option value='false' <?php if (isset($GLOBALS['pap_is_married']) && $GLOBALS['pap_is_married'] == "false") { echo 'selected'; }  ?> >Single</option> 
                                                                                         </select>
 										</span></td>
+                                                                </tbody>
 									</tr>
-									<tr>
+                                                                        <tr><tbody>
 										<td class="formLabel">Select Tribe:</td>
 										<td class="formLabel">Select Religion:</td>
-									</tr>
-									<tr>
+                                                                </tbody>
+                                                                </tr>
+                                                                <tr><tbody>
 										<td><span class="formSingleLineBox">
 										    <select name="PapTribe" id="SelectTribe" >
                                                                                         <option value="">-- Select Tribe --</option>
@@ -1000,13 +1007,15 @@
                                                                                         <option value="">-- Select Religion --</option>
                                                                                         <?php if (isset($_GET['ProjectID']) || isset($_GET['ReligionID'])) { BindReligion(); } ?>
                                                                                     <!-- select><a class="LinkInBoxOther" href="#">New</a -->
-										</span></td>
+                                                                                    </span></td></tbody>
 									</tr>
-									<tr>
+                                                                        <tr> <tbody>
 										<td class="formLabel">Select Occupation:</td>
                                                                                 <td class="formLabel">Literacy Level</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formSingleLineBox">
 										    <select name="PapOccupation" id="SelectOccupation" >
                                                                                     <option value="">-- Select Occupation --</option>
@@ -1026,13 +1035,15 @@
                                                                                         </select>
                                                                                         </select>
 										</span></td>
-										
+                                                                </tbody>	
 									</tr>
-									<tr>
+                                                                        <tr> <tbody>
 										<td class="formLabel">Email Address:</td>
                                                                                 <td class="formLabel">Phone Number:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td ><span class="formSingleLineBox" >
 											<input type="text" value="<?php if (isset($GLOBALS['email'])) { echo $GLOBALS['email']; } ?>" name="PapEmail"  placeholder="Enter Contact Email" />
 										</span></td>
@@ -1043,24 +1054,31 @@
 											<input type="text" value="<?php if (isset($GLOBALS['other_pap_phone_no'])) { echo $GLOBALS['other_pap_phone_no']; } ?>" name="OtherPhoneNo" placeholder="Alternate Phone" style="width: 125px;" />
 										</span>
 										</td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td class="formLabel">Interviewer:</td>
                                                                             <td class="formLabel">Interview Date:</td>
-                                                                        </tr>
+                                                                </tbody>
+                                                                </tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td><span class="formSingleLineBox">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_hhid'])) {  } ?>" placeholder="Interviewer" name="Interviewer" readonly />
 										</span></td>
                                                                                 <td><span class="formSingleLineBox">
 											<input title="DD/MM/YYYY" type="text" id="interview_date" value="<?php if (isset($GLOBALS['pap_dob'])) {  } ?>" placeholder="DD/MM/YYYY" name="InterviewDate" readonly />
 										</span></td>
-                                                                        </tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="saveButtonArea"> <input type="submit" value="Update" name="UpdateBasicInfo"/></span></td>
 										<td><span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
 											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 								</table>
 								</form>
 							</div>
@@ -1069,15 +1087,19 @@
 							<div style="width:300px; float:left; margin-top:10px; margin-left:20px;">
 								<table  style="margin-bottom:20px; width:250px;">
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel"></td>
+                                                                </tbody>
 									</tr>
-									<tr>
+                                                                        <tr><tbody>
 										<td>
 										<div class="PhotoBox">
 											<img src="<?php if($GLOBALS['pap_id_photo'] == "/"){ echo 'images/placeholder.jpg'; }else{ echo '../uploads/' . $GLOBALS['pap_id_photo']; } ?>" width="250" height="250" />'; ?>
 										</div></td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formLinks SideBar" ><a href="<?php echo 'ui_doc.php?Mode=IDPhoto&Tag=PapBasicInfo&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Upload Photo</a></span>
 											<span class="formLinks" ><a <?php if($GLOBALS['pap_id_photo'] == "/"){ echo 'style="display:none"'; } ?> onClick="return Confirm();" href="<?php 
 											if(isset($_GET['HHID'])){ $pap_id = $_GET['HHID']; }
@@ -1085,6 +1107,7 @@
 											else{ $pap_id = $_SESSION['session_pap_hhid']; } }
 											echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=DeleteIDPhoto&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&HHID=' . $pap_id ; 
 											?>">Delete Photo</a></span></td>
+                                                                </tbody>
 									</tr>
 								</table>
 								
@@ -1111,23 +1134,30 @@
                                                             } ?>" />
 								<table class="formTable">
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Plot No, Road:</td>
 										<td class="formLabel">
 										<input type="checkbox">
                                                                                 &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
                                                                                 <input type="checkbox">
 										&nbsp;Affected Plot?</td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_addr_road'])) { echo $GLOBALS['pap_addr_road']; } ?>" name="Road" placeholder="Enter Address" />
 										</span></td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Select District:</td>
 										<td class="formLabel">Select County:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
                                                                             <td><span class="formSingleLineBox" >
                                                                                     <select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
                                                                                         <option value="" <?php
@@ -1153,12 +1183,16 @@
                                                                                         <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
                                                                                 </span>
                                                                             </td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Select SubCounty:</td>
 										<td class="formLabel">Select Village:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formSingleLineBox" >
 											<select name="SubCounties" id="SelectSubCty" onchange="BindVillages()" >
                                                 <option value="" >-- Select Sub County --</option>
@@ -1173,8 +1207,10 @@
                                             <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
                                             </span>
                                         </td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td> 
 											<span class="saveButtonArea">
 												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewAddress') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
@@ -1185,7 +1221,8 @@
 										<td align="right">
                                                                                     <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
 											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 								</table>
 								</form>
 							</div>
@@ -1198,11 +1235,13 @@
                                                                     </legend>
                                                                     <table class="detailGrid" style="width:800px; margin:10px 0px;">
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td class = "detailGridHead">#</td>
                                                                             <td  class = "detailGridHead">Address</td>
                                                                             <td  class = "detailGridHead">Village</td>
                                                                             <td  class = "detailGridHead">District</td>
                                                                             <td  class = "detailGridHead">Modify</td>
+                                                                    </tbody>
                                                                         </tr>
                                                                         <?php if (isset($_GET['ProjectID'])) {
                                                                             LoadPapAddr();
@@ -1245,19 +1284,25 @@
                                                                     <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
 								<table class="formTable">
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Family Member Name:</td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
 										    <input type="text" value="<?php if (isset($GLOBALS['fam_mbr_name'])) { echo $GLOBALS['fam_mbr_name']; } ?>" name="MemberName" placeholder="Enter Family Member Name" />
 										</span></td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Sex:</td>
 										<td class="formLabel">Relation Type:</td>
-									</tr>
-									<tr>
+                                                                </tbody>
+                                                                </tr>
+                                                                <tr> <tbody>
 										<td><span class="formSingleLineBox">
 											<select name="MemberSex" >
                                                 <option value="">-- Select Sex --</option>
@@ -1271,24 +1316,31 @@
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['RelationID'])) { BindMemberRelation(); } ?>
                                             <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Date Of Birth:</td>
 										<td class="formLabel">Place Of Birth:</td>
-									</tr>
-									<tr>
+                                                                </tbody>
+                                                                </tr>
+                                                                <tr> <tbody>
 										<td><span class="formSingleLineBox">
 											<input title="DD/MM/YYYY" type="text" id="member_birth_date" value="<?php if (isset($GLOBALS['fam_mbr_dob'])) { echo $GLOBALS['fam_mbr_dob']; } ?>" placeholder="DD/MM/YYYY" name="MemberBirthDate" readonly />
 										</span></td>
 										<td><span class="formSingleLineBox">
 											<input type="text" value="<?php if (isset($GLOBALS['fam_mbr_birth_place'])) { echo $GLOBALS['fam_mbr_birth_place']; } ?>" name="MemberBirthPlace" placeholder="Enter Birth Place" />
 										</span></td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Tribe:</td>
 										<td class="formLabel">Religion:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formSingleLineBox">
 										    <select name="MemberTribe" id="SelectMemberTribe" >
                                                <option value="" <?php if ($_GET['Mode'] == 'Read'){ echo 'selected'; unset($_SESSION['fam_mbr_tribe_id']); } ?> >-- Select Tribe --</option>
@@ -1301,12 +1353,16 @@
                                                 <?php if (isset($_GET['ProjectID']) || isset($_GET['MemberID'])) { BindMemberReligion(); } ?>
                                             <!-- select><a class="LinkInBoxOther" href="#">New</a -->
 										</span></td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<td class="formLabel">Education Level:</td>
 										<td class="formLabel">Current School Status:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formSingleLineBox" style="float: left; ">
 											<select name="EducLevel" >
                                                                                         <option value="">-- Literacy Level --</option>    
@@ -1326,12 +1382,16 @@
                                                                                         <option value='TEN' >Never Attended</option>
                                                                                         </select>
                                                                                 </span></td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<td class="formLabel">Reason for Non Attendance:</td>
 										<td class="formLabel">Reason for Drop Out:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
 									<tr>
+                                                                        <tbody>
 										<td><span class="formSingleLineBox" style="float: left; ">
 											<select name="EducLevel" >
                                                                                         <option value="">-- Non Attendance --</option>    
@@ -1357,8 +1417,9 @@
                                                                                         <option value='TEN' >Health</option>
                                                                                         </select>
                                                                                 </span></td>
+                                                                </tbody>
 									</tr>
-									<tr>
+                                                                        <tr><tbody>
 										<td> 
 											<span class="saveButtonArea">
 												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewMember') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
@@ -1368,8 +1429,10 @@
                                         </td>
 										<td align="right">
                                                                                     <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
-											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
-									</tr>
+										
+                                                                                  <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
+                                                                </tbody>
+                                                                </tr>
 								</table>
 								</form>
 							</div>
@@ -1382,12 +1445,14 @@
                                                                     </legend>
                                                                     <table class="detailGrid" style="width:800px; margin:10px 0px;">
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td class = "detailGridHead">#</td>
                                                                             <td  class = "detailGridHead">Member Name</td>
                                                                             <td  class = "detailGridHead">Sex</td>
                                                                             <td  class = "detailGridHead">Age</td>
                                                                             <td  class = "detailGridHead">Relation</td>
                                                                             <td  class = "detailGridHead">Modify</td>
+                                                                    </tbody>
                                                                         </tr>
 									<?php if (isset($_GET['ProjectID'])) { LoadFamilyMember(); } ?>
                                                                     </table>
@@ -1432,10 +1497,13 @@
                                                                 <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
 								<table class="formTable">
 									<tr>
+                                                                        <tbody>
 										<td class="formLabel">Activity:</td>
                                                                                 <td class="formLabel">Income Per Cycle:</td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td ><span class="formSingleLineBox" style="">
 										    Enter Activity Name
@@ -1443,22 +1511,30 @@
                                                                                 <td ><span class="formSingleLineBox" style="">
 										    Enter Income per Season
 										</span></td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<td class="formLabel">Other Detail:</td>
-									</tr>
+                                                                </tbody>
+                                                                </tr>
+                                                                        
                                                                         <tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formMultiLineBox">
 										    Other details about this activity
 										</span></td>
+                                                                </tbody>
                                                                         </tr>
                                                                         <tr>
+                                                                        <tbody>
 									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
 									<td >
 										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
 										<span class="formLinks"><a href="#">Photos</a></span>
 									</td>
+                                                                </tbody>
 								</tr>
 							</table>
                                                         </div>
@@ -1471,6 +1547,7 @@
                                                                     </legend>
 								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
+                                                                                <tbody>
 											<td class = "detailGridHead">#</td>
 											<td class = "detailGridHead">Crop Name:</td>
 											<td  class = "detailGridHead">Crop Type:</td>
@@ -1479,8 +1556,10 @@
 											<td  class = "detailGridHead">Crop Rate:</td>
 											<td  class = "detailGridHead">Crop Total:</td>
 											<td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                </tbody>
 										</tr>
 										<tr>
+                                                                                <tbody>
 											<td>1</td>
 											<td>Banana Plants</td>
 											<td>Seasonal</td>
@@ -1489,8 +1568,10 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>		
+                                                                </tr>
 										<tr>
+                                                                                <tbody>
 											<td>2</td>
 											<td>Orange Trees</td>
 											<td>Seasonal</td>
@@ -1499,8 +1580,11 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
+                                                                
 										<tr>
+                                                                                <tbody>
 											<td>3</td>
 											<td>Eucalyptus Trees</td>
 											<td>Perenial</td>
@@ -1509,8 +1593,10 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
 										<tr>
+                                                                                <tbody>
 											<td>4</td>
 											<td>Banana Plants</td>
 											<td>Seasonal</td>
@@ -1519,8 +1605,11 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                
+                                                                </tr>
 										<tr>
+                                                                                <tbody>
 											<td>5</td>
 											<td>Nsambya Tree</td>
 											<td>Perenial</td>
@@ -1529,13 +1618,16 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
 									</table>
 									<table class="detailNavigation">
 										<tr>
+                                                                                <tbody>
 											<td><a href="#">Previous</a></td>
 											<td class="PageJump">1 / 2</td>
 											<td><a href="#">Next</a></td>
+                                                                        </tbody>
 										</tr>
 									</table>
                                                                 </fieldset>
@@ -1560,6 +1652,7 @@
                                                                                 <td class="formLabel">Number Affected:</td>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td ><span class="formSingleLineBox" style="">
 										    Enter Common disease
@@ -1567,10 +1660,13 @@
                                                                                 <td ><span class="formSingleLineBox" style="">
 										    Enter no Of members affected
 										</span></td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<td class="formLabel">First Aid Step:</td>
                                                                                 <td class="formLabel">Nearest Health Center:</td>
+                                                                </tbody>
 									</tr>
 									<tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
@@ -1582,20 +1678,26 @@
 										</span></td>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<td class="formLabel">Other Detail:</td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formMultiLineBox">
 										    Other details about this disease
 										</span></td>
+                                                                </tbody>
                                                                         </tr>
                                                                         <tr>
+                                                                        <tbody>
 									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
 									<td >
 										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
 										<span class="formLinks"><a href="#">Photos</a></span>
 									</td>
+                                                                </tbody>
 								</tr>
 							</table>
                                                                 </form>
@@ -1610,6 +1712,7 @@
                                                                     </legend>
 								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
+                                                                                <tbody>
 											<td class = "detailGridHead">#</td>
 											<td class = "detailGridHead">Crop Name:</td>
 											<td  class = "detailGridHead">Crop Type:</td>
@@ -1618,8 +1721,10 @@
 											<td  class = "detailGridHead">Crop Rate:</td>
 											<td  class = "detailGridHead">Crop Total:</td>
 											<td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                </tbody>
 										</tr>
 										<tr>
+                                                                                <tbody>
 											<td>1</td>
 											<td>Banana Plants</td>
 											<td>Seasonal</td>
@@ -1628,8 +1733,10 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>	
+                                                                </tr>
 										<tr>
+                                                                                    <tbody>
 											<td>2</td>
 											<td>Orange Trees</td>
 											<td>Seasonal</td>
@@ -1638,9 +1745,11 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
 										<tr>
-											<td>3</td>
+                                                                                <tbody>	
+                                                                                    <td>3</td>
 											<td>Eucalyptus Trees</td>
 											<td>Perenial</td>
 											<td>Mature, Good Condition</td>
@@ -1648,8 +1757,10 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
 										<tr>
+                                                                                <tbody>
 											<td>4</td>
 											<td>Banana Plants</td>
 											<td>Seasonal</td>
@@ -1658,8 +1769,10 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
 										<tr>
+                                                                                <tbody>
 											<td>5</td>
 											<td>Nsambya Tree</td>
 											<td>Perenial</td>
@@ -1668,13 +1781,17 @@
 											<td>25,000</td>
 											<td>2,500,000</td>
 											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                </tbody>
+                                                                </tr>
+                                                                
 									</table>
 									<table class="detailNavigation">
 										<tr>
+                                                                                <tbody>
 											<td><a href="#">Previous</a></td>
 											<td class="PageJump">1 / 2</td>
 											<td><a href="#">Next</a></td>
+                                                                        </tbody>
 										</tr>
 									</table>
                                                                 </fieldset>
@@ -1694,10 +1811,13 @@
                                                                 <input type="hidden" name="MemberID" value="<?php if (isset($_GET['MemberID'])) { echo $_GET['MemberID']; } ?>" />
 								<table class="formTable">
 									<tr>
+                                                                            <tbody>
 										<td class="formLabel">Asset/Business Name:</td>
                                                                                 <td class="formLabel">Number of Assets:</td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td ><span class="formSingleLineBox" style="">
 										    Enter Asset Name
@@ -1705,30 +1825,39 @@
                                                                                 <td ><span class="formSingleLineBox" style="">
 										    Enter Number of Assets
 										</span></td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<td class="formLabel">Purpose:</td>
+                                                                </tbody>
 									</tr>
 									<tr>
+                                                                        <tbody>
                                                                                 <td ><span class="formSingleLineBox" style="">
 										    Enter purpose of Asset
 										</span></td>
+                                                                </tbody>
 									</tr>
                                                                         <tr>
 										<td class="formLabel">Other Detail:</td>
 									</tr>
                                                                         <tr>
+                                                                        <tbody>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formMultiLineBox">
 										    Other details about this Asset
 										</span></td>
+                                                                </tbody>
                                                                         </tr>
                                                                         <tr>
+                                                                        <tbody>
 									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
 									<td >
 										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
 										<span class="formLinks"><a href="#">Photos</a></span>
 									</td>
+                                                                </tbody>
 								</tr>
 							</table>
                                                         </div>
@@ -1741,6 +1870,7 @@
                                                                     </legend>
                                                                     <table class="detailGrid" style="width:700px; margin:10px 0px;">
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td class = "detailGridHead">#</td>
                                                                             <td class = "detailGridHead">Crop Name:</td>
                                                                             <td  class = "detailGridHead">Crop Type:</td>
@@ -1749,8 +1879,10 @@
                                                                             <td  class = "detailGridHead">Crop Rate:</td>
                                                                             <td  class = "detailGridHead">Crop Total:</td>
                                                                             <td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                    </tbody>
                                                                         </tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td>1</td>
                                                                             <td>Banana Plants</td>
                                                                             <td>Seasonal</td>
@@ -1759,8 +1891,10 @@
                                                                             <td>25,000</td>
                                                                             <td>2,500,000</td>
                                                                             <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
+                                                                    </tbody>
+                                                                    </tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td>2</td>
                                                                             <td>Orange Trees</td>
                                                                             <td>Seasonal</td>
@@ -1769,8 +1903,10 @@
                                                                             <td>25,000</td>
                                                                             <td>2,500,000</td>
                                                                             <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
+                                                                    </tbody>
+                                                                    </tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td>3</td>
                                                                             <td>Eucalyptus Trees</td>
                                                                             <td>Perenial</td>
@@ -1779,8 +1915,10 @@
                                                                             <td>25,000</td>
                                                                             <td>2,500,000</td>
                                                                             <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
+                                                                    </tbody>
+                                                                    </tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td>4</td>
                                                                             <td>Banana Plants</td>
                                                                             <td>Seasonal</td>
@@ -1789,8 +1927,10 @@
                                                                             <td>25,000</td>
                                                                             <td>2,500,000</td>
                                                                             <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
+                                                                    </tbody>
+                                                                    </tr>
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td>5</td>
                                                                             <td>Nsambya Tree</td>
                                                                             <td>Perenial</td>
@@ -1799,14 +1939,17 @@
                                                                             <td>25,000</td>
                                                                             <td>2,500,000</td>
                                                                             <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
+                                                                    </tbody>
+                                                                    </tr>
                                                                     </table>
                                                                     <table class="detailNavigation">
                                                                         <tr>
+                                                                        <tbody>
                                                                             <td><a href="#">Previous</a></td>
                                                                             <td class="PageJump">1 / 2</td>
                                                                             <td><a href="#">Next</a></td>
-                                                                        </tr>
+                                                                    </tbody>
+                                                                    </tr>
                                                                     </table>
                                                                 </fieldset>
                                                             </form>
