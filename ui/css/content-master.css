@@ -18,6 +18,11 @@ a {
 	font-weight: bold;
 }
 
+@font-face {
+    font-family: BodyCustomFont;
+    src: url(../lib/Nunito/Nunito-Bold.ttf);
+}
+
 .ContentParent {
 	position: absolute;
 	top: 100px;
@@ -32,7 +37,9 @@ a {
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: 20px;
+        font-family: BodyCustomFont;
 }
+
 .ContentTitle {
 	display: block;
 	width: 150px;

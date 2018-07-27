@@ -1,4 +1,9 @@
 
+@font-face {
+    font-family: BodyCustomFont;
+    src: url(../lib/Nunito/Nunito-Bold.ttf);
+}
+
 #loginWrapper {
 	width: 400px;
 	text-align: left;
@@ -18,8 +23,8 @@
 #loginWrapper span {
 	display: table-cell;
 	vertical-align: middle;
-/*	font-family: 'open_sanslight';*/
-	font-family: 'open_sansregular';
+/*	font-family: 'open_sanslight'; */
+	font-family: BodyCustomFont;
 }
 
 .loginFields {

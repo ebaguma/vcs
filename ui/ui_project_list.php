@@ -11,6 +11,13 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="Me" content="PapList">
 	<title>VCS&nbsp;&nbsp;|&nbsp;&nbsp;PAP List</title>
+        
+<!--  link rel="stylesheet" href="trial/jquery-ui-themes/themes/hot-sneaks/jquery-ui.css">
+<link rel="stylesheet" href="trial/jquery-ui-themes/themes/hot-sneaks/theme.css">
+<link rel="stylesheet" href="trial/datatables/css/dataTables.uikit.css">
+ <script type="text/javascript" src="trial/jquery-2.1.4.min.js"></script>
+ <script src="trial/datatables/js/jquery.dataTables.min.js"></script>
+ <script src="trial/datatables/js/dataTables.jqueryui.min.js"></script -->
 
 	<?php
     include ('ui_popup_header.php');
@@ -35,7 +42,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
                     $CheckReturnUser->CheckLoginStatus();
                     if ($CheckReturnUser->return_session_id == session_id() && $CheckReturnUser->login_status == "TRUE") {
                         // header('Location: ui/ui_project_list.php?PageNumber=1');
-                        echo 'SetActivePage()';
+                        // echo 'SetActivePage()';
                         $_SESSION['Last_Activity'] = $time;
                     } else {
                         session_unset();
@@ -70,7 +77,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
         function ReadProjects() {
             include_once ('../code/code_project_list.php');
 
-            echo '<script>ShowNavigation();</script>';
+            // echo '<script>ShowNavigation();</script>';
 
             $projects = new ProjectList();
 
@@ -145,6 +152,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
     if (isset($_GET['logout'])) {
         LogOut();
     }
+
 	?>
 
 <!-- @formatter:off -->
@@ -153,18 +161,21 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 			<div class="ContentTitle2">
 				Change Project Selection
 			</div>
-			<div class="SearchPap">
+			<!-- div class="SearchPap">
                                 <form autocomplete="false">
                                         <fieldset class="fieldset" style="height:130px;width:1000px">
                                                 <legend class="legend" style="width:250px"> <span class="legendText"> Search By Project Details </span> </legend>
                                                 <table>
                                                         <tr>
+                                                        <tbody>
                                                                 <td class="formLabel">Project Name</td>
                                                                 <td class="formLabel">Project Code</td>
                                                                 <td class="formLabel" style="display:none">Other Details</td>
+                                                </tbody>
                                                         </tr>
                                                         <tr>
-                                                                <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>" method="GET" autocomplete="false">
+                                                        <tbody>  
+                                                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="GET" autocomplete="false">
                                                                         <td><span class="formSingleLineBox">
                                                                             <input type="hidden" name="Mode" value="Search" />
                                                                             <input type="hidden" name="PageNumber" value="1" />
@@ -178,30 +189,33 @@ if(isset($_GET['LogOut'])){ LogOut(); }
                                                                         <td><span class="formSingleLineBox" style="display:none">Search By Other Details</span>
                                                                         </td>
                                                                         <input type="submit" style="position:absolute;left:-99999px" /> </form>
+                                                </tbody>
                                                         </tr>
                                                 </table>
                                         </fieldset>
                                 </form>
-                        </div>
+                        </div -->
                     
-			<div class="GridArea" >
-				<form>
-					<fieldset class="fieldset" style="height:425px; width:1000px;">
-						<legend class="legend" style="width:250px;">
-							<span class="legendText" > Summary Project Portfolio </span>
-						</legend>
+                    <div class="GridArea" id="Reload">
+                        <form>
+                            <fieldset class="fieldset" style="padding:30px; height:800px; width:1000px;">
+                                <legend class="legend" style="width:250px;">
+                                    <span class="legendText" > Summary Project Portfolio </span>
+                                </legend>
 
-						<!-- <table class="detailGrid" style="width:750px;"> -->
-						<table class="detailGrid" style="width:900px; margin: 20px 10px; font-size: 15px">
-							<tr>
-								<td class = "detailGridHead">#</td>
-								<td  class = "detailGridHead">Project Name:</td>
-								<td class = "detailGridHead">Project Code:</td>
-								<td class = "detailGridHead">Project Manager:</td>
-								<td class = "detailGridHead">Start Date:</td>
-								<td class = "detailGridHead">End Date:</td>
-							</tr>
-							
+                                                <!-- <table class="detailGrid" style="width:750px;"> -->
+                                <table id="uiProjectListTable" class="display compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <td class = "detailGridHead">#</td>
+                                            <td  class = "detailGridHead">Project Name:</td>
+                                            <td class = "detailGridHead">Project Code:</td>
+                                            <td class = "detailGridHead">Project Manager:</td>
+                                            <td class = "detailGridHead">Start Date:</td>
+                                            <td class = "detailGridHead">End Date:</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="me">
 							<!-- @formatter:on -->
 							<?php
                                                         if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Mode']) && $_GET['Mode'] == 'Read') {
@@ -209,7 +223,7 @@ if(isset($_GET['LogOut'])){ LogOut(); }
 
                                                             include_once ('../code/code_project_list.php');
 
-                                                            echo '<script>ShowNavigation();</script>';
+                                                            // echo '<script>ShowNavigation();</script>';
 
                                                             $projects = new ProjectList();
 
@@ -330,39 +344,31 @@ if(isset($_GET['LogOut'])){ LogOut(); }
                                                             $_GET['Mode'] = "Read";
                                                             $_GET['PageNumber'] = 1;
                                                         }
-							?>
-						</table>
-						<table id="GridNav" class="detailNavigation" style="margin: 20px 10px;">
-							<tr>
-								<td><a href="<?php if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $prev_page; } 
-								else if (isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PageNumber=' . $prev_page; } 
-								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $prev_page; } ?>" id="PreviousPage">Previous</a></td>
-								<td class="PageJump" style="width:70px;">
-								<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" autocomplete="false" >
-									<input type="hidden" name="Mode" value="<?php if (isset($_GET['Mode'])) {echo $_GET['Mode']; } else {echo 'Read'; } ?>" />
-									<input type="hidden" name="ProjectName" value="<?php if (isset($_GET['ProjectName'])) {echo $_GET['ProjectName']; } else {echo ''; } ?>" />
-									<input type="hidden" name="ProjectCode" value="<?php if (isset($_GET['ProjectCode'])) {echo $_GET['ProjectCode']; } else {echo ''; } ?>" />
-									<input name="PageNumber" type="text" value="<?php if (isset($_GET['PageNumber'])) {echo $_GET['PageNumber']; } else {echo 1; } ?>" class="NavBoxes" />
-									/&nbsp;&nbsp;<?php echo $num_pages; ?>
-									<input type="submit" style="position: absolute; left: -99999px;" />
-								</form></td>
-								<td><a href="<?php if (isset($_GET['ProjectName']) && $_GET['ProjectName'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectName=' . $_GET['ProjectName'] . '&PageNumber=' . $next_page; } 
-								else if (isset($_GET['ProjectCode']) && $_GET['ProjectCode'] != "") { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&ProjectCode=' . $_GET['ProjectCode'] . '&PageNumber=' . $next_page; } 
-								else { echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=' . $_GET['Mode'] . '&PageNumber=' . $next_page; } ?>" id="NextPage">Next</a></td>
-							</tr>
-						</table>
+                            ?>
+                                    </tbody>
+                                </table>
 
-					</fieldset>
-				</form>
+                                <!-- id="GridNav" class="detailNavigation" -->
 
-			</div>
-			<br>
-		</div>
-	</div>
+
+                            </fieldset>
+                        </form>
+
+                    </div>
+
+                    <br>
+                </div>
+        </div>
 
 	<?php
     include ('ui_footer.php');
 	?>
-
-	</body>
-	</html>
+<script>
+    $(document).ready(function () {
+        $("#uiProjectListTable").DataTable({
+            lengthMenu:[20]
+        });
+    });
+</script>
+</body>
+</html>

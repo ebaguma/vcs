@@ -53,7 +53,7 @@ Class ProjectPapList {
             $DEL_ACTION = '<a href="' . $DEL_URL . '" ><img src="images/delete.png" alt="" class="EditDeleteButtons" /></a>';
 
             $this -> pap_record_num = $this -> pap_record_num + 1;
-            printf("<tr><td>%s</td><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $this -> pap_record_num, $HHID, $ACTION, $PAP_NAME, $PLOT_REF, $DESIGN, $PAP_TYPE, $DEL_ACTION);
+            printf("<tr><td>%s</td><td><a href='%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $HHID, $ACTION, $PAP_NAME, $PLOT_REF, $DESIGN, $PAP_TYPE, $DEL_ACTION);
         }
         //recuperate resources
         $result -> free();

@@ -22,7 +22,7 @@ Class PapAddress {
 	public $pap_addr_id;
 	public $pap_addr_pap_id;
 	public $pap_addr_road;
-	public $pap_addr_is_resident;
+	public $pap_is_resident;
 	public $pap_addr_vill_id;
 	public $pap_addr_subcty_id;
 	public $pap_addr_cty_id;
@@ -82,7 +82,7 @@ Class PapAddress {
 
 			$this -> pap_addr_id = $row -> ID;
 			$this -> pap_addr_road = $row -> ROAD;
-			$this -> pap_addr_is_resident = $row -> IS_RESIDENT;
+			$this -> pap_is_resident = $row -> IS_RESIDENT;
 			$this -> pap_addr_dist_id = $row -> DIST_ID;
 			$this -> pap_addr_cty_id = $row -> CTY_ID;
 			$this -> pap_addr_subcty_id = $row -> SUBCTY_ID;
@@ -98,7 +98,7 @@ Class PapAddress {
 
 		$mysqli -> query("SET @PAP_ID_ = " . $this -> pap_addr_pap_id);
 		$mysqli -> query("SET @ROAD_ = " . "'" . $this -> pap_addr_road . "'");
-		# $mysqli -> query("SET @IS_RESIDENT_ = " . $this -> selected_project_id);
+		$mysqli -> query("SET @IS_RESIDENT_ = " . "'" . $this -> pap_is_resident . "'");
 		$mysqli -> query("SET @VILL_ID_ = " . $this -> pap_addr_vill_id);
 		$mysqli -> query("SET @CREATED_BY_ = " . $this -> session_user_id);
 
@@ -117,7 +117,7 @@ Class PapAddress {
 
 		$mysqli -> query("SET @ID_ = " . $this -> pap_addr_id);
 		$mysqli -> query("SET @ROAD_ = " . "'" . $this -> pap_addr_road . "'");
-		# $mysqli -> query("SET @IS_RESIDENT_ = " . $this -> proj_sect_length);
+		$mysqli -> query("SET @IS_RESIDENT_ = " . "'" . $this -> pap_is_resident . "'");
 		$mysqli -> query("SET @VILL_ID_ = " . $this -> pap_addr_vill_id);
 		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 

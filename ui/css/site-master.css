@@ -1,6 +1,11 @@
 a{
 	outline: 0;
 	}
+        
+ @font-face {
+    font-family: HeaderCustomFont;
+    src: url(../lib/Nunito/Nunito-Black.ttf);
+}       
 
 .Header {
 	background-color: #003366;
@@ -11,7 +16,9 @@ a{
 	padding: 10px;
 	overflow: hidden;
 	z-index: 50;
+        font-family: HeaderCustomFont;
 }
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -54,6 +61,7 @@ html, body {
 	-webkit-box-shadow: 0 8px 4px -4px #BABABA;
 	-moz-box-shadow: 0 8px 4px -4px #BABABA;
 	box-shadow: 0 8px 4px -4px #BABABA;
+        font-family: HeaderCustomFont;
 }
 .BreadCrumbContent {
 	text-align: left;
@@ -76,6 +84,7 @@ html, body {
 	height: 30px;
 	width: 100%;
 	z-index: 100;
+        font-family: HeaderCustomFont;
 }
 .FooterContent {
 	text-align: center;

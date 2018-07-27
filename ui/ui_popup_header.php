@@ -3,8 +3,12 @@
 <link rel="stylesheet" type="text/css" href="css/content-master.css" >
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/pap_list_projects_popup.css" >
-<script src="js/jquery-2.1.4.min.js" ></script>
+<link rel="stylesheet" type="text/css" href="lib/bkicons/bakerFont.css" >
+<!-- script src="js/jquery-2.1.4.min.js" ></script -->
 <script src="js/bootstrap.js" ></script>
+<script src="lib/jquery-2.1.4.min.js" type="text/javascript"></script>
+<link href="lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+ <script src="lib/datatables/js/jquery.dataTables.min.js"></script>
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
 
@@ -57,54 +61,9 @@
 		}
 	</script>
         
-        <script>
-               $("#NextPage").click(function(n){
-                   n.preventDefault();
-                   var link = document.getElementById("NextPage").getAttribute("href");
-                    var final = link + " .GridArea";
-                    $(".GridArea").load(final);
-                
-                
-                   });
-        </script>
-            
-        <script>
-               $("#PreviousPage").click(function(o){
-                   o.preventDefault();
-                   var link = document.getElementById("PreviousPage").getAttribute("href");
-                  var final = link + " .GridArea";
-                $(".GridArea").load(final);
-                
-                
-                   });
-        </script>
-        
-        <script>
-               $("#NextPage").click(function(p){
-                   p.preventDefault();
-                   var link = document.getElementById("NextPage").getAttribute("href");
-                    var final = link + " .PapGrid";
-                    $(".PapGrid").load(final);
-                
-                
-                   });
-        </script>
-            
-        <script>
-               $("#PreviousPage").click(function(q){
-                   q.preventDefault();
-                   var link = document.getElementById("PreviousPage").getAttribute("href");
-                  var final = link + " .PapGrid";
-                $(".PapGrid").load(final);
-                
-                
-                   });
-        </script>
-           
-
 	<div class="BreadCrumbParent" style="margin-top: 0;">
 		<div class="BreadCrumbContent">
-			<span class="spanBreadCrumbs"><a href="JavaScript:void(0);" onclick="redirectHome();">Valuation, Compensation System:</a></span>
+			<span class="spanBreadCrumbs"><a href="JavaScript:void(0);" onclick="redirectHome();">Valuation and Compensation System:</a></span>
 			<span class="spanCurrentProject">
             <a id="SelectedProject" href="ui_project_list.php?Mode=Read&PageNumber=1">
                 <span style="color:#003366">Project:</span>

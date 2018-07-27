@@ -1,17 +1,20 @@
 <link rel="stylesheet" type="text/css" href="css/site-master.css">
-<link rel='shortcut icon' type='image/x-icon' href='images/favicon.png' />
+<link rel='shortcut icon' type='image/x-icon' href='images/favicon_icon.ico' />
 <link rel="stylesheet" type="text/css" href="css/content-master.css">
 <link rel="stylesheet" href="css/jquery-ui.min.css">
 <script src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap.js"></script>
 <script src="js/date_picker/moment.min.js"></script>
 <link rel="stylesheet" href="css/date_picker/pikaday.css">
 <link rel="stylesheet" href="css/date_picker/site.css">
-
-
+<link rel="stylesheet" href="lib/jquery-ui-themes/themes/hot-sneaks/jquery-ui.css">
+<link rel="stylesheet" href="lib/jquery-ui-themes/themes/hot-sneaks/theme.css">
+<link rel="stylesheet" href="lib/datatables/css/dataTables.min.css">
+<script src="lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="lib/datatables/js/dataTables.jqueryui.js"></script>
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
 	<div  class="Header">
@@ -77,7 +80,7 @@
 		}
 
 	</script>
-	
+      
 	<script type="text/javascript">
             $(document).ready(function() {
                 
@@ -116,7 +119,7 @@
     <!-- @formatter:off -->
 	<div class="BreadCrumbParent">
 		<div class="BreadCrumbContent">
-			<span class="spanBreadCrumbs"><a href="#">Valuation, Compensation System:</a></span>
+			<span class="spanBreadCrumbs"><a href="#">Valuation and Compensation System:</a></span>
 			<span class="spanCurrentProject">
 			<a id="SelectedProject" href="ui_project_list.php?Mode=Read&PageNumber=1">
     			<span style="color:#003366">Project:</span>

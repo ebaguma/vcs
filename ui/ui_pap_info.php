@@ -343,7 +343,8 @@
 			$select_pap_addr -> SelectPapAddr();
 
 			$GLOBALS['pap_addr_road'] = $select_pap_addr -> pap_addr_road;
-
+                        $GLOBALS['pap_is_resident'] = $select_pap_addr -> pap_is_resident;
+                        
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
 				$_SESSION['pap_addr_dist_id'] = $select_pap_addr -> pap_addr_dist_id;
@@ -369,7 +370,8 @@
 
 			$insert_pap_addr -> pap_addr_road = $_POST['Road'];
 			$insert_pap_addr -> pap_addr_vill_id = $_POST['Villages'];
-
+                        $insert_pap_addr -> pap_is_resident = $_POST['IsResident'];
+                           
 			if (isset($_GET['HHID'])) {
 				$insert_pap_addr -> pap_addr_pap_id = $_GET['HHID'];
 			}
@@ -399,6 +401,7 @@
 
 			$update_pap_addr -> pap_addr_road = $_POST['Road'];
 			$update_pap_addr -> pap_addr_vill_id = $_POST['Villages'];
+                        $update_pap_addr -> pap_is_resident = $_POST['IsResident'];
 			$update_pap_addr -> pap_addr_id = $_POST['AddrID'];
 
 			if (session_status() == PHP_SESSION_NONE) {
@@ -1092,107 +1095,124 @@
 						</div>
 
 						<!-- This is the PAP Address Screen -->
-						<div id="PapAddress" class="tab-pane fade">
-							<p>
-								This is the PAP Address Screen
-							</p>
-							<div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
-                                                            <form name="Address" action="<?php
-                                                            if ($_GET['Mode'] == 'Read') {
-                                                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
-                                                            } else if ($_GET['Mode'] == 'ViewAddress') {
-                                                                echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
-                                                            }
-                                                            ?>" method="POST" autocomplete="off">
-                                                                <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
-                                                                <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
-                                                                <input type="hidden" name="AddrID" value="<?php if (isset($_GET['AddrID'])) {
+                                                <div id="PapAddress" class="tab-pane fade">
+                                                    <p>
+                                                        This is the PAP Address Screen
+                                                    </p>
+                                                    <div style="width:600px; float:left; margin-top:10px; margin-right:20px;">
+                                                        <form name="Address" action="<?php
+                                                        if ($_GET['Mode'] == 'Read') {
+                                                            echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=InsertAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
+                                                        } else if ($_GET['Mode'] == 'ViewAddress') {
+                                                            echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=UpdateAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
+                                                        }
+                                                        ?>" method="POST" autocomplete="off">
+                                                            <input type="hidden" name="ProjectID" value="<?php echo $_GET['ProjectID']; ?>" />
+                                                            <input type="hidden" name="ProjectCode" value="<?php echo $_GET['ProjectCode']; ?>" />
+                                                            <input type="hidden" name="AddrID" value="<?php
+                                                            if (isset($_GET['AddrID'])) {
                                                                 echo $_GET['AddrID'];
-                                                            } ?>" />
-								<table class="formTable">
-									<tr>
-										<td class="formLabel">Plot No, Road:</td>
-										<td class="formLabel">
-										<input type="checkbox">
-                                                                                &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
-                                                                                <input type="checkbox">
-										&nbsp;Affected Plot?</td>
-									</tr>
-									<tr>
-										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
-										    <input type="text" value="<?php if (isset($GLOBALS['pap_addr_road'])) { echo $GLOBALS['pap_addr_road']; } ?>" name="Road" placeholder="Enter Address" />
-										</span></td>
-									</tr>
-									<tr>
-										<td class="formLabel">Select District:</td>
-										<td class="formLabel">Select County:</td>
-									</tr>
-									<tr>
-                                                                            <td><span class="formSingleLineBox" >
-                                                                                    <select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
-                                                                                        <option value="" <?php
+                                                            }
+                                                            ?>" />
+                                                            <table class="formTable">
+                                                                <tr>
+                                                                    <td class="formLabel">Plot No, Road:</td>
+                                                                    <td class="formLabel">
+                                                                        <input type="checkbox" name="IsResident" value="YES" <?php if (isset($GLOBALS['pap_is_resident']) && $GLOBALS['pap_is_resident'] == 'YES') { echo "checked"; }  ?> >
+                                                                        &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
+                                                                        <input type="checkbox">
+                                                                        &nbsp;Affected Plot?</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2"><span class="formSingleLineBox" style="width:610px;">
+                                                                            <input type="text" value="<?php if (isset($GLOBALS['pap_addr_road'])) {
+                                                                echo $GLOBALS['pap_addr_road'];
+                                                            } ?>" name="Road" placeholder="Enter Address" />
+                                                                        </span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="formLabel">Select District:</td>
+                                                                    <td class="formLabel">Select County:</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span class="formSingleLineBox" >
+                                                                            <select name="Districts" id="SelectDistrict" onchange="BindCounties()" >
+                                                                                <option value="" <?php
                                                                                         if ($_GET['Mode'] == 'Read') {
                                                                                             echo 'selected';
                                                                                             unset($_SESSION['pap_addr_dist_id']);
                                                                                         }
                                                                                         ?> >-- Select District --</option>
-                                                                                                <?php
-                                                                                                if (isset($_GET['ProjectID'])) {
-                                                                                                    SelectDistrict();
-                                                                                                }
-                                                                                                ?>
-                                                                                        <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
-                                                                                </span>
-                                                                            </td>
-                                                                            <td><span class="formSingleLineBox">
-                                                                                    <select name="Counties" id="SelectCounty" onchange="BindSubCounties()" >
-                                                                                        <option value="" >-- Select County --</option>
-                                                                                        <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') {
-                                                                                            SelectCounty();
-                                                                                        } ?>
-                                                                                        <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
-                                                                                </span>
-                                                                            </td>
-									</tr>
-									<tr>
-										<td class="formLabel">Select SubCounty:</td>
-										<td class="formLabel">Select Village:</td>
-									</tr>
-									<tr>
-										<td><span class="formSingleLineBox" >
-											<select name="SubCounties" id="SelectSubCty" onchange="BindVillages()" >
-                                                <option value="" >-- Select Sub County --</option>
-                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectSubCounty(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
-                                            </span>
-                                        </td>
-										<td><span class="formSingleLineBox" >
-											<select name="Villages" id="SelectVillage" >
-                                                <option value="" >-- Select Village --</option>
-                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') { SelectVillage(); } ?>
-                                            <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
-                                            </span>
-                                        </td>
-									</tr>
-									<tr>
-										<td> 
-											<span class="saveButtonArea">
-												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewAddress') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
-												<?php $new_address = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
-                                                if ($_GET['Mode'] == 'ViewAddress') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_address . '>New Address</a></span>'; } ?>
-                                            </span>
-                                        </td>
-										<td align="right">
-                                                                                    <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
-											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
-									</tr>
-								</table>
-								</form>
-							</div>
+                                                                                        <?php
+                                                                                        if (isset($_GET['ProjectID'])) {
+                                                                                            SelectDistrict();
+                                                                                        }
+                                                                                        ?>
+                                                                                <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
+                                                                        </span>
+                                                                    </td>
+                                                                    <td><span class="formSingleLineBox">
+                                                                            <select name="Counties" id="SelectCounty" onchange="BindSubCounties()" >
+                                                                                <option value="" >-- Select County --</option>
+                                                                                <?php
+                                                                                if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') {
+                                                                                    SelectCounty();
+                                                                                }
+                                                                                ?>
+                                                                                <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="formLabel">Select SubCounty:</td>
+                                                                    <td class="formLabel">Select Village:</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span class="formSingleLineBox" >
+                                                                            <select name="SubCounties" id="SelectSubCty" onchange="BindVillages()" >
+                                                                                <option value="" >-- Select Sub County --</option>
+                                                                                <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') {
+                                                                                    SelectSubCounty();
+                                                                                } ?>
+                                                                                <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
+                                                                        </span>
+                                                                    </td>
+                                                                    <td><span class="formSingleLineBox" >
+                                                                            <select name="Villages" id="SelectVillage" >
+                                                                                <option value="" >-- Select Village --</option>
+                                                                            <?php if (isset($_GET['Mode']) && $_GET['Mode'] == 'ViewAddress') {
+                                                                                SelectVillage();
+                                                                            } ?>
+                                                                                <!-- select><a class="LinkInBoxOther" href="#" >New</a -->
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td> 
+                                                                        <span class="saveButtonArea">
+                                                                            <input type="submit" value="<?php if ($_GET['Mode'] == 'ViewAddress') {
+                                                                                echo 'Update';
+                                                                            } else {
+                                                                                echo 'Save';
+                                                                            } ?>" name="UpdateMode" style="float:left;" />
+                                                                            <?php $new_address = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapAddress';
+                                                                            if ($_GET['Mode'] == 'ViewAddress') {
+                                                                                echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_address . '>New Address</a></span>';
+                                                                            }
+                                                                            ?>
+                                                                        </span>
+                                                                    </td>
+                                                                    <td align="right">
+                                                                        <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+                                                                        <span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapAddress&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
+                                                                </tr>
+                                                            </table>
+                                                        </form>
+                                                    </div>
 							
 							<div class="GridArea" style="width: 750px;">
                                                             <form>
-                                                                <fieldset class="fieldset" style="width:800px; margin:0px;;">
+                                                                <fieldset class="fieldset" style="width:1000px; margin:0px;;">
                                                                     <legend class="legend" style="width:200px;">
                                                                         <span class="legendText" >Pap Addresses:</span>
                                                                     </legend>
