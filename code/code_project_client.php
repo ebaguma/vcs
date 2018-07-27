@@ -5,7 +5,7 @@ class ProjectClient {
     public $read_num_rows;
 
     //read Client Page parameters
-    public $client_page_rows = 5;
+    public $client_page_rows = 10;
     public $client_last_page;
     public $client_data_offset;
     public $client_record_num;

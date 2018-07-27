@@ -1,9 +1,9 @@
 <?php
 
-/* $servername = "192.168.7.3";
+/* $servername = "localhost";
 $username = "application";
 $password = "application";
-$database = "VCS_DB"; */
+$database = "vcs_db"; */
 
 $status = "Failed";
 

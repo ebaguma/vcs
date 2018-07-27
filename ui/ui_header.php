@@ -6,12 +6,16 @@
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap.js"></script>
 <script src="js/date_picker/moment.min.js"></script>
 <link rel="stylesheet" href="css/date_picker/pikaday.css">
 <link rel="stylesheet" href="css/date_picker/site.css">
-
-
+<script type="text/javascript" src="trial/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" href="trial/jquery-ui-themes/themes/hot-sneaks/jquery-ui.css">
+<link rel="stylesheet" href="trial/jquery-ui-themes/themes/hot-sneaks/theme.css">
+<link rel="stylesheet" href="trial/datatables/css/dataTables.jqueryui.min.css">
+<script src="trial/datatables/js/jquery.dataTables.min.js"></script>
+<script src="trial/datatables/js/dataTables.jqueryui.min.js"></script>
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
 	<div  class="Header">
@@ -77,7 +81,7 @@
 		}
 
 	</script>
-	
+      
 	<script type="text/javascript">
             $(document).ready(function() {
                 
