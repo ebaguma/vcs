@@ -3,8 +3,16 @@
 <link rel="stylesheet" type="text/css" href="css/content-master.css" >
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/pap_list_projects_popup.css" >
+<link rel="stylesheet" type="text/css" href="bkicons/bakerFont.css" >
 <script src="js/jquery-2.1.4.min.js" ></script>
 <script src="js/bootstrap.js" ></script>
+
+<script type="text/javascript" src="trial/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" href="trial/jquery-ui-themes/themes/hot-sneaks/jquery-ui.css">
+<link rel="stylesheet" href="trial/jquery-ui-themes/themes/hot-sneaks/theme.css">
+<link rel="stylesheet" href="trial/datatables/css/dataTables.jqueryui.min.css">
+ <script src="trial/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="trial/datatables/js/dataTables.jqueryui.min.js"></script>
 </head>
 <body onLoad="<?php CheckReturnUser(); ?>">
 
@@ -56,7 +64,7 @@
 			window.close();
 		}
 	</script>
-
+        
 	<div class="BreadCrumbParent" style="margin-top: 0;">
 		<div class="BreadCrumbContent">
 			<span class="spanBreadCrumbs"><a href="JavaScript:void(0);" onclick="redirectHome();">Valuation, Compensation System:</a></span>
