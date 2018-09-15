@@ -1507,10 +1507,10 @@
 									<tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td ><span class="formSingleLineBox" style="">
-										    Enter Activity Name
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Activity" placeholder="Enter Activity Name" />
 										</span></td>
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    Enter Income per Season
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Income Per Cycle" placeholder="Enter Income per season" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1519,7 +1519,7 @@
                                                                         <tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formMultiLineBox">
-										    Other details about this activity
+										    <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Other details about this activity" name="Other "><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
 										</span></td>
                                                                         </tr>
                                                                         <tr>
@@ -1540,65 +1540,15 @@
                                                                     </legend>
 								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
-											<td class = "detailGridHead">#</td>
-											<td class = "detailGridHead">Crop Name:</td>
-											<td  class = "detailGridHead">Crop Type:</td>
-											<td  class = "detailGridHead">Crop Description:</td>
-											<td  class = "detailGridHead">Units:</td>
-											<td  class = "detailGridHead">Crop Rate:</td>
-											<td  class = "detailGridHead">Crop Total:</td>
-											<td  class = "detailGridHead" colspan="2">Modify:</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>Banana Plants</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Orange Trees</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Eucalyptus Trees</td>
-											<td>Perenial</td>
-											<td>Mature, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Banana Plants</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>Nsambya Tree</td>
-											<td>Perenial</td>
-											<td>Mature, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                            <td class = "detailGridHead">#</td>
+                                                                            <td  class = "detailGridHead">Crop Name:</td>
+                                                                            <td  class = "detailGridHead">Crop Type:</td>
+                                                                            <td  class = "detailGridHead">Crop Description:</td>
+                                                                            <td  class = "detailGridHead">Units:</td>
+                                                                            <td  class = "detailGridHead">Crop Rate:</td>
+                                                                            <td  class = "detailGridHead">Crop Total:</td>
+                                                                            <td  class = "detailGridHead">Modify:</td>
+                                                                        </tr>
 									</table>
 									<table class="detailNavigation">
 										<tr>
@@ -1631,10 +1581,10 @@
 									<tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td ><span class="formSingleLineBox" style="">
-										    Enter Common disease
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Common Disease" placeholder="Enter Common disease" />
 										</span></td>
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    Enter no Of members affected
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Number Affected" placeholder="Enter no Of members affected" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1644,10 +1594,10 @@
 									<tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td ><span class="formSingleLineBox" style="">
-										    Enter First Aid Step
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="First Aid Step" placeholder="Enter First Aid Step" />
 										</span></td>
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    Enter Nearest Health Center
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Nearest Health Center" placeholder="Enter Nearest Health Center" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1656,7 +1606,7 @@
                                                                         <tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formMultiLineBox">
-										    Other details about this disease
+										    <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Other details about this disease" name="Other "><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
 										</span></td>
                                                                         </tr>
                                                                         <tr>
@@ -1679,65 +1629,15 @@
                                                                     </legend>
 								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
-											<td class = "detailGridHead">#</td>
-											<td class = "detailGridHead">Crop Name:</td>
-											<td  class = "detailGridHead">Crop Type:</td>
-											<td  class = "detailGridHead">Crop Description:</td>
-											<td  class = "detailGridHead">Units:</td>
-											<td  class = "detailGridHead">Crop Rate:</td>
-											<td  class = "detailGridHead">Crop Total:</td>
-											<td  class = "detailGridHead" colspan="2">Modify:</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>Banana Plants</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Orange Trees</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Eucalyptus Trees</td>
-											<td>Perenial</td>
-											<td>Mature, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Banana Plants</td>
-											<td>Seasonal</td>
-											<td>Young, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>Nsambya Tree</td>
-											<td>Perenial</td>
-											<td>Mature, Good Condition</td>
-											<td>100</td>
-											<td>25,000</td>
-											<td>2,500,000</td>
-											<td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-										</tr>
+                                                                            <td class = "detailGridHead">#</td>
+                                                                            <td  class = "detailGridHead">Crop Name:</td>
+                                                                            <td  class = "detailGridHead">Crop Type:</td>
+                                                                            <td  class = "detailGridHead">Crop Description:</td>
+                                                                            <td  class = "detailGridHead">Units:</td>
+                                                                            <td  class = "detailGridHead">Crop Rate:</td>
+                                                                            <td  class = "detailGridHead">Crop Total:</td>
+                                                                            <td  class = "detailGridHead">Modify:</td>
+                                                                        </tr>
 									</table>
 									<table class="detailNavigation">
 										<tr>
@@ -1768,11 +1668,13 @@
 									</tr>
 									<tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
-										<td ><span class="formSingleLineBox" style="">
-										    Enter Asset Name
+									
+										<td><span class="formSingleLineBox">
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Number of Assets" placeholder="Enter Number of Assets" />
 										</span></td>
+										
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    Enter Number of Assets
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Asset/Business Name" placeholder="Enter Asset Name" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1780,7 +1682,7 @@
 									</tr>
 									<tr>
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    Enter purpose of Asset
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Purpose" placeholder="Enter Purpose of Asset" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1788,8 +1690,8 @@
 									</tr>
                                                                         <tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
-										<td colspan="2"><span class="formMultiLineBox">
-										    Other details about this Asset
+										<td colspan="2"><span class="formMultiLineBox">										   
+                                                                                     <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Other details about this Asset" name="Other "><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
 										</span></td>
                                                                         </tr>
                                                                         <tr>
@@ -1802,81 +1704,31 @@
 							</table>
                                                         </div>
                                                         
-                                                        <div class="GridArea" style="width: 750px;">
+                                                        <div class="GridArea" style="width: 800px;">
                                                             <form>
                                                                 <fieldset class="fieldset" style="width:800px; margin:0px;">
                                                                     <legend class="legend" style="width:200px;">
                                                                         <span class="legendText" >Pap Addresses:</span>
                                                                     </legend>
                                                                     <table class="detailGrid" style="width:700px; margin:10px 0px;">
-                                                                        <tr>
+										<tr>
                                                                             <td class = "detailGridHead">#</td>
-                                                                            <td class = "detailGridHead">Crop Name:</td>
+                                                                            <td  class = "detailGridHead">Crop Name:</td>
                                                                             <td  class = "detailGridHead">Crop Type:</td>
                                                                             <td  class = "detailGridHead">Crop Description:</td>
                                                                             <td  class = "detailGridHead">Units:</td>
                                                                             <td  class = "detailGridHead">Crop Rate:</td>
                                                                             <td  class = "detailGridHead">Crop Total:</td>
-                                                                            <td  class = "detailGridHead" colspan="2">Modify:</td>
+                                                                            <td  class = "detailGridHead">Modify:</td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>Banana Plants</td>
-                                                                            <td>Seasonal</td>
-                                                                            <td>Young, Good Condition</td>
-                                                                            <td>100</td>
-                                                                            <td>25,000</td>
-                                                                            <td>2,500,000</td>
-                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>2</td>
-                                                                            <td>Orange Trees</td>
-                                                                            <td>Seasonal</td>
-                                                                            <td>Young, Good Condition</td>
-                                                                            <td>100</td>
-                                                                            <td>25,000</td>
-                                                                            <td>2,500,000</td>
-                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>3</td>
-                                                                            <td>Eucalyptus Trees</td>
-                                                                            <td>Perenial</td>
-                                                                            <td>Mature, Good Condition</td>
-                                                                            <td>100</td>
-                                                                            <td>25,000</td>
-                                                                            <td>2,500,000</td>
-                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>4</td>
-                                                                            <td>Banana Plants</td>
-                                                                            <td>Seasonal</td>
-                                                                            <td>Young, Good Condition</td>
-                                                                            <td>100</td>
-                                                                            <td>25,000</td>
-                                                                            <td>2,500,000</td>
-                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>5</td>
-                                                                            <td>Nsambya Tree</td>
-                                                                            <td>Perenial</td>
-                                                                            <td>Mature, Good Condition</td>
-                                                                            <td>100</td>
-                                                                            <td>25,000</td>
-                                                                            <td>2,500,000</td>
-                                                                            <td><a href="#"><img src="UI/images/Edit.png" alt="" class="EditDeleteButtons"/></a><a href="#"><img src="UI/images/delete.png" alt="" class="EditDeleteButtons"/></a></td>
-                                                                        </tr>
-                                                                    </table>
-                                                                    <table class="detailNavigation">
-                                                                        <tr>
-                                                                            <td><a href="#">Previous</a></td>
-                                                                            <td class="PageJump">1 / 2</td>
-                                                                            <td><a href="#">Next</a></td>
-                                                                        </tr>
-                                                                    </table>
+									</table>
+									<table class="detailNavigation">
+										<tr>
+											<td><a href="#">Previous</a></td>
+											<td class="PageJump">1 / 2</td>
+											<td><a href="#">Next</a></td>
+										</tr>
+									</table>
                                                                 </fieldset>
                                                             </form>
                                                         </div>
