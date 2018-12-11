@@ -120,7 +120,8 @@
 			<span class="spanCurrentProject">
 			<a id="SelectedProject" href="ui_project_list.php?Mode=Read&PageNumber=1">
     			<span style="color:#003366">Project:</span>
-    			 <?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?> 
+    			 <?php if (isset($_GET['ProjectCode'])) { echo $_GET['ProjectCode']; } ?>
+                        
 			</a>&nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="SelectedPAP" href="ui_pap_list.php?Mode=Read&ProjectID=<?php if (isset($_GET['ProjectID'])) {
                                 echo $_GET['ProjectID'];
@@ -135,7 +136,7 @@
                                 } else if (session_status() == PHP_SESSION_ACTIVE) {
                                     echo $_SESSION['session_pap_hhid'];
                                 }
-                                ?>:
+                                ?>
                             </span>
                             <?php
                             if (session_status() == PHP_SESSION_NONE) {

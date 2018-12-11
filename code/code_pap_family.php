@@ -31,6 +31,9 @@ Class FamilyMember {
 	public $fam_mbr_tribe_id;
 	public $fam_mbr_relgn_id;
         public $fam_mbr_edu_lev;
+        public $fam_mbr_css;
+        public $fam_mbr_non_att;
+        public $fam_mbr_rdo;
 	public $fam_mbr_other_dtl;
 	
                 
@@ -48,7 +51,7 @@ Class FamilyMember {
 
 		//iterate through the result set
 		while ($row = $result -> fetch_object()) {
-			# ID, MBR_NAME, PAP_ID, RLTN_ID, DOB, AGE, BIRTH_PLACE, SEX, TRIBE_ID, RELGN_ID,
+			# ID, MBR_NAME, PAP_ID, RLTN_ID, DOB, AGE, BIRTH_PLACE, SEX, TRIBE_ID, RELGN_ID, EDU_LEV, CSS, NON_ATT, RDO
 			# OTHER_DTL, IS_DELETED
 
 			$ID = $row -> ID;
@@ -62,7 +65,10 @@ Class FamilyMember {
 			$SEX = $row -> SEX;
 			$TRIBE_ID = $row -> TRIBE_ID;
 			$RELGN_ID = $row -> RELGN_ID;
-                        $EDU_LEV = $row->EDU_LEV;
+                        $EDU_LEV = $row -> EDU_LEV;
+                        $CSS = $row -> CSS;
+                        $NON_ATT = $row -> NON_ATT;
+                        $RDO = $row -> RDO;
 			$OTHER_DTL = $row->OTHER_DTL;
                         
 			$confirm = "Are You Sure?";
@@ -85,7 +91,7 @@ Class FamilyMember {
 
 		//iterate through the result set
 		if ($results) {
-			# ID, MBR_NAME, PAP_ID, RLTN_ID, DOB, AGE, BIRTH_PLACE, SEX, TRIBE_ID, RELGN_ID,
+			# ID, MBR_NAME, PAP_ID, RLTN_ID, DOB, AGE, BIRTH_PLACE, SEX, TRIBE_ID, RELGN_ID, EDU_LEV, CSS, NON_ATT, RDO,
 			# OTHER_DTL, IS_DELETED, UPDATED_BY, UPDATED_DATE, CREATED_BY, CREATED_DATE
 
 			$row = $results -> fetch_object();
@@ -99,6 +105,9 @@ Class FamilyMember {
 			$this -> fam_mbr_tribe_id = $row -> TRIBE_ID;
 			$this -> fam_mbr_relgn_id = $row -> RELGN_ID;
                         $this -> fam_mbr_edu_lev = $row -> EDU_LEV;
+                        $this -> fam_mbr_css = $row -> CSS;
+                        $this -> fam_mbr_non_att = $row -> NON_ATT;
+                        $this -> fam_mbr_rdo = $row -> RDO;
 
 		}
 
@@ -106,7 +115,7 @@ Class FamilyMember {
 
 	function InsertFamilyMember() {
 		include ('code_connect.php');
-		$sql = "CALL USP_INS_PAP_FAMILY_MBR(@MBR_NAME_, @PAP_ID_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_, @EDU_LEV_, @OTHER_DTL_, @CREATED_BY_)";
+		$sql = "CALL USP_INS_PAP_FAMILY_MBR(@MBR_NAME_, @PAP_ID_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_, @EDU_LEV_, @CSS_, @NON_ATT_, @RDO_, @OTHER_DTL_, @CREATED_BY_)";
 
 		$mysqli -> query("SET @PAP_ID_ = " . $this -> fam_mbr_pap_id);
 		$mysqli -> query("SET @MBR_NAME_ = " . "'" . $this -> fam_mbr_name . "'");
@@ -116,7 +125,10 @@ Class FamilyMember {
 		$mysqli -> query("SET @SEX_ = " . "'" . $this -> fam_mbr_sex . "'");
 		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> fam_mbr_tribe_id );
 		$mysqli -> query("SET @RELGN_ID_ = " . $this -> fam_mbr_relgn_id );
-                $mysqli -> query("SET @EDU_LEV_ = " . $this -> fam_mbr_edu_lev );
+                $mysqli -> query("SET @EDU_LEV_ = " . "'" . $this -> fam_mbr_edu_lev . "'");
+                $mysqli -> query("SET @CSS_ = " . "'" . $this -> fam_mbr_css . "'" );
+                $mysqli -> query("SET @NON_ATT_ = " . "'" . $this -> fam_mbr_non_att ."'" );
+                $mysqli -> query("SET @RDO_ = " . "'" . $this -> fam_mbr_rdo . "'");
 		$mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> fam_mbr_other_dtl . "'");
 		$mysqli -> query("SET @CREATED_BY_ = " . $this -> session_user_id);
 
@@ -131,7 +143,7 @@ Class FamilyMember {
 
 	function UpdateFamilyMember() {
 		include ('code_connect.php');
-		$sql = "CALL USP_UPD_PAP_FAMILY_MBR(@ID_, @MBR_NAME_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_,@EDU_LEV_, @OTHER_DTL_, @UPDATED_BY_)";
+		$sql = "CALL USP_UPD_PAP_FAMILY_MBR(@ID_, @MBR_NAME_, @RLTN_ID_, @DOB_, @BIRTH_PLACE_, @SEX_, @TRIBE_ID_, @RELGN_ID_, @EDU_LEV_, @CSS_, @NON_ATT, @RDO_, @OTHER_DTL_, @UPDATED_BY_)";
 
 		$mysqli -> query("SET @ID_ = " . $this -> fam_mbr_id);
 		$mysqli -> query("SET @MBR_NAME_ = " . "'" . $this -> fam_mbr_name . "'");
@@ -141,7 +153,10 @@ Class FamilyMember {
 		$mysqli -> query("SET @SEX_ = " . "'" . $this -> fam_mbr_sex . "'");
 		$mysqli -> query("SET @TRIBE_ID_ = " . $this -> fam_mbr_tribe_id );
 		$mysqli -> query("SET @RELGN_ID_ = " . $this -> fam_mbr_relgn_id );
-                $mysqli -> query("SET @EDU_LEV_ = " . $this -> fam_mbr_edu_lev );
+                $mysqli -> query("SET @EDU_LEV_ = " . "'" . $this -> fam_mbr_edu_lev . "'");
+                $mysqli -> query("SET @CSS_ = " . "'" . $this -> fam_mbr_css . "'");
+                $mysqli -> query("SET @NON_ATT_ = " . "'" . $this -> fam_mbr_non_att . "'" );
+                $mysqli -> query("SET @RDO_ = " . "'" . $this -> fam_mbr_rdo . "'");
 		$mysqli -> query("SET @OTHER_DTL_ = " . "'" . $this -> fam_mbr_other_dtl . "'");
 		$mysqli -> query("SET @UPDATED_BY_ = " . $this -> session_user_id);
 

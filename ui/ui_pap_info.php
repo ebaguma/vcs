@@ -550,6 +550,10 @@
 			$GLOBALS['fam_mbr_sex'] = $select_fam_mbr -> fam_mbr_sex;
 			$GLOBALS['fam_mbr_dob'] = $select_fam_mbr -> fam_mbr_dob;
 			$GLOBALS['fam_mbr_birth_place'] = $select_fam_mbr -> fam_mbr_birth_place;
+                        $GLOBALS['fam_mbr_edu_lev'] = $select_fam_mbr -> fam_mbr_edu_lev;
+                        $GLOBALS['fam_mbr_css'] = $select_fam_mbr -> fam_mbr_css;
+                        $GLOBALS['fam_mbr_non_att'] = $select_fam_mbr -> fam_mbr_non_att;
+                        $GLOBALS['fam_mbr_rdo'] = $select_fam_mbr -> fam_mbr_rdo;
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
@@ -560,6 +564,7 @@
 				$_SESSION['fam_mbr_rltn_id'] = $select_fam_mbr -> fam_mbr_rltn_id;
 				$_SESSION['fam_mbr_tribe_id'] = $select_fam_mbr -> fam_mbr_tribe_id;
 				$_SESSION['fam_mbr_relgn_id'] = $select_fam_mbr -> fam_mbr_relgn_id;
+                                
 			}
 
 		}
@@ -579,6 +584,10 @@
 			$insert_fam_mbr -> fam_mbr_sex = $_POST['MemberSex'];
 			$insert_fam_mbr -> fam_mbr_tribe_id = $_POST['MemberTribe'];
 			$insert_fam_mbr -> fam_mbr_relgn_id = $_POST['MemberReligion'];
+                        $insert_fam_mbr -> fam_mbr_edu_lev = $_POST['EducLevel'];
+                        $insert_fam_mbr -> fam_mbr_css = $_POST['CurrentSchool'];
+                        $insert_fam_mbr -> fam_mbr_non_att = $_POST['NonAttendance'];
+                        $insert_fam_mbr -> fam_mbr_rdo = $_POST['DropOut'];
 			# $insert_fam_mbr -> fam_mbr_other_dtl = $_POST['MemberOtherDtl'];
 
 			if (isset($_GET['HHID'])) {
@@ -616,6 +625,11 @@
 			$update_fam_mbr -> fam_mbr_sex = $_POST['MemberSex'];
 			$update_fam_mbr -> fam_mbr_tribe_id = $_POST['MemberTribe'];
 			$update_fam_mbr -> fam_mbr_relgn_id = $_POST['MemberReligion'];
+                        $update_fam_mbr -> fam_mbr_edu_lev = $_POST['EducLevel'];
+                        $update_fam_mbr -> fam_mbr_css = $_POST['CurrentSchool'];
+                        $update_fam_mbr -> fam_mbr_non_att = $_POST['NonAttendance'];
+                        $update_fam_mbr -> fam_mbr_rdo = $_POST['DropOut'];
+                        
 
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
@@ -670,6 +684,472 @@
 		
 		?>
 		
+                <?php
+
+		function LoadPapWelf() {
+			include_once ('../code/code_pap_welfare.php');
+			$load_pap_welf = new PapWelf();
+
+			$load_pap_welf -> selected_project_id = $_GET['ProjectID'];
+			$load_pap_welf -> selected_project_code = $_GET['ProjectCode'];
+
+			if (isset($_GET['HHID'])) {
+				$load_pap_welf -> pap_welf_pap_id = $_GET['HHID'];
+			} else if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$load_pap_welf -> pap_welf_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$load_pap_welf -> pap_welf_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			if (isset($_GET['GridPage'])) {
+				$GLOBALS['pap_welf_load_page'] = $_GET['GridPage'];
+			} else {
+				$GLOBALS['pap_welf_load_page'] = 1;
+			}
+
+			# set pagination parameters
+			$load_pap_welf -> PapWelfPageParams();
+			$GLOBALS['pap_welf_num_pages'] = $load_pap_welf -> pap_welf_last_page;
+
+			# Handling grid pages and navigation
+			if ($GLOBALS['pap_welf_load_page'] == 1) {
+				$load_pap_welf -> pap_welf_record_num = 0;
+				$load_pap_welf -> pap_welf_data_offset = 0;
+                                
+			} else if ($GLOBALS['pap_welf_load_page'] <= $load_pap_welf -> pap_welf_last_page) {
+				$load_pap_welf -> pap_welf_data_offset = ($GLOBALS['pap_welf_load_page'] - 1) * $load_pap_welf -> pap_welf_page_rows;
+				$load_pap_welf -> pap_welf_record_num = ($GLOBALS['pap_welf_load_page'] - 1) * $load_pap_welf -> pap_welf_page_rows;
+				
+			} else {
+				// echo '<script>alert("Page Is Out Of Range");</script>';
+				$GLOBALS['pap_welf_load_page'] = 1;
+				$load_pap_welf -> pap_welf_record_num = 0;
+				$load_pap_welf -> pap_welf_data_offset = 0;
+			}
+
+			# Setting next, and previous page numbers
+			if (($GLOBALS['pap_welf_load_page'] + 1) <= $load_pap_welf -> pap_welf_last_page) {
+				$GLOBALS['pap_welf_next_page'] = $GLOBALS['pap_welf_load_page'] + 1;
+			} else {
+				$GLOBALS['pap_welf_next_page'] = 1;
+			}
+
+			if (($GLOBALS['pap_welf_load_page'] - 1) >= 1) {
+				$GLOBALS['pap_welf_prev_page'] = $GLOBALS['pap_welf_load_page'] - 1;
+			} else {
+				$GLOBALS['pap_welf_prev_page'] = 1;
+			}
+
+			# Loading Pap Welfare
+			$load_pap_welf -> LoadPapWelf();
+		}
+
+		function SelectPapWelf() {
+			include_once ('../code/code_pap_welfare.php');
+			$select_pap_welf = new PapWelf();
+
+			$select_pap_welf -> selected_project_id = $_GET['ProjectID'];
+			$select_pap_welf -> selected_project_code = $_GET['ProjectCode'];
+			$select_pap_welf -> pap_welf_id = $_GET['AddrID'];
+
+			$select_pap_welf -> SelectPapWelf();
+
+			$GLOBALS['pap_welf_asset_name'] = $select_pap_welf -> pap_asset_name;
+			$GLOBALS['pap_welf_nbr_assets'] = $select_pap_welf -> pap_nbr_assets;
+			$GLOBALS['pap_welf_asset_purpose'] = $select_pap_welf -> pap_welf_asset_purpose;
+                        $GLOBALS['pap_welf_other_dtl'] = $select_pap_welf -> pap_welf_other_dtl;
+                        
+                }
+			
+		function InsertWelf() {
+			// echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
+			include_once ('../code/code_pap_welfare.php');
+			$insert_pap_welf = new PapWelf();
+
+			$insert_pap_welf -> selected_project_id = $_GET['ProjectID'];
+			$insert_pap_welf -> selected_project_code = $_GET['ProjectCode'];
+
+			$insert_pap_welf -> pap_asset_name = $_POST['Asset/Business Name'];
+			$insert_pap_welf -> pap_welf_nbr_assets = $_POST['Number of Assets'];
+			$insert_pap_welf -> pap_welf_asset_purpose = $_POST['Purpose'];
+                        $insert_pap_welf -> pap_welf_other_dtl = $_POST['Others'];
+			
+			if (isset($_GET['HHID'])) {
+				$insert_pap_welf -> pap_welf_pap_id = $_GET['HHID'];
+			}
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$insert_pap_welf -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_welf -> pap_welf_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$insert_pap_welf -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_welf -> pap_welf_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			$insert_pap_welf -> InsertPapWelf();
+
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_pap_welf -> selected_project_id . '&ProjectCode=' . $insert_pap_welf -> selected_project_code . '#PapWelf');
+			exit();
+		}
+		
+		function UpdatePapWelf() {
+			include_once ('../code/code_pap_welfare.php');
+			$update_pap_welf = new Welf();
+
+			$update_pap_welf -> selected_project_id = $_GET['ProjectID'];
+			$update_pap_welf -> selected_project_code = $_GET['ProjectCode'];
+			
+			$update_pap_welf -> pap_welf_id = $_POST['MemberID'];
+			$update_pap_welf -> pap_asset_name = $_POST['AssetName'];
+			$update_pap_welf -> pap_welf_nbr_assets = $_POST['NumberAssets'];
+			$update_pap_welf -> pap_welf_asset_purpose = $_POST['Purpose'];
+                        $update_pap_welf -> pap_welf_other_dtl = $_POST['Others'];
+			
+			
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$update_pap_welf -> session_user_id = $_SESSION['session_user_id'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$update_pap_welf -> session_user_id = $_SESSION['session_user_id'];
+			}
+
+			$update_pap_welf -> UpdatePapWelf();
+			
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=ViewMember&ProjectID=' . $update_pap_welf -> selected_project_id . '&ProjectCode=' . $update_pap_welf -> selected_project_code . '&MemberID=' . $update_pap_welf -> pap_welf_id . '#PapWelf');
+			exit();
+		}
+		
+		function DeletePapWelf() {
+			include_once ('../code/code_pap_welfare.php');
+			$delete_pap_welf = new PapWelf();
+
+			$delete_pap_welf -> selected_project_id = $_GET['ProjectID'];
+			$delete_pap_welf -> selected_project_code = $_GET['ProjectCode'];
+
+			$delete_pap_welf -> pap_welf_id = $_GET['MemberID'];
+
+			$delete_pap_welf -> DeletePapWelf();
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_pap_welf -> selected_project_id . '&ProjectCode=' . $delete_pap_welf -> selected_project_code . '#PapWelf');
+			exit();
+		}
+		
+            ?>
+                
+                <?php
+
+		function LoadPapLive() {
+			include_once ('../code/code_pap_livelihood.php');
+			$load_pap_live = new PapLive();
+
+			$load_pap_live -> selected_project_id = $_GET['ProjectID'];
+			$load_pap_live -> selected_project_code = $_GET['ProjectCode'];
+
+			if (isset($_GET['HHID'])) {
+				$load_pap_live -> pap_live_pap_id = $_GET['HHID'];
+			} else if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$load_pap_live -> pap_live_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$load_pap_live -> pap_live_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			if (isset($_GET['GridPage'])) {
+				$GLOBALS['pap_live_load_page'] = $_GET['GridPage'];
+			} else {
+				$GLOBALS['pap_live_load_page'] = 1;
+			}
+
+			# set pagination parameters
+			$load_pap_live -> PapLivePageParams();
+			$GLOBALS['pap_live_num_pages'] = $load_pap_live -> pap_live_last_page;
+
+			# Handling grid pages and navigation
+			if ($GLOBALS['pap_live_load_page'] == 1) {
+				$load_pap_live -> pap_live_record_num = 0;
+				$load_pap_live -> pap_live_data_offset = 0;
+                                
+			} else if ($GLOBALS['pap_live_load_page'] <= $load_pap_live -> pap_live_last_page) {
+				$load_pap_live -> pap_live_data_offset = ($GLOBALS['pap_live_load_page'] - 1) * $load_pap_live -> pap_live_page_rows;
+				$load_pap_live -> pap_live_record_num = ($GLOBALS['pap_live_load_page'] - 1) * $load_pap_live -> pap_live_page_rows;
+				
+			} else {
+				// echo '<script>alert("Page Is Out Of Range");</script>';
+				$GLOBALS['pap_live_load_page'] = 1;
+				$load_pap_live -> pap_live_record_num = 0;
+				$load_pap_live -> pap_live_data_offset = 0;
+			}
+
+			# Setting next, and previous page numbers
+			if (($GLOBALS['pap_live_load_page'] + 1) <= $load_pap_live -> pap_live_last_page) {
+				$GLOBALS['pap_live_next_page'] = $GLOBALS['pap_live_load_page'] + 1;
+			} else {
+				$GLOBALS['pap_live_next_page'] = 1;
+			}
+
+			if (($GLOBALS['pap_live_load_page'] - 1) >= 1) {
+				$GLOBALS['pap_live_prev_page'] = $GLOBALS['pap_live_load_page'] - 1;
+			} else {
+				$GLOBALS['pap_live_prev_page'] = 1;
+			}
+
+			# Loading Pap Livelihood
+			$load_pap_live -> LoadPapLive();
+		}
+
+		function SelectPapLive() {
+			include_once ('../code/code_pap_livelihood.php');
+			$select_pap_live = new PapLive();
+
+			$select_pap_live -> selected_project_id = $_GET['ProjectID'];
+			$select_pap_live -> selected_project_code = $_GET['ProjectCode'];
+			$select_pap_live -> pap_live_id = $_GET['AddrID'];
+
+			$select_pap_live -> SelectPapLive();
+
+			$GLOBALS['pap_live_activity_name'] = $select_pap_live -> pap_activity_name;
+			$GLOBALS['pap_live_income_cycle'] = $select_pap_live -> pap_income_cycle;
+			$GLOBALS['pap_live_cycle'] = $select_pap_live -> pap_live_cycle;
+            $GLOBALS['pap_live_other_dtl'] = $select_pap_live -> pap_live_other_dtl;
+                        
+                }
+			
+		function InsertPapLive() {
+			// echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
+			include_once ('../code/code_pap_liveare.php');
+			$insert_pap_live = new PapLive();
+
+			$insert_pap_live -> selected_project_id = $_GET['ProjectID'];
+			$insert_pap_live -> selected_project_code = $_GET['ProjectCode'];
+
+			$insert_pap_live -> pap_activity_name = $_POST['Asset/Business Name'];
+			$insert_pap_live -> pap_live_income_cycle = $_POST['Number of Assets'];
+			$insert_pap_live -> pap_live_cycle = $_POST['Purpose'];
+                        $insert_pap_live -> pap_live_other_dtl = $_POST['Others'];
+			
+			if (isset($_GET['HHID'])) {
+				$insert_pap_live -> pap_live_pap_id = $_GET['HHID'];
+			}
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$insert_pap_live -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_live -> pap_live_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$insert_pap_live -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_live -> pap_live_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			$insert_pap_live -> InsertPapLive();
+
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_pap_live -> selected_project_id . '&ProjectCode=' . $insert_pap_live -> selected_project_code . '#PapLive');
+			exit();
+		}
+		
+		function UpdatePapLive() {
+			include_once ('../code/code_pap_liveare.php');
+			$update_pap_live = new Welf();
+
+			$update_pap_live -> selected_project_id = $_GET['ProjectID'];
+			$update_pap_live -> selected_project_code = $_GET['ProjectCode'];
+			
+			$update_pap_live -> pap_live_id = $_POST['MemberID'];
+			$update_pap_live -> pap_activity_name = $_POST['Activity'];
+			$update_pap_live -> pap_live_income_cycle = $_POST['IncomePerCycle'];
+		    $update_pap_live -> pap_live_other_dtl = $_POST['Other'];
+			
+			
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$update_pap_live -> session_user_id = $_SESSION['session_user_id'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$update_pap_live -> session_user_id = $_SESSION['session_user_id'];
+			}
+
+			$update_pap_live -> UpdatePapLive();
+			
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=ViewMember&ProjectID=' . $update_pap_live -> selected_project_id . '&ProjectCode=' . $update_pap_live -> selected_project_code . '&MemberID=' . $update_pap_live -> pap_live_id . '#PapLive');
+			exit();
+		}
+		
+		function DeletePapLive() {
+			include_once ('../code/code_pap_livelihood.php');
+			$delete_pap_live = new PapLive();
+
+			$delete_pap_live -> selected_project_id = $_GET['ProjectID'];
+			$delete_pap_live -> selected_project_code = $_GET['ProjectCode'];
+
+			$delete_pap_live -> pap_live_id = $_GET['MemberID'];
+
+			$delete_pap_live -> DeletePapLive();
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_pap_live -> selected_project_id . '&ProjectCode=' . $delete_pap_live -> selected_project_code . '#PapLive');
+			exit();
+		}
+		
+            ?>
+                
+                <?php
+
+		function LoadPapHealth() {
+			include_once ('../code/code_pap_health.php');
+			$load_pap_health = new PapHealth();
+
+			$load_pap_health -> selected_project_id = $_GET['ProjectID'];
+			$load_pap_health -> selected_project_code = $_GET['ProjectCode'];
+
+			if (isset($_GET['HHID'])) {
+				$load_pap_health -> pap_health_pap_id = $_GET['HHID'];
+			} else if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$load_pap_health -> pap_health_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$load_pap_health -> pap_health_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			if (isset($_GET['GridPage'])) {
+				$GLOBALS['pap_health_load_page'] = $_GET['GridPage'];
+			} else {
+				$GLOBALS['pap_health_load_page'] = 1;
+			}
+
+			# set pagination parameters
+			$load_pap_health -> PapHealthPageParams();
+			$GLOBALS['pap_health_num_pages'] = $load_pap_health -> pap_health_last_page;
+
+			# Handling grid pages and navigation
+			if ($GLOBALS['pap_health_load_page'] == 1) {
+				$load_pap_health -> pap_health_record_num = 0;
+				$load_pap_health -> pap_health_data_offset = 0;
+                                
+			} else if ($GLOBALS['pap_health_load_page'] <= $load_pap_health -> pap_health_last_page) {
+				$load_pap_health -> pap_health_data_offset = ($GLOBALS['pap_health_load_page'] - 1) * $load_pap_health -> pap_health_page_rows;
+				$load_pap_health -> pap_health_record_num = ($GLOBALS['pap_health_load_page'] - 1) * $load_pap_health -> pap_health_page_rows;
+				
+			} else {
+				// echo '<script>alert("Page Is Out Of Range");</script>';
+				$GLOBALS['pap_health_load_page'] = 1;
+				$load_pap_health -> pap_health_record_num = 0;
+				$load_pap_health -> pap_health_data_offset = 0;
+			}
+
+			# Setting next, and previous page numbers
+			if (($GLOBALS['pap_health_load_page'] + 1) <= $load_pap_health -> pap_health_last_page) {
+				$GLOBALS['pap_health_next_page'] = $GLOBALS['pap_health_load_page'] + 1;
+			} else {
+				$GLOBALS['pap_health_next_page'] = 1;
+			}
+
+			if (($GLOBALS['pap_health_load_page'] - 1) >= 1) {
+				$GLOBALS['pap_health_prev_page'] = $GLOBALS['pap_health_load_page'] - 1;
+			} else {
+				$GLOBALS['pap_health_prev_page'] = 1;
+			}
+
+			# Loading Pap Livelihood
+			$load_pap_health -> LoadPapHealth();
+		}
+
+		function SelectPapHealth() {
+			include_once ('../code/code_pap_health.php');
+			$select_pap_health = new PapHealth();
+
+			$select_pap_health -> selected_project_id = $_GET['ProjectID'];
+			$select_pap_health -> selected_project_code = $_GET['ProjectCode'];
+			$select_pap_health -> pap_health_id = $_GET['AddrID'];
+
+			$select_pap_health -> SelectPapHealth();
+
+			$GLOBALS['pap_health_activity_name'] = $select_pap_health -> pap_activity_name;
+			$GLOBALS['pap_health_income_cycle'] = $select_pap_health -> pap_income_cycle;
+			$GLOBALS['pap_health_cycle'] = $select_pap_health -> pap_health_cycle;
+                               $GLOBALS['pap_health_other_dtl'] = $select_pap_health -> pap_health_other_dtl;
+                        
+                }
+			
+		function InsertPapHealth() {
+			// echo '<script>alert(' . $_GET['ClientID'] . ');</script>';
+			include_once ('../code/code_pap_health.php');
+			$insert_pap_health = new PapHealth();
+
+			$insert_pap_health -> selected_project_id = $_GET['ProjectID'];
+			$insert_pap_health -> selected_project_code = $_GET['ProjectCode'];
+
+			$insert_pap_health -> pap_activity_name = $_POST['Common Disease'];
+			$insert_pap_health -> pap_health_income_cycle = $_POST['Number Affected'];
+			$insert_pap_health -> pap_health_cycle = $_POST['First Aid Step'];
+			$insert_pap_health -> pap_health_cycle = $_POST['Nearest Health Center'];
+                        $insert_pap_health -> pap_health_other_dtl = $_POST['Other'];
+			
+			if (isset($_GET['HHID'])) {
+				$insert_pap_health -> pap_health_pap_id = $_GET['HHID'];
+			}
+
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$insert_pap_health -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_health -> pap_health_pap_id = $_SESSION['session_pap_hhid'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$insert_pap_health -> session_user_id = $_SESSION['session_user_id'];
+				$insert_pap_health -> pap_health_pap_id = $_SESSION['session_pap_hhid'];
+			}
+
+			$insert_pap_health -> InsertPapHealth();
+
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $insert_pap_health -> selected_project_id . '&ProjectCode=' . $insert_pap_health -> selected_project_code . '#PapHealth');
+			exit();
+		}
+		
+		function UpdatePapHealth() {
+			include_once ('../code/code_pap_healthare.php');
+			$update_pap_health = new Welf();
+
+			$update_pap_health -> selected_project_id = $_GET['ProjectID'];
+			$update_pap_health -> selected_project_code = $_GET['ProjectCode'];
+			
+			$update_pap_health -> pap_health_id = $_POST['MemberID'];
+			$update_pap_health -> pap_activity_name = $_POST['Activity'];
+			$update_pap_health -> pap_health_income_cycle = $_POST['IncomePerCycle'];
+		    $update_pap_health -> pap_health_other_dtl = $_POST['Other'];
+			
+			
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+				$update_pap_health -> session_user_id = $_SESSION['session_user_id'];
+			} else if (session_status() == PHP_SESSION_ACTIVE) {
+				$update_pap_health -> session_user_id = $_SESSION['session_user_id'];
+			}
+
+			$update_pap_health -> UpdatePapHealth();
+			
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=ViewMember&ProjectID=' . $update_pap_health -> selected_project_id . '&ProjectCode=' . $update_pap_health -> selected_project_code . '&MemberID=' . $update_pap_health -> pap_health_id . '#PapHealth');
+			exit();
+		}
+		
+		function DeletePapHealth() {
+			include_once ('../code/code_pap_healthlihood.php');
+			$delete_pap_health = new PapHealth();
+
+			$delete_pap_health -> selected_project_id = $_GET['ProjectID'];
+			$delete_pap_health -> selected_project_code = $_GET['ProjectCode'];
+
+			$delete_pap_health -> pap_health_id = $_GET['MemberID'];
+
+			$delete_pap_health -> DeletePapHealth();
+			unset($_POST);
+			header('Refresh:0; url=ui_pap_info.php?Mode=Read&ProjectID=' . $delete_pap_health -> selected_project_id . '&ProjectCode=' . $delete_pap_health -> selected_project_code . '#PapHealth');
+			exit();
+		}
+		
+            ?>
 		
 		<script type="text/javascript">
 			
@@ -1127,14 +1607,13 @@
                                                             } ?>" />
 								<table class="formTable">
 									<tr>
-										<td class="formLabel">Plot No, Road:</td>
-										<td class="formLabel">
-										<input type="checkbox">
-                                                                                &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
-                                                                                <input type="checkbox" value="<?php if (isset($POST['pap_addr_is_resident'])) { echo $POST['pap_addr_is_resident']; } ?>" name="Is Residence" name="Affected Plot">
-										&nbsp;Affected Plot?
-                                                                                </td>
-									</tr>
+	                                                                     <td class="formLabel">Plot No, Road:</td>
+	                                                                     <td class="formLabel">
+		                                                <input type="checkbox" name="IsResident" value="YES" <?php if (isset($GLOBALS['pap_is_resident']) && $GLOBALS['pap_is_resident'] == 'YES') { echo "checked"; }  ?> >
+		                                                  &nbsp;Is Residence?&nbsp;&nbsp;&nbsp;
+		                                                <input type="checkbox">
+		                                                  &nbsp;Affected Plot?</td>
+                                                                </tr>
 									<tr>
 										<td colspan="2"><span class="formSingleLineBox" style="width:610px;">
 										    <input type="text" value="<?php if (isset($GLOBALS['pap_addr_road'])) { echo $GLOBALS['pap_addr_road']; } ?>" name="Road" placeholder="Enter Address" />
@@ -1328,19 +1807,19 @@
 											<select name="EducLevel" >
                                                                                         <option value="">-- Literacy Level --</option>    
                                                                                         <option value="LO" <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'LO') { echo 'selected'; }  ?>> Illiterate</option>
-                                                                                        <option value='LIC' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'LIC') { echo 'selected'; }  ?>> Primary</option>
-                                                                                        <option value='TEN' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'TEN') { echo 'selected'; }  ?>> Secondary</option>
-                                                                                        <option value='TEN' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'TEN') { echo 'selected'; }  ?>> Vocational</option>
-                                                                                        <option value='TEN' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'TEN') { echo 'selected'; }  ?>> Tertiary</option>
+                                                                                        <option value='Pri' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'Pri') { echo 'selected'; }  ?>> Primary</option>
+                                                                                        <option value='Sec' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'Sec') { echo 'selected'; }  ?>> Secondary</option>
+                                                                                        <option value='Voc' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'Voc') { echo 'selected'; }  ?>> Vocational</option>
+                                                                                        <option value='Ter' <?php if (isset($GLOBALS['fam_mbr_edu_lev']) && $GLOBALS['fam_mbr_edu_lev'] == 'Ter') { echo 'selected'; }  ?>> Tertiary</option>
                                                                                         </select>
                                                                                 </span></td>
 										<td><span class="formSingleLineBox" style="float: left; ">
 											<select name="CurrentSchool" >
                                                                                         <option value="">-- School Status --</option>    
-                                                                                        <option value="LO">Continuing</option>
-                                                                                        <option value='LIC' >Completed</option>
-                                                                                        <option value='TEN' >Dropped Out</option>
-                                                                                        <option value='TEN' >Never Attended</option>
+                                                                                        <option value="Con" <?php if (isset($GLOBALS['fam_mbr_css']) && $GLOBALS['fam_mbr_css'] == 'Con') { echo 'selected'; }  ?>>Continuing</option>
+                                                                                        <option value='Com' <?php if (isset($GLOBALS['fam_mbr_css']) && $GLOBALS['fam_mbr_css'] == 'Com') { echo 'selected'; }  ?>>Completed</option>
+                                                                                        <option value='Dro' <?php if (isset($GLOBALS['fam_mbr_css']) && $GLOBALS['fam_mbr_css'] == 'Dro') { echo 'selected'; }  ?>>Dropped Out</option>
+                                                                                        <option value='Nev' <?php if (isset($GLOBALS['fam_mbr_css']) && $GLOBALS['fam_mbr_css'] == 'Nev') { echo 'selected'; }  ?>>Never Attended</option>
                                                                                         </select>
                                                                                 </span></td>
 									</tr>
@@ -1350,28 +1829,28 @@
 									</tr>
 									<tr>
 										<td><span class="formSingleLineBox" style="float: left; ">
-											<select name="EducLevel" >
+											<select name="NonAttendance" >
                                                                                         <option value="">-- Non Attendance --</option>    
-                                                                                        <option value="LO">Expensive</option>
-                                                                                        <option value='LIC' >Not Applicable</option>
-                                                                                        <option value='TEN' >Long Distance</option>
-                                                                                        <option value='TEN' >Disabled</option>
-                                                                                        <option value='TEN' >Orphaned</option>
-                                                                                        <option value='TEN' >Needed to Work</option>
-                                                                                        <option value='TEN' >Health</option>
+                                                                                        <option value="Exp" <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Exp') { echo 'selected'; }  ?>>Expensive</option>
+                                                                                        <option value='Not' <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Not') { echo 'selected'; } ?> >Not Applicable</option>
+                                                                                        <option value='Lon' <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Lon') { echo 'selected'; }  ?>>Long Distance</option>
+                                                                                        <option value='Dis' <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Dis') { echo 'selected'; }  ?>>Disabled</option>
+                                                                                        <option value='Orp' <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Orp') { echo 'selected'; }  ?>>Orphaned</option>
+                                                                                        <option value='Nee' <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Nee') { echo 'selected'; }  ?>>Needed to Work</option>
+                                                                                        <option value='Hea' <?php if (isset($GLOBALS['fam_mbr_non_att']) && $GLOBALS['fam_mbr_non_att'] == 'Hea') { echo 'selected'; }  ?>>Health</option>
                                                                                         </select>
                                                                                 </span></td>
 										<td><span class="formSingleLineBox" style="float: left; ">
-											<select name="CurrentSchool" >
+											<select name="DropOut" >
                                                                                         <option value="">-- Drop Out Reason --</option>    
-                                                                                        <option value="LO">Attained Desired Level</option>
-                                                                                        <option value="LO">Expensive</option>
-                                                                                        <option value='LIC' >Not Applicable</option>
-                                                                                        <option value='TEN' >Long Distance</option>
-                                                                                        <option value='TEN' >Disabled</option>
-                                                                                        <option value='TEN' >Orphaned</option>
-                                                                                        <option value='TEN' >Needed to Work</option>
-                                                                                        <option value='TEN' >Health</option>
+                                                                                        <option value="Att" <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Att') { echo 'selected'; }  ?>>Attained Desired Level</option>
+                                                                                        <option value="Exp" <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Exp') { echo 'selected'; }  ?>>Expensive</option>
+                                                                                        <option value='Not' <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Not') { echo 'selected'; }  ?>>Not Applicable</option>
+                                                                                        <option value='Lon' <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Lon') { echo 'selected'; }  ?>>Long Distance</option>
+                                                                                        <option value='Dis' <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Dis') { echo 'selected'; }  ?>>Disabled</option>
+                                                                                        <option value='Orp' <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Orp') { echo 'selected'; }  ?>>Orphaned</option>
+                                                                                        <option value='Nee' <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Nee') { echo 'selected'; }  ?>>Needed to Work</option>
+                                                                                        <option value='Hea' <?php if (isset($GLOBALS['fam_mbr_rdo']) && $GLOBALS['fam_mbr_rdo'] == 'Hea') { echo 'selected'; }  ?>>Health</option>
                                                                                         </select>
                                                                                 </span></td>
 									</tr>
@@ -1510,7 +1989,7 @@
 										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Activity" placeholder="Enter Activity Name" />
 										</span></td>
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Income Per Cycle" placeholder="Enter Income per season" />
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="IncomePerCycle" placeholder="Enter Income per season" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1523,12 +2002,17 @@
 										</span></td>
                                                                         </tr>
                                                                         <tr>
-									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
-									<td >
-										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
-										<span class="formLinks"><a href="#">Photos</a></span>
-									</td>
-								</tr>
+										<td> 
+											<span class="saveButtonArea">
+												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewMember') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
+												<?php $new_member = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapFamily';
+                                                if ($_GET['Mode'] == 'ViewMember') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_member . '>New Member</a></span>'; } ?>
+                                            </span>
+                                        </td>
+										<td align="right">
+                                                                                    <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
+									</tr>
 							</table>
                                                         </div>
                                                         
@@ -1541,13 +2025,9 @@
 								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
                                                                             <td class = "detailGridHead">#</td>
-                                                                            <td  class = "detailGridHead">Crop Name:</td>
-                                                                            <td  class = "detailGridHead">Crop Type:</td>
-                                                                            <td  class = "detailGridHead">Crop Description:</td>
-                                                                            <td  class = "detailGridHead">Units:</td>
-                                                                            <td  class = "detailGridHead">Crop Rate:</td>
-                                                                            <td  class = "detailGridHead">Crop Total:</td>
-                                                                            <td  class = "detailGridHead">Modify:</td>
+                                                                            <td  class = "detailGridHead">Activity</td>
+                                                                            <td  class = "detailGridHead">Income Per Cycle</td>
+                                                                            <td  class = "detailGridHead">Modify</td>
                                                                         </tr>
 									</table>
 									<table class="detailNavigation">
@@ -1610,12 +2090,17 @@
 										</span></td>
                                                                         </tr>
                                                                         <tr>
-									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
-									<td >
-										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
-										<span class="formLinks"><a href="#">Photos</a></span>
-									</td>
-								</tr>
+										<td> 
+											<span class="saveButtonArea">
+												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewMember') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
+												<?php $new_member = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapFamily';
+                                                if ($_GET['Mode'] == 'ViewMember') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_member . '>New Member</a></span>'; } ?>
+                                            </span>
+                                        </td>
+										<td align="right">
+                                                                                    <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
+									</tr>
 							</table>
                                                                 </form>
                                                         </div>
@@ -1630,13 +2115,10 @@
 								<table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
                                                                             <td class = "detailGridHead">#</td>
-                                                                            <td  class = "detailGridHead">Crop Name:</td>
-                                                                            <td  class = "detailGridHead">Crop Type:</td>
-                                                                            <td  class = "detailGridHead">Crop Description:</td>
-                                                                            <td  class = "detailGridHead">Units:</td>
-                                                                            <td  class = "detailGridHead">Crop Rate:</td>
-                                                                            <td  class = "detailGridHead">Crop Total:</td>
-                                                                            <td  class = "detailGridHead">Modify:</td>
+                                                                            <td  class = "detailGridHead">Affected</td>
+                                                                            <td  class = "detailGridHead">First Aid</td>
+                                                                            <td  class = "detailGridHead">Health</td>
+                                                                            <td  class = "detailGridHead">Modify</td>
                                                                         </tr>
 									</table>
 									<table class="detailNavigation">
@@ -1670,11 +2152,11 @@
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 									
 										<td><span class="formSingleLineBox">
-										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Number of Assets" placeholder="Enter Number of Assets" />
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="NumberAssets" placeholder="Enter Number of Assets" />
 										</span></td>
 										
                                                                                 <td ><span class="formSingleLineBox" style="">
-										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="Asset/Business Name" placeholder="Enter Asset Name" />
+										    <input type="text" value="<?php if (isset($GLOBALS[''])) { echo $GLOBALS['']; } ?>" name="AssetName" placeholder="Enter Asset Name" />
 										</span></td>
 									</tr>
                                                                         <tr>
@@ -1691,16 +2173,21 @@
                                                                         <tr>
 										<!-- td colspan="2"><span class="formSingleLineBox" style="width:610px;">Enter Name Of</span></td -->
 										<td colspan="2"><span class="formMultiLineBox">										   
-                                                                                     <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Other details about this Asset" name="Other "><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
+                                                                                     <textarea id="dtlProjObj" onfocus="Focus(this.id)" onblur="Blur(this.id)" type="text" placeholder="Other details about this Asset" name="Others"><?php if(isset($project_obj)){echo $project_obj;}?></textarea>
 										</span></td>
                                                                         </tr>
                                                                         <tr>
-									<td ><a class="saveButtonArea" href="#">Save / Finish</a></td>
-									<td >
-										<span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=ValuationDoc&Tag=Land&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
-										<span class="formLinks"><a href="#">Photos</a></span>
-									</td>
-								</tr>
+										<td> 
+											<span class="saveButtonArea">
+												<input type="submit" value="<?php if ($_GET['Mode'] == 'ViewMember') {echo 'Update'; } else {echo 'Save'; } ?>" name="UpdateMode" style="float:left;" />
+												<?php $new_member = htmlspecialchars($_SERVER["PHP_SELF"]) . '?Mode=Read&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode'] . '#PapFamily';
+                                                if ($_GET['Mode'] == 'ViewMember') { echo '<span class="formLinks" style="margin-top:0px;"><a href=' . $new_member . '>New Member</a></span>'; } ?>
+                                            </span>
+                                        </td>
+										<td align="right">
+                                                                                    <span class="formLinks SideBar"><a href="<?php echo 'ui_doc.php?Mode=PapDoc&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Documents</a></span>
+											<span class="formLinks"><a href="<?php echo 'ui_doc.php?Mode=PapPhoto&Tag=PapFamily&ProjectID=' . $_GET['ProjectID'] . '&ProjectCode=' . $_GET['ProjectCode']; ?>">Photos</a></span></td>
+									</tr>
 							</table>
                                                         </div>
                                                         
@@ -1713,13 +2200,9 @@
                                                                     <table class="detailGrid" style="width:700px; margin:10px 0px;">
 										<tr>
                                                                             <td class = "detailGridHead">#</td>
-                                                                            <td  class = "detailGridHead">Crop Name:</td>
-                                                                            <td  class = "detailGridHead">Crop Type:</td>
-                                                                            <td  class = "detailGridHead">Crop Description:</td>
-                                                                            <td  class = "detailGridHead">Units:</td>
-                                                                            <td  class = "detailGridHead">Crop Rate:</td>
-                                                                            <td  class = "detailGridHead">Crop Total:</td>
-                                                                            <td  class = "detailGridHead">Modify:</td>
+                                                                            <td  class = "detailGridHead">ASSET NAME</td>
+                                                                            <td  class = "detailGridHead">ASSET PURPOSE</td>
+                                                                            <td  class = "detailGridHead">Modify</td>
                                                                         </tr>
 									</table>
 									<table class="detailNavigation">
